@@ -1,0 +1,49 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" fill="#0B0B12"/>
+  <defs>
+    <radialGradient id="glow" cx="78%" cy="18%" r="60%">
+      <stop offset="0%" stop-color="#7C5CFF" stop-opacity="0.42"/>
+      <stop offset="100%" stop-color="#0B0B12" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow2" cx="6%" cy="92%" r="55%">
+      <stop offset="0%" stop-color="#22D3EE" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="#0B0B12" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="grad" x1="0" y1="0" x2="1" y2="0.4">
+      <stop offset="0%" stop-color="#A98BFF"/>
+      <stop offset="100%" stop-color="#22D3EE"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <rect width="1200" height="630" fill="url(#glow2)"/>
+
+  <!-- brand lockup -->
+  <g transform="translate(96, 150)">
+    <rect width="64" height="64" rx="15" fill="#16121F"/>
+    <rect x="11" y="19" width="42" height="26" rx="6" fill="#7C5CFF"/>
+    <g stroke="#C4F542" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none">
+      <path d="M15 32 V27 H20"/><path d="M44 27 H49 V32"/>
+      <path d="M15 37 V42 H20"/><path d="M44 42 H49 V37"/>
+    </g>
+    <text x="84" y="46" font-family="'Space Grotesk', system-ui, sans-serif" font-weight="700" font-size="40" letter-spacing="-0.02em">
+      <tspan fill="#FFFFFF">FindThis</tspan><tspan fill="#22D3EE">BIN</tspan>
+    </text>
+  </g>
+
+  <text x="96" y="340" font-family="'Space Grotesk', system-ui, sans-serif" font-weight="700" font-size="74" letter-spacing="-0.03em" fill="#FFFFFF">Every card,</text>
+  <text x="96" y="426" font-family="'Space Grotesk', system-ui, sans-serif" font-weight="700" font-size="74" letter-spacing="-0.03em">
+    <tspan fill="#FFFFFF">decoded in </tspan><tspan fill="url(#grad)">one API call.</tspan>
+  </text>
+
+  <text x="96" y="500" font-family="'Inter', system-ui, sans-serif" font-weight="400" font-size="28" fill="#A9A9BC">BIN intelligence API · EU-hosted · sub-10ms p99</text>
+
+  <!-- trust dots -->
+  <g transform="translate(96, 540)" font-family="'Inter', system-ui, sans-serif" font-weight="500" font-size="20" fill="#7A7A8C">
+    <circle cx="6" cy="-6" r="5" fill="#22D3EE"/>
+    <text x="22" y="0">GDPR-clean</text>
+    <circle cx="186" cy="-6" r="5" fill="#22D3EE"/>
+    <text x="202" y="0">PCI out-of-scope</text>
+    <circle cx="416" cy="-6" r="5" fill="#22D3EE"/>
+    <text x="432" y="0">99.9% uptime</text>
+  </g>
+</svg>

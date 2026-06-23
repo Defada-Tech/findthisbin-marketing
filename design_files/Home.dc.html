@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  html{ scroll-behavior:smooth; }
+  body{ margin:0; background:#0B0B12; }
+  *{ box-sizing:border-box; }
+  @keyframes ftbGrad{ 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+  @keyframes ftbUp{ from{opacity:0; transform:translateY(12px)} to{opacity:1; transform:translateY(0)} }
+  @keyframes ftbBlink{ 0%,100%{opacity:1} 50%{opacity:0} }
+  @keyframes ftbFloat{ 0%,100%{transform:translateY(0)} 50%{transform:translateY(-16px)} }
+  .ftb-herogrid{ display:grid; grid-template-columns:1.05fr 1fr; gap:56px; align-items:center; }
+  @media (max-width: 980px){ .ftb-herogrid{ grid-template-columns:1fr; gap:40px; } }
+  .ftb-2col{ display:grid; grid-template-columns:1fr 1fr; gap:28px; align-items:center; }
+  @media (max-width: 900px){ .ftb-2col{ grid-template-columns:1fr; gap:36px; } }
+  .ftb-stats3{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+  @media (max-width: 600px){ .ftb-stats3{ grid-template-columns:1fr; gap:8px; } .ftb-stats3 > div{ border:0 !important; padding:14px 0; } }
+  .ftb-pillars{ display:grid; grid-template-columns:1fr 1fr; gap:22px; }
+  @media (max-width: 820px){ .ftb-pillars{ grid-template-columns:1fr; } }
+  .ftb-pricing4{ display:grid; grid-template-columns:repeat(4,1fr); gap:18px; align-items:stretch; }
+  @media (max-width: 1040px){ .ftb-pricing4{ grid-template-columns:1fr 1fr; } }
+  @media (max-width: 560px){ .ftb-pricing4{ grid-template-columns:1fr; } }
+  .ftb-cards3{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+  @media (max-width: 860px){ .ftb-cards3{ grid-template-columns:1fr; } }
+</style>
+</helmet>
+<div style="fontFamily:'Inter',sans-serif; background:#0B0B12; color:#fff; overflow-x:hidden;">
+  <dc-import name="Nav" active="home" hint-size="100%,68px"></dc-import>
+
+  <!-- ============ HERO ============ -->
+  <section style="position:relative; background:#0B0B12; overflow:hidden;">
+    <div style="position:absolute; inset:0; background:radial-gradient(120% 90% at 70% -10%, rgba(124,92,255,0.30), rgba(11,11,18,0) 55%), radial-gradient(80% 70% at 8% 8%, rgba(34,211,238,0.16), rgba(11,11,18,0) 50%); pointer-events:none;"></div>
+    <div style="position:absolute; top:-120px; right:-80px; width:420px; height:420px; border-radius:50%; background:radial-gradient(circle, rgba(124,92,255,0.45), rgba(124,92,255,0) 70%); filter:blur(20px); animation:ftbFloat 9s ease-in-out infinite; pointer-events:none;"></div>
+    <div style="max-width:1240px; margin:0 auto; padding:clamp(56px,9vw,108px) 24px clamp(64px,8vw,96px); position:relative;">
+      <div class="ftb-herogrid">
+        <div>
+          <div style="display:inline-flex; align-items:center; gap:9px; padding:7px 14px; border-radius:999px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); margin-bottom:26px;">
+            <span style="width:7px; height:7px; border-radius:50%; background:#C4F542; box-shadow:0 0 10px #C4F542;"></span>
+            <span style="fontSize:13px; fontWeight:600; color:#D7D7E2; letterSpacing:0.01em;">BIN intelligence API · EU-hosted</span>
+          </div>
+          <h1 style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:clamp(40px,6vw,72px); lineHeight:1.02; letterSpacing:-0.03em; margin:0 0 22px; color:#fff;">Every card,<br>decoded in <span style="background:linear-gradient(100deg,#A98BFF,#22D3EE); -webkit-background-clip:text; background-clip:text; color:transparent;">one API call.</span></h1>
+          <p style="fontSize:clamp(16px,1.7vw,19px); lineHeight:1.6; color:#A9A9BC; margin:0 0 34px; max-width:560px;">FindThisBIN turns any 6–8 digit BIN into rich, accurate card data — scheme, type, issuer, country, currency, and DCC eligibility — in a single sub-10ms request. EU-hosted, developer-first, built for PSPs and payment platforms.</p>
+          <div style="display:flex; flex-wrap:wrap; gap:14px; margin-bottom:34px;">
+            <a href="Pricing.dc.html#tiers" style="text-decoration:none; fontWeight:600; fontSize:16px; color:#0B0B12; background:#C4F542; padding:15px 26px; border-radius:12px; boxShadow:0 12px 36px -10px rgba(196,245,66,0.6); transition:transform .15s ease;" style-hover="transform:translateY(-2px);">Get your free API key</a>
+            <a href="Home.dc.html#" style="text-decoration:none; fontWeight:600; fontSize:16px; color:#fff; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.16); padding:15px 26px; border-radius:12px; transition:background .15s ease;" style-hover="background:rgba(255,255,255,0.12);">Talk to sales</a>
+          </div>
+          <div style="display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center; fontSize:13px; color:#7A7A8C; fontWeight:500;">
+            <span style="display:inline-flex; align-items:center; gap:7px;"><span style="color:#22D3EE;">●</span>EU-hosted</span>
+            <span style="display:inline-flex; align-items:center; gap:7px;"><span style="color:#22D3EE;">●</span>GDPR-clean</span>
+            <span style="display:inline-flex; align-items:center; gap:7px;"><span style="color:#22D3EE;">●</span>PCI-out-of-scope</span>
+            <span style="display:inline-flex; align-items:center; gap:7px;"><span style="color:#22D3EE;">●</span>sub-10ms p99</span>
+            <span style="display:inline-flex; align-items:center; gap:7px;"><span style="color:#22D3EE;">●</span>99.9% uptime</span>
+          </div>
+        </div>
+
+        <!-- demo panel -->
+        <div style="position:relative;">
+          <div style="position:absolute; inset:-1px; border-radius:18px; background:linear-gradient(140deg,rgba(124,92,255,0.6),rgba(34,211,238,0.4),rgba(124,92,255,0.1)); filter:blur(2px); opacity:0.7;"></div>
+          <div style="position:relative; background:#0C0C16; border:1px solid rgba(255,255,255,0.08); border-radius:16px; overflow:hidden; boxShadow:0 30px 80px -30px rgba(0,0,0,0.8);">
+            <div style="display:flex; align-items:center; gap:8px; padding:13px 16px; background:#12121E; borderBottom:1px solid rgba(255,255,255,0.06);">
+              <span style="width:11px; height:11px; border-radius:50%; background:#FF5F57;"></span>
+              <span style="width:11px; height:11px; border-radius:50%; background:#FEBC2E;"></span>
+              <span style="width:11px; height:11px; border-radius:50%; background:#28C840;"></span>
+              <span style="margin-left:10px; fontFamily:'JetBrains Mono',monospace; fontSize:12px; color:#6E6E80;">findthisbin · live</span>
+            </div>
+            <div style="padding:18px 18px 6px; fontFamily:'JetBrains Mono',monospace; fontSize:13px; display:flex; align-items:center; gap:10px; flexWrap:wrap;">
+              <span style="background:#C4F542; color:#0B0B12; fontWeight:700; padding:2px 8px; border-radius:6px; fontSize:11px;">GET</span>
+              <span style="color:#9EE493;">https://api.findthisbin.com/v1/bins/<span style="color:#22D3EE;">53847012</span></span>
+            </div>
+            <div style="padding:8px 20px 22px; fontFamily:'JetBrains Mono',monospace; fontSize:13px; lineHeight:1.7; color:#E6E6F0;">
+              <div style="animation:ftbUp .4s ease both; animation-delay:.05s;"><span style="color:#717184;">{</span></div>
+              <div style="padding-left:18px; animation:ftbUp .4s ease both; animation-delay:.12s;"><span style="color:#7DD3FC;">"bin"</span><span style="color:#717184;">: </span><span style="color:#9EE493;">"53847012"</span><span style="color:#717184;">,</span></div>
+              <div style="padding-left:18px; animation:ftbUp .4s ease both; animation-delay:.18s;"><span style="color:#7DD3FC;">"scheme"</span><span style="color:#717184;">: </span><span style="color:#9EE493;">"mastercard"</span><span style="color:#717184;">,</span></div>
+              <div style="padding-left:18px; animation:ftbUp .4s ease both; animation-delay:.24s;"><span style="color:#7DD3FC;">"type"</span><span style="color:#717184;">: </span><span style="color:#9EE493;">"credit"</span><span style="color:#717184;">,</span></div>
+              <div style="padding-left:18px; animation:ftbUp .4s ease both; animation-delay:.30s;"><span style="color:#7DD3FC;">"category"</span><span style="color:#717184;">: </span><span style="color:#9EE493;">"consumer"</span><span style="color:#717184;">,</span></div>
+              <div style="padding-left:18px; animation:ftbUp .4s ease both; animation-delay:.36s;"><span style="color:#7DD3FC;">"product"</span><span style="color:#717184;">: </span><span style="color:#9EE493;">"World Elite Mastercard"</span><span style="color:#717184;">,</span></div>
+              <div style="padding-left:18px; animation:ftbUp .4s ease both; animation-delay:.42s;"><span style="color:#7DD3FC;">"issuer"</span><span style="color:#717184;">: { </span><span style="color:#7DD3FC;">"name"</span><span style="color:#717184;">: </span><span style="color:#9EE493;">"Revolut Ltd"</span><span style="color:#717184;">, </span><span style="color:#7DD3FC;">"country"</span><span style="color:#717184;">: </span><span style="color:#9EE493;">"GB"</span><span style="color:#717184;">, </span><span style="color:#7DD3FC;">"currency"</span><span style="color:#717184;">: </span><span style="color:#9EE493;">"GBP"</span><span style="color:#717184;"> },</span></div>
+              <div style="padding-left:18px; animation:ftbUp .4s ease both; animation-delay:.48s;"><span style="color:#7DD3FC;">"flags"</span><span style="color:#717184;">: { </span><span style="color:#7DD3FC;">"prepaid"</span><span style="color:#717184;">: </span><span style="color:#C4A5FF;">false</span><span style="color:#717184;">, </span><span style="color:#7DD3FC;">"commercial"</span><span style="color:#717184;">: </span><span style="color:#C4A5FF;">false</span><span style="color:#717184;">, </span><span style="color:#7DD3FC;">"regulated_debit"</span><span style="color:#717184;">: </span><span style="color:#C4A5FF;">false</span><span style="color:#717184;"> },</span></div>
+              <div style="padding-left:18px; animation:ftbUp .4s ease both; animation-delay:.54s;"><span style="color:#7DD3FC;">"dcc_eligible"</span><span style="color:#717184;">: </span><span style="color:#C4A5FF;">true</span><span style="color:#717184;">,</span></div>
+              <div style="padding-left:18px; animation:ftbUp .4s ease both; animation-delay:.60s;"><span style="color:#7DD3FC;">"confidence"</span><span style="color:#717184;">: </span><span style="color:#C4A5FF;">0.98</span><span style="color:#717184;">,</span></div>
+              <div style="padding-left:18px; animation:ftbUp .4s ease both; animation-delay:.66s;"><span style="color:#7DD3FC;">"dataset_version"</span><span style="color:#717184;">: </span><span style="color:#9EE493;">"2026-06-12"</span></div>
+              <div style="animation:ftbUp .4s ease both; animation-delay:.72s;"><span style="color:#717184;">}</span><span style="display:inline-block; width:8px; height:15px; background:#C4F542; margin-left:4px; vertical-align:-2px; animation:ftbBlink 1s step-end infinite;"></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- scheme logos strip -->
+      <div style="margin-top:clamp(44px,6vw,72px); padding-top:30px; borderTop:1px solid rgba(255,255,255,0.07); display:flex; flex-wrap:wrap; align-items:center; gap:14px 40px;">
+        <span style="fontSize:12px; fontWeight:600; letterSpacing:0.08em; textTransform:uppercase; color:#5C5C6E;">Coverage across every major scheme</span>
+        <div style="display:flex; flex-wrap:wrap; align-items:center; gap:28px; opacity:0.62;">
+          <span style="fontFamily:'Space Grotesk',sans-serif; fontStyle:italic; fontWeight:700; fontSize:21px; color:#cfcfda; letterSpacing:0.02em;">VISA</span>
+          <span style="display:inline-flex; align-items:center; gap:-6px;"><span style="width:17px; height:17px; border-radius:50%; background:#cfcfda; opacity:0.9;"></span><span style="width:17px; height:17px; border-radius:50%; background:#9a9aae; margin-left:-7px;"></span></span>
+          <span style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:16px; color:#cfcfda; letterSpacing:0.02em;">AMEX</span>
+          <span style="fontFamily:'Space Grotesk',sans-serif; fontWeight:600; fontSize:17px; color:#cfcfda;">Discover</span>
+          <span style="fontFamily:'Space Grotesk',sans-serif; fontWeight:600; fontSize:17px; color:#cfcfda;">JCB</span>
+          <span style="fontFamily:'Space Grotesk',sans-serif; fontWeight:600; fontSize:17px; color:#cfcfda;">UnionPay</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SOCIAL PROOF ============ -->
+  <section style="background:#F6F6FB; color:#0B0B12;">
+    <div style="max-width:1240px; margin:0 auto; padding:clamp(56px,7vw,88px) 24px;">
+      <p style="text-align:center; fontSize:13px; fontWeight:600; letterSpacing:0.08em; textTransform:uppercase; color:#8A8A9A; margin:0 0 36px;">Powering BIN intelligence for modern payment platforms</p>
+      <div style="display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:24px 52px; margin-bottom:56px;">
+        <span style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:23px; color:#0B0B12; opacity:0.42; letterSpacing:-0.02em;">NorthPay</span>
+        <span style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:23px; color:#0B0B12; opacity:0.42; letterSpacing:-0.02em;">Volt</span>
+        <span style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:23px; color:#0B0B12; opacity:0.42; letterSpacing:-0.02em;">Cadence</span>
+        <span style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:23px; color:#0B0B12; opacity:0.42; letterSpacing:-0.02em;">Ledgerline</span>
+        <span style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:23px; color:#0B0B12; opacity:0.42; letterSpacing:-0.02em;">Orbital</span>
+        <span style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:23px; color:#0B0B12; opacity:0.42; letterSpacing:-0.02em;">Settle</span>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:24px; max-width:880px; margin:0 auto;" class="ftb-stats3">
+        <div style="text-align:center;">
+          <div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:clamp(34px,5vw,52px); letterSpacing:-0.03em; color:#0B0B12;">{{ binsStr }}</div>
+          <div style="fontSize:14px; color:#6E6E80; fontWeight:500; margin-top:4px;">BINs covered</div>
+        </div>
+        <div style="text-align:center; borderLeft:1px solid #E6E6EF; borderRight:1px solid #E6E6EF;">
+          <div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:clamp(34px,5vw,52px); letterSpacing:-0.03em; color:#0B0B12;">{{ countriesStr }}</div>
+          <div style="fontSize:14px; color:#6E6E80; fontWeight:500; margin-top:4px;">Countries & territories</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:clamp(34px,5vw,52px); letterSpacing:-0.03em; color:#0B0B12;">{{ lookupsStr }}</div>
+          <div style="fontSize:14px; color:#6E6E80; fontWeight:500; margin-top:4px;">Lookups per day</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VALUE PILLARS ============ -->
+  <section id="product" style="background:#FFFFFF; color:#0B0B12;">
+    <div style="max-width:1240px; margin:0 auto; padding:clamp(64px,8vw,108px) 24px;">
+      <div style="max-width:680px; margin-bottom:48px;">
+        <div style="fontSize:13px; fontWeight:700; letterSpacing:0.08em; textTransform:uppercase; color:#7C5CFF; margin-bottom:14px;">Why FindThisBIN</div>
+        <h2 style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:clamp(30px,4.2vw,48px); lineHeight:1.05; letterSpacing:-0.025em; margin:0;">Engineered for the teams that move money.</h2>
+      </div>
+      <div class="ftb-pillars">
+        <div style="background:#0B0B12; color:#fff; border-radius:18px; padding:34px; position:relative; overflow:hidden;">
+          <div style="position:absolute; top:-40px; right:-40px; width:180px; height:180px; background:radial-gradient(circle,rgba(124,92,255,0.4),transparent 70%); filter:blur(10px);"></div>
+          <div style="position:relative;">
+            <div style="fontSize:13px; fontWeight:700; color:#C4F542; letterSpacing:0.05em; margin-bottom:14px;">01 · DEVELOPER EXPERIENCE</div>
+            <h3 style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:26px; letterSpacing:-0.02em; margin:0 0 12px;">Ships in minutes, not sprints.</h3>
+            <p style="fontSize:15.5px; line-height:1.6; color:#A9A9BC; margin:0 0 22px;">Clean REST API, SDKs in 5 languages, test &amp; live keys, and a generous free tier. Signup to first lookup in under 5 minutes.</p>
+            <div style="background:#0A0A12; border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:16px; fontFamily:'JetBrains Mono',monospace; fontSize:12.5px; line-height:1.7;">
+              <div><span style="color:#FF7B9C;">const</span> <span style="color:#E6E6F0;">card</span> <span style="color:#717184;">=</span> <span style="color:#FF7B9C;">await</span> <span style="color:#E6E6F0;">ftb</span><span style="color:#717184;">.</span><span style="color:#B89CFF;">lookup</span><span style="color:#717184;">(</span><span style="color:#9EE493;">'53847012'</span><span style="color:#717184;">)</span></div>
+              <div><span style="color:#717184;">// → { scheme, type, issuer, dcc... }</span></div>
+            </div>
+          </div>
+        </div>
+        <div style="background:#F6F6FB; border:1px solid #E6E6EF; border-radius:18px; padding:34px;">
+          <div style="fontSize:13px; fontWeight:700; color:#7C5CFF; letterSpacing:0.05em; margin-bottom:14px;">02 · EU &amp; COMPLIANCE</div>
+          <h3 style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:26px; letterSpacing:-0.02em; margin:0 0 12px; color:#0B0B12;">EU-resident, compliance-ready.</h3>
+          <p style="fontSize:15.5px; line-height:1.6; color:#5A5A6B; margin:0 0 20px;">Hosted in the EU, GDPR-clean, and we never see a full card number — entirely out of PCI scope. DPA available. A built-in DCC module ships ECB reference-rate disclosure data for PSD2 / CBPR compliance.</p>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <span style="fontSize:12.5px; fontWeight:600; color:#0B0B12; background:#fff; border:1px solid #E6E6EF; padding:6px 11px; border-radius:8px;">EU-hosted</span>
+            <span style="fontSize:12.5px; fontWeight:600; color:#0B0B12; background:#fff; border:1px solid #E6E6EF; padding:6px 11px; border-radius:8px;">GDPR-clean</span>
+            <span style="fontSize:12.5px; fontWeight:600; color:#0B0B12; background:#fff; border:1px solid #E6E6EF; padding:6px 11px; border-radius:8px;">PCI out-of-scope</span>
+            <span style="fontSize:12.5px; fontWeight:600; color:#0B0B12; background:#fff; border:1px solid #E6E6EF; padding:6px 11px; border-radius:8px;">DCC module</span>
+          </div>
+        </div>
+        <div style="background:#F6F6FB; border:1px solid #E6E6EF; border-radius:18px; padding:34px;">
+          <div style="fontSize:13px; fontWeight:700; color:#7C5CFF; letterSpacing:0.05em; margin-bottom:14px;">03 · ACCURACY</div>
+          <h3 style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:26px; letterSpacing:-0.02em; margin:0 0 12px; color:#0B0B12;">Accuracy you can underwrite.</h3>
+          <p style="fontSize:15.5px; line-height:1.6; color:#5A5A6B; margin:0;">True 8-digit range precision — not legacy 6-digit guessing. Multi-source aggregation with per-field confidence and continuous corrections that catch the mislabeled prepaid and commercial cards raw network files miss.</p>
+          <div style="margin-top:22px; display:flex; align-items:center; gap:14px;">
+            <div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:40px; color:#0B0B12; letterSpacing:-0.03em;">8-digit</div>
+            <div style="fontSize:13.5px; color:#6E6E80; line-height:1.4;">range precision<br>with per-field confidence</div>
+          </div>
+        </div>
+        <div style="background:#0B0B12; color:#fff; border-radius:18px; padding:34px; position:relative; overflow:hidden;">
+          <div style="position:absolute; bottom:-40px; left:-40px; width:180px; height:180px; background:radial-gradient(circle,rgba(34,211,238,0.35),transparent 70%); filter:blur(10px);"></div>
+          <div style="position:relative;">
+            <div style="fontSize:13px; fontWeight:700; color:#22D3EE; letterSpacing:0.05em; margin-bottom:14px;">04 · PERFORMANCE</div>
+            <h3 style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:26px; letterSpacing:-0.02em; margin:0 0 12px;">Built for the checkout hot path.</h3>
+            <p style="fontSize:15.5px; line-height:1.6; color:#A9A9BC; margin:0 0 22px;">Sub-10ms p99 lookups that survive BIN-enumeration bursts — engineered for high-volume, real-time decisioning at checkout.</p>
+            <div style="display:flex; gap:28px;">
+              <div><div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:32px; color:#C4F542;">&lt;10ms</div><div style="fontSize:13px; color:#7A7A8C;">p99 latency</div></div>
+              <div><div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:32px; color:#C4F542;">99.9%</div><div style="fontSize:13px; color:#7A7A8C;">uptime</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TRY IT LIVE ============ -->
+  <section id="try" style="position:relative; background:#0B0B12; overflow:hidden;">
+    <div style="position:absolute; inset:0; background:radial-gradient(90% 80% at 50% 0%, rgba(124,92,255,0.18), transparent 60%); pointer-events:none;"></div>
+    <div style="max-width:1000px; margin:0 auto; padding:clamp(64px,8vw,108px) 24px; position:relative;">
+      <div style="text-align:center; max-width:620px; margin:0 auto 40px;">
+        <div style="fontSize:13px; fontWeight:700; letterSpacing:0.08em; textTransform:uppercase; color:#22D3EE; margin-bottom:14px;">Playground</div>
+        <h2 style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:clamp(30px,4.2vw,48px); lineHeight:1.05; letterSpacing:-0.025em; margin:0 0 14px; color:#fff;">Look up any BIN, right now.</h2>
+        <p style="fontSize:17px; line-height:1.6; color:#A9A9BC; margin:0;">Type a 6–8 digit BIN and see exactly what your integration receives.</p>
+      </div>
+      <div style="background:#0C0C16; border:1px solid rgba(255,255,255,0.09); border-radius:18px; overflow:hidden; boxShadow:0 30px 80px -40px rgba(0,0,0,0.8);">
+        <div style="padding:22px; display:flex; flex-wrap:wrap; gap:12px; align-items:center; borderBottom:1px solid rgba(255,255,255,0.07);">
+          <div style="display:flex; align-items:center; gap:10px; flex:1; min-width:220px; background:#0A0A12; border:1px solid rgba(255,255,255,0.12); border-radius:11px; padding:0 14px;">
+            <span style="fontFamily:'JetBrains Mono',monospace; fontSize:13px; color:#5C5C6E;">/v1/bins/</span>
+            <input value="{{ bin }}" onInput="{{ onBinInput }}" inputmode="numeric" maxlength="8" placeholder="53847012" style="flex:1; background:transparent; border:0; outline:none; color:#fff; fontFamily:'JetBrains Mono',monospace; fontSize:16px; padding:14px 0; min-width:80px;" />
+          </div>
+          <span style="fontSize:13px; color:#6E6E80;">Try:</span>
+          <sc-for list="{{ tryExamples }}" as="ex" hint-placeholder-count="4">
+            <button onClick="{{ ex.onClick }}" style="fontFamily:'JetBrains Mono',monospace; fontSize:12.5px; color:#C7C7D6; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:8px; padding:7px 10px; cursor:pointer;" style-hover="border-color:rgba(34,211,238,0.5); color:#22D3EE;">{{ ex.value }}</button>
+          </sc-for>
+        </div>
+        <div style="padding:28px; display:grid; grid-template-columns:1fr 1fr; gap:14px;" class="ftb-pillars">
+          <div style="display:flex; flex-direction:column; gap:12px;">
+            <div style="display:flex; gap:12px;">
+              <div style="flex:1; background:#10101C; border:1px solid rgba(255,255,255,0.07); border-radius:12px; padding:16px;"><div style="fontSize:11px; textTransform:uppercase; letterSpacing:0.06em; color:#6E6E80; margin-bottom:6px;">Scheme</div><div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:20px; color:#fff;">{{ r.scheme }}</div></div>
+              <div style="flex:1; background:#10101C; border:1px solid rgba(255,255,255,0.07); border-radius:12px; padding:16px;"><div style="fontSize:11px; textTransform:uppercase; letterSpacing:0.06em; color:#6E6E80; margin-bottom:6px;">Type</div><div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:20px; color:#fff;">{{ r.type }}</div></div>
+            </div>
+            <div style="background:#10101C; border:1px solid rgba(255,255,255,0.07); border-radius:12px; padding:16px;">
+              <div style="fontSize:11px; textTransform:uppercase; letterSpacing:0.06em; color:#6E6E80; margin-bottom:6px;">Issuer</div>
+              <div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:18px; color:#fff;">{{ r.issuer }}</div>
+              <div style="fontSize:13px; color:#9A9AAE; margin-top:4px;">{{ r.product }}</div>
+            </div>
+            <div style="display:flex; gap:12px;">
+              <div style="flex:1; background:#10101C; border:1px solid rgba(255,255,255,0.07); border-radius:12px; padding:16px;"><div style="fontSize:11px; textTransform:uppercase; letterSpacing:0.06em; color:#6E6E80; margin-bottom:6px;">Country</div><div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:20px; color:#fff;">{{ r.country }}</div></div>
+              <div style="flex:1; background:#10101C; border:1px solid rgba(255,255,255,0.07); border-radius:12px; padding:16px;"><div style="fontSize:11px; textTransform:uppercase; letterSpacing:0.06em; color:#6E6E80; margin-bottom:6px;">Currency</div><div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:20px; color:#fff;">{{ r.currency }}</div></div>
+              <div style="flex:1; background:#10101C; border:1px solid rgba(255,255,255,0.07); border-radius:12px; padding:16px;"><div style="fontSize:11px; textTransform:uppercase; letterSpacing:0.06em; color:#6E6E80; margin-bottom:6px;">DCC</div><div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:20px; color:{{ dccColor }};">{{ dccLabel }}</div></div>
+            </div>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:12px;">
+            <div style="background:#10101C; border:1px solid rgba(255,255,255,0.07); border-radius:12px; padding:16px;">
+              <div style="fontSize:11px; textTransform:uppercase; letterSpacing:0.06em; color:#6E6E80; margin-bottom:12px;">Flags</div>
+              <div style="display:flex; flex-direction:column; gap:8px;">
+                <sc-for list="{{ flagsList }}" as="fl" hint-placeholder-count="3">
+                  <div style="display:flex; align-items:center; justify-content:space-between;">
+                    <span style="fontSize:14px; color:#C7C7D6;">{{ fl.label }}</span>
+                    <span style="display:inline-flex; align-items:center; justify-content:center; min-width:26px; height:24px; padding:0 8px; border-radius:7px; fontSize:13px; fontWeight:700; color:{{ fl.color }}; background:{{ fl.bg }}; border:1px solid {{ fl.border }};">{{ fl.mark }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+            <div style="background:#10101C; border:1px solid rgba(255,255,255,0.07); border-radius:12px; padding:16px; flex:1;">
+              <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
+                <span style="fontSize:11px; textTransform:uppercase; letterSpacing:0.06em; color:#6E6E80;">Confidence</span>
+                <span style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:18px; color:#C4F542;">{{ confPct }}</span>
+              </div>
+              <div style="height:8px; border-radius:99px; background:rgba(255,255,255,0.08); overflow:hidden;">
+                <div style="height:100%; width:{{ confBar }}; background:linear-gradient(90deg,#7C5CFF,#22D3EE); border-radius:99px; transition:width .4s ease;"></div>
+              </div>
+              <div style="fontSize:12.5px; color:#7A7A8C; margin-top:12px;">{{ bestGuessHint }}</div>
+              <div style="fontSize:12.5px; color:#7A7A8C; margin-top:4px;">Dataset version 2026-06-12</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WHAT YOU GET ============ -->
+  <section style="background:#F6F6FB; color:#0B0B12;">
+    <div style="max-width:1240px; margin:0 auto; padding:clamp(64px,8vw,108px) 24px;">
+      <div style="max-width:640px; margin-bottom:44px;">
+        <div style="fontSize:13px; fontWeight:700; letterSpacing:0.08em; textTransform:uppercase; color:#7C5CFF; margin-bottom:14px;">One call, everything</div>
+        <h2 style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:clamp(30px,4.2vw,48px); lineHeight:1.05; letterSpacing:-0.025em; margin:0 0 12px;">Every field your stack needs.</h2>
+        <p style="fontSize:17px; line-height:1.6; color:#5A5A6B; margin:0;">A single BIN lookup returns the full card-intelligence record — typed, scored, and versioned.</p>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:14px;">
+        <div style="background:#fff; border:1px solid #E6E6EF; border-radius:12px; padding:18px;"><div style="fontSize:12px; color:#8A8A9A; margin-bottom:5px;">scheme</div><div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:17px;">Visa · MC · Amex</div></div>
+      <div style="background:#fff; border:1px solid #E6E6EF; border-radius:12px; padding:18px;"><div style="fontSize:12px; color:#8A8A9A; margin-bottom:5px;">type</div><div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:17px;">Credit / Debit</div></div>
+      <div style="background:#fff; border:1px solid #E6E6EF; border-radius:12px; padding:18px;"><div style="fontSize:12px; color:#8A8A9A; margin-bottom:5px;">category</div><div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:17px;">Consumer / Comm.</div></div>
+      <div style="background:#fff; border:1px solid #E6E6EF; border-radius:12px; padding:18px;"><div style="fontSize:12px; color:#8A8A9A; margin-bottom:5px;">product / level</div><div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:17px;">World Elite</div></div>
+      <div style="background:#fff; border:1px solid #E6E6EF; border-radius:12px; padding:18px;"><div style="fontSize:12px; color:#8A8A9A; margin-bottom:5px;">issuer name</div><div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:17px;">Revolut Ltd</div></div>
+      <div style="background:#fff; border:1px solid #E6E6EF; border-radius:12px; padding:18px;"><div style="fontSize:12px; color:#8A8A9A; margin-bottom:5px;">issuer country</div><div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:17px;">GB</div></div>
+      <div style="background:#fff; border:1px solid #E6E6EF; border-radius:12px; padding:18px;"><div style="fontSize:12px; color:#8A8A9A; margin-bottom:5px;">issuer currency</div><div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:17px;">GBP</div></div>
+      <div style="background:#fff; border:1px solid #E6E6EF; border-radius:12px; padding:18px;"><div style="fontSize:12px; color:#8A8A9A; margin-bottom:5px;">prepaid flag</div><div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:17px;">true / false</div></div>
+      <div style="background:#fff; border:1px solid #E6E6EF; border-radius:12px; padding:18px;"><div style="fontSize:12px; color:#8A8A9A; margin-bottom:5px;">commercial flag</div><div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:17px;">true / false</div></div>
+      <div style="background:#fff; border:1px solid #E6E6EF; border-radius:12px; padding:18px;"><div style="fontSize:12px; color:#8A8A9A; margin-bottom:5px;">regulated debit</div><div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:17px;">true / false</div></div>
+      <div style="background:#fff; border:1px solid #E6E6EF; border-radius:12px; padding:18px;"><div style="fontSize:12px; color:#8A8A9A; margin-bottom:5px;">dcc_eligible</div><div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:17px; color:#7C5CFF;">true / false</div></div>
+      <div style="background:#fff; border:1px solid #E6E6EF; border-radius:12px; padding:18px;"><div style="fontSize:12px; color:#8A8A9A; margin-bottom:5px;">confidence</div><div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:17px; color:#7C5CFF;">0.98</div></div>
+      <div style="background:#fff; border:1px solid #E6E6EF; border-radius:12px; padding:18px;"><div style="fontSize:12px; color:#8A8A9A; margin-bottom:5px;">dataset_version</div><div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:17px;">2026-06-12</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PSP SECTION ============ -->
+  <section id="psp" style="position:relative; background:#0B0B12; color:#fff; overflow:hidden;">
+    <div style="position:absolute; inset:0; background:radial-gradient(80% 70% at 90% 20%, rgba(124,92,255,0.22), transparent 55%); pointer-events:none;"></div>
+    <div style="max-width:1240px; margin:0 auto; padding:clamp(64px,8vw,112px) 24px; position:relative;">
+      <div class="ftb-2col">
+        <div>
+          <div style="fontSize:13px; fontWeight:700; letterSpacing:0.08em; textTransform:uppercase; color:#22D3EE; margin-bottom:16px;">For payment platforms</div>
+          <h2 style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:clamp(30px,4.4vw,52px); lineHeight:1.04; letterSpacing:-0.03em; margin:0 0 18px;">Embed card intelligence across your entire stack.</h2>
+          <p style="fontSize:17px; line-height:1.65; color:#A9A9BC; margin:0 0 28px; max-width:520px;">PSPs, orchestrators, and ISVs use FindThisBIN to power smarter routing, surcharging, DCC eligibility, richer checkout UX, and risk signals — all from one API. White-label, high-volume pricing, SLAs, and EU data-residency guarantees included.</p>
+          <div style="display:flex; flex-wrap:wrap; gap:12px;">
+            <a href="Home.dc.html#" style="text-decoration:none; fontWeight:600; fontSize:15.5px; color:#0B0B12; background:#C4F542; padding:13px 22px; border-radius:11px;">Talk to sales</a>
+            <a href="Pricing.dc.html" style="text-decoration:none; fontWeight:600; fontSize:15.5px; color:#fff; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.16); padding:13px 22px; border-radius:11px;">See platform pricing</a>
+          </div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:20px; display:flex; gap:16px; align-items:flex-start;"><span style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; color:#7C5CFF; fontSize:15px;">↳</span><div><div style="fontWeight:700; fontSize:16px; margin-bottom:3px;">Smarter routing</div><div style="fontSize:14px; color:#9A9AAE;">Least-cost &amp; debit routing decisions from accurate type and regulated-debit flags.</div></div></div>
+          <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:20px; display:flex; gap:16px; align-items:flex-start;"><span style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; color:#7C5CFF; fontSize:15px;">↳</span><div><div style="fontWeight:700; fontSize:16px; margin-bottom:3px;">Surcharging &amp; interchange</div><div style="fontSize:14px; color:#9A9AAE;">Apply correct surcharges and optimize interchange with commercial/consumer precision.</div></div></div>
+          <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:20px; display:flex; gap:16px; align-items:flex-start;"><span style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; color:#22D3EE; fontSize:15px;">↳</span><div><div style="fontWeight:700; fontSize:16px; margin-bottom:3px;">DCC eligibility for EU flows</div><div style="fontSize:14px; color:#9A9AAE;">PSD2 / CBPR-ready disclosure with ECB reference-rate data points.</div></div></div>
+          <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:20px; display:flex; gap:16px; align-items:flex-start;"><span style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; color:#22D3EE; fontSize:15px;">↳</span><div><div style="fontWeight:700; fontSize:16px; margin-bottom:3px;">Richer checkout UX &amp; risk</div><div style="fontSize:14px; color:#9A9AAE;">Card art and scheme logos, plus issuer-country signals for fraud screening.</div></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ USE CASES ============ -->
+  <section style="background:#FFFFFF; color:#0B0B12;">
+    <div style="max-width:1240px; margin:0 auto; padding:clamp(64px,8vw,108px) 24px;">
+      <h2 style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:clamp(28px,3.8vw,44px); lineHeight:1.05; letterSpacing:-0.025em; margin:0 0 40px; max-width:560px;">One dataset, six revenue levers.</h2>
+      <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px;">
+        <div style="border:1px solid #E6E6EF; border-radius:14px; padding:24px;" style-hover="border-color:#7C5CFF;"><div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:18px; margin-bottom:6px;">Least-cost &amp; debit routing</div><div style="fontSize:14.5px; color:#5A5A6B; line-height:1.55;">Route on real card type and regulated-debit status to cut acceptance cost.</div></div>
+        <div style="border:1px solid #E6E6EF; border-radius:14px; padding:24px;" style-hover="border-color:#7C5CFF;"><div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:18px; margin-bottom:6px;">Surcharging &amp; interchange</div><div style="fontSize:14.5px; color:#5A5A6B; line-height:1.55;">Charge and optimize correctly with consumer vs. commercial certainty.</div></div>
+        <div style="border:1px solid #E6E6EF; border-radius:14px; padding:24px;" style-hover="border-color:#7C5CFF;"><div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:18px; margin-bottom:6px;">DCC eligibility (EU)</div><div style="fontSize:14.5px; color:#5A5A6B; line-height:1.55;">Offer compliant dynamic currency conversion with ECB-rate disclosure.</div></div>
+        <div style="border:1px solid #E6E6EF; border-radius:14px; padding:24px;" style-hover="border-color:#7C5CFF;"><div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:18px; margin-bottom:6px;">Checkout UX &amp; card art</div><div style="fontSize:14.5px; color:#5A5A6B; line-height:1.55;">Render the right scheme logo and card visuals the moment a BIN is typed.</div></div>
+        <div style="border:1px solid #E6E6EF; border-radius:14px; padding:24px;" style-hover="border-color:#7C5CFF;"><div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:18px; margin-bottom:6px;">Fraud &amp; risk signals</div><div style="fontSize:14.5px; color:#5A5A6B; line-height:1.55;">Flag issuer-country mismatches and prepaid cards in your risk engine.</div></div>
+        <div style="border:1px solid #E6E6EF; border-radius:14px; padding:24px;" style-hover="border-color:#7C5CFF;"><div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:18px; margin-bottom:6px;">Batch data enrichment</div><div style="fontSize:14.5px; color:#5A5A6B; line-height:1.55;">Enrich historical transaction tables with accurate, versioned BIN data.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOW IT WORKS ============ -->
+  <section style="background:#0B0B12; color:#fff;">
+    <div style="max-width:1240px; margin:0 auto; padding:clamp(64px,8vw,108px) 24px;">
+      <div class="ftb-2col" style="align-items:start;">
+        <div>
+          <div style="fontSize:13px; fontWeight:700; letterSpacing:0.08em; textTransform:uppercase; color:#C4F542; margin-bottom:16px;">How it works</div>
+          <h2 style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:clamp(30px,4.2vw,48px); lineHeight:1.05; letterSpacing:-0.025em; margin:0 0 32px;">Three steps to rich card data.</h2>
+          <div style="display:flex; flex-direction:column; gap:22px;">
+            <div style="display:flex; gap:16px; align-items:flex-start;"><span style="flex:none; width:34px; height:34px; border-radius:9px; background:rgba(124,92,255,0.16); border:1px solid rgba(124,92,255,0.4); color:#A98BFF; fontFamily:'Space Grotesk',sans-serif; fontWeight:700; display:flex; align-items:center; justify-content:center;">1</span><div><div style="fontWeight:700; fontSize:18px;">Get an API key</div><div style="fontSize:15px; color:#9A9AAE; margin-top:2px;">Sign up free, grab test and live keys. No credit card.</div></div></div>
+            <div style="display:flex; gap:16px; align-items:flex-start;"><span style="flex:none; width:34px; height:34px; border-radius:9px; background:rgba(124,92,255,0.16); border:1px solid rgba(124,92,255,0.4); color:#A98BFF; fontFamily:'Space Grotesk',sans-serif; fontWeight:700; display:flex; align-items:center; justify-content:center;">2</span><div><div style="fontWeight:700; fontSize:18px;">Call the API</div><div style="fontSize:15px; color:#9A9AAE; margin-top:2px;">One GET request with the BIN. SDKs for 5 languages.</div></div></div>
+            <div style="display:flex; gap:16px; align-items:flex-start;"><span style="flex:none; width:34px; height:34px; border-radius:9px; background:rgba(34,211,238,0.16); border:1px solid rgba(34,211,238,0.4); color:#22D3EE; fontFamily:'Space Grotesk',sans-serif; fontWeight:700; display:flex; align-items:center; justify-content:center;">3</span><div><div style="fontWeight:700; fontSize:18px;">Get rich card data</div><div style="fontSize:15px; color:#9A9AAE; margin-top:2px;">Scheme, type, issuer, country, DCC, and confidence — in milliseconds.</div></div></div>
+          </div>
+        </div>
+        <div style="background:#0C0C16; border:1px solid rgba(255,255,255,0.09); border-radius:16px; overflow:hidden;">
+          <div style="display:flex; gap:6px; padding:14px; borderBottom:1px solid rgba(255,255,255,0.07); flex-wrap:wrap;">
+            <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="5">
+              <button onClick="{{ t.onClick }}" style="{{ t.style }}">{{ t.label }}</button>
+            </sc-for>
+          </div>
+          <div style="padding:22px; fontFamily:'JetBrains Mono',monospace; fontSize:13px; line-height:1.75; min-height:170px;">
+            <sc-if value="{{ isCurl }}" hint-placeholder-val="{{ true }}">
+              <div><span style="color:#B89CFF;">curl</span> <span style="color:#9EE493;">https://api.findthisbin.com/v1/bins/53847012</span> <span style="color:#717184;">\</span></div>
+              <div style="padding-left:18px;"><span style="color:#717184;">-H</span> <span style="color:#9EE493;">"Authorization: Bearer sk_live_..."</span></div>
+            </sc-if>
+            <sc-if value="{{ isNode }}" hint-placeholder-val="{{ false }}">
+              <div><span style="color:#FF7B9C;">import</span> <span style="color:#E6E6F0;">{ FindThisBIN }</span> <span style="color:#FF7B9C;">from</span> <span style="color:#9EE493;">'findthisbin'</span></div>
+              <div><span style="color:#FF7B9C;">const</span> <span style="color:#E6E6F0;">ftb</span> <span style="color:#717184;">=</span> <span style="color:#FF7B9C;">new</span> <span style="color:#B89CFF;">FindThisBIN</span><span style="color:#717184;">(</span><span style="color:#9EE493;">'sk_live_...'</span><span style="color:#717184;">)</span></div>
+              <div><span style="color:#FF7B9C;">const</span> <span style="color:#E6E6F0;">card</span> <span style="color:#717184;">=</span> <span style="color:#FF7B9C;">await</span> <span style="color:#E6E6F0;">ftb</span><span style="color:#717184;">.</span><span style="color:#B89CFF;">bins</span><span style="color:#717184;">.</span><span style="color:#B89CFF;">get</span><span style="color:#717184;">(</span><span style="color:#9EE493;">'53847012'</span><span style="color:#717184;">)</span></div>
+            </sc-if>
+            <sc-if value="{{ isPython }}" hint-placeholder-val="{{ false }}">
+              <div><span style="color:#FF7B9C;">from</span> <span style="color:#E6E6F0;">findthisbin</span> <span style="color:#FF7B9C;">import</span> <span style="color:#E6E6F0;">FindThisBIN</span></div>
+              <div><span style="color:#E6E6F0;">ftb</span> <span style="color:#717184;">=</span> <span style="color:#B89CFF;">FindThisBIN</span><span style="color:#717184;">(</span><span style="color:#9EE493;">'sk_live_...'</span><span style="color:#717184;">)</span></div>
+              <div><span style="color:#E6E6F0;">card</span> <span style="color:#717184;">=</span> <span style="color:#E6E6F0;">ftb</span><span style="color:#717184;">.</span><span style="color:#B89CFF;">bins</span><span style="color:#717184;">.</span><span style="color:#B89CFF;">get</span><span style="color:#717184;">(</span><span style="color:#9EE493;">'53847012'</span><span style="color:#717184;">)</span></div>
+            </sc-if>
+            <sc-if value="{{ isGo }}" hint-placeholder-val="{{ false }}">
+              <div><span style="color:#E6E6F0;">ftb</span> <span style="color:#717184;">:=</span> <span style="color:#E6E6F0;">findthisbin</span><span style="color:#717184;">.</span><span style="color:#B89CFF;">New</span><span style="color:#717184;">(</span><span style="color:#9EE493;">"sk_live_..."</span><span style="color:#717184;">)</span></div>
+              <div><span style="color:#E6E6F0;">card</span><span style="color:#717184;">, </span><span style="color:#E6E6F0;">err</span> <span style="color:#717184;">:=</span> <span style="color:#E6E6F0;">ftb</span><span style="color:#717184;">.</span><span style="color:#B89CFF;">Bins</span><span style="color:#717184;">.</span><span style="color:#B89CFF;">Get</span><span style="color:#717184;">(</span><span style="color:#9EE493;">"53847012"</span><span style="color:#717184;">)</span></div>
+            </sc-if>
+            <sc-if value="{{ isPhp }}" hint-placeholder-val="{{ false }}">
+              <div><span style="color:#E6E6F0;">$ftb</span> <span style="color:#717184;">=</span> <span style="color:#FF7B9C;">new</span> <span style="color:#B89CFF;">FindThisBIN</span><span style="color:#717184;">(</span><span style="color:#9EE493;">'sk_live_...'</span><span style="color:#717184;">);</span></div>
+              <div><span style="color:#E6E6F0;">$card</span> <span style="color:#717184;">=</span> <span style="color:#E6E6F0;">$ftb</span><span style="color:#717184;">-></span><span style="color:#B89CFF;">bins</span><span style="color:#717184;">-></span><span style="color:#B89CFF;">get</span><span style="color:#717184;">(</span><span style="color:#9EE493;">'53847012'</span><span style="color:#717184;">);</span></div>
+            </sc-if>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PERFORMANCE BAND ============ -->
+  <section style="position:relative; overflow:hidden; background:linear-gradient(115deg,#7C5CFF,#6366F1 45%,#3B82F6); background-size:200% 200%; animation:ftbGrad 14s ease infinite;">
+    <div style="max-width:1240px; margin:0 auto; padding:clamp(56px,7vw,96px) 24px;">
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:28px; text-align:center;">
+        <div><div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:clamp(34px,5vw,56px); color:#fff; letterSpacing:-0.03em;">&lt;10ms</div><div style="fontSize:14px; color:rgba(255,255,255,0.8); fontWeight:500;">p99 latency</div></div>
+        <div><div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:clamp(34px,5vw,56px); color:#fff; letterSpacing:-0.03em;">99.9%</div><div style="fontSize:14px; color:rgba(255,255,255,0.8); fontWeight:500;">uptime</div></div>
+        <div><div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:clamp(34px,5vw,56px); color:#fff; letterSpacing:-0.03em;">6.2M</div><div style="fontSize:14px; color:rgba(255,255,255,0.8); fontWeight:500;">BINs covered</div></div>
+        <div><div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:clamp(34px,5vw,56px); color:#fff; letterSpacing:-0.03em;">242</div><div style="fontSize:14px; color:rgba(255,255,255,0.8); fontWeight:500;">countries</div></div>
+        <div><div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:clamp(34px,5vw,56px); color:#fff; letterSpacing:-0.03em;">EU</div><div style="fontSize:14px; color:rgba(255,255,255,0.8); fontWeight:500;">data residency</div></div>
+      </div>
+      <div style="text-align:center; margin-top:30px; fontSize:14px; color:rgba(255,255,255,0.85); fontWeight:500; letterSpacing:0.02em;">GDPR · PCI out-of-scope · SOC 2 (in progress)</div>
+    </div>
+  </section>
+
+  <!-- ============ PRICING ============ -->
+  <section style="background:#F6F6FB; color:#0B0B12;">
+    <div style="max-width:1240px; margin:0 auto; padding:clamp(64px,8vw,108px) 24px;">
+      <div style="text-align:center; max-width:600px; margin:0 auto 44px;">
+        <h2 style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:clamp(30px,4.2vw,48px); lineHeight:1.05; letterSpacing:-0.025em; margin:0 0 12px;">Start free. Scale on usage.</h2>
+        <p style="fontSize:17px; line-height:1.6; color:#5A5A6B; margin:0;">Pay only for the lookups you make. Move to a subscription when you need SLAs and EU-residency guarantees.</p>
+      </div>
+      <div class="ftb-pricing4">
+        <div style="background:#fff; border:1px solid #E6E6EF; border-radius:16px; padding:28px; display:flex; flex-direction:column;">
+          <div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:18px;">Free</div>
+          <div style="fontSize:13.5px; color:#6E6E80; margin:4px 0 16px;">Evaluation &amp; indie</div>
+          <div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:38px; letterSpacing:-0.03em;">€0</div>
+          <div style="fontSize:13px; color:#8A8A9A; margin-bottom:18px;">5,000 lookups / mo</div>
+          <a href="Pricing.dc.html#tiers" style="text-decoration:none; text-align:center; fontWeight:600; fontSize:14.5px; color:#0B0B12; background:#F0F0F6; border:1px solid #E6E6EF; padding:12px; border-radius:10px;">Start free</a>
+        </div>
+        <div style="background:#fff; border:1px solid #E6E6EF; border-radius:16px; padding:28px; display:flex; flex-direction:column;">
+          <div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:18px;">Pay-as-you-go</div>
+          <div style="fontSize:13.5px; color:#6E6E80; margin:4px 0 16px;">Variable traffic</div>
+          <div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:38px; letterSpacing:-0.03em;">€0.004<span style="fontSize:15px; color:#8A8A9A; fontWeight:600;">/lookup</span></div>
+          <div style="fontSize:13px; color:#8A8A9A; margin-bottom:18px;">Drops with volume</div>
+          <a href="Pricing.dc.html#tiers" style="text-decoration:none; text-align:center; fontWeight:600; fontSize:14.5px; color:#0B0B12; background:#F0F0F6; border:1px solid #E6E6EF; padding:12px; border-radius:10px;">Get your API key</a>
+        </div>
+        <div style="background:#0B0B12; color:#fff; border-radius:16px; padding:28px; display:flex; flex-direction:column; position:relative; box-shadow:0 24px 60px -24px rgba(124,92,255,0.6);">
+          <div style="position:absolute; top:-12px; left:50%; transform:translateX(-50%); background:#C4F542; color:#0B0B12; fontSize:11.5px; fontWeight:700; letterSpacing:0.04em; padding:5px 12px; border-radius:999px;">MOST POPULAR</div>
+          <div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:18px;">Growth / Scale</div>
+          <div style="fontSize:13.5px; color:#9A9AAE; margin:4px 0 16px;">Production &amp; SLAs</div>
+          <div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:38px; letterSpacing:-0.03em;">€499<span style="fontSize:15px; color:#9A9AAE; fontWeight:600;">/mo</span></div>
+          <div style="fontSize:13px; color:#7A7A8C; margin-bottom:18px;">250k included + overage</div>
+          <a href="Pricing.dc.html#tiers" style="text-decoration:none; text-align:center; fontWeight:600; fontSize:14.5px; color:#0B0B12; background:#C4F542; padding:12px; border-radius:10px;">Start free trial</a>
+        </div>
+        <div style="background:#fff; border:1px solid #E6E6EF; border-radius:16px; padding:28px; display:flex; flex-direction:column;">
+          <div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:18px;">Enterprise</div>
+          <div style="fontSize:13.5px; color:#6E6E80; margin:4px 0 16px;">On-prem &amp; custom</div>
+          <div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:38px; letterSpacing:-0.03em;">Custom</div>
+          <div style="fontSize:13px; color:#8A8A9A; margin-bottom:18px;">Dataset export, private deploy</div>
+          <a href="Home.dc.html#" style="text-decoration:none; text-align:center; fontWeight:600; fontSize:14.5px; color:#fff; background:#0B0B12; padding:12px; border-radius:10px;">Talk to sales</a>
+        </div>
+      </div>
+      <div style="text-align:center; margin-top:24px;"><a href="Pricing.dc.html" style="fontSize:15px; fontWeight:600; color:#7C5CFF; text-decoration:none;">Compare all plans &amp; features →</a></div>
+    </div>
+  </section>
+
+  <!-- ============ COMPLIANCE CALLOUT ============ -->
+  <section style="background:#FFFFFF; color:#0B0B12;">
+    <div style="max-width:1240px; margin:0 auto; padding:clamp(48px,6vw,80px) 24px;">
+      <div style="background:#F6F6FB; border:1px solid #E6E6EF; border-radius:20px; padding:clamp(28px,4vw,48px); display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:28px;">
+        <div style="display:flex; flex-direction:column; gap:6px;"><span style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:18px; color:#7C5CFF;">EU residency</span><span style="fontSize:14px; color:#5A5A6B; line-height:1.5;">All data hosted and processed within the EU.</span></div>
+        <div style="display:flex; flex-direction:column; gap:6px;"><span style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:18px; color:#7C5CFF;">GDPR-clean</span><span style="fontSize:14px; color:#5A5A6B; line-height:1.5;">No personal data, no card numbers, ever.</span></div>
+        <div style="display:flex; flex-direction:column; gap:6px;"><span style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:18px; color:#7C5CFF;">Out of PCI scope</span><span style="fontSize:14px; color:#5A5A6B; line-height:1.5;">BIN-only — we never ingest full PANs.</span></div>
+        <div style="display:flex; flex-direction:column; gap:6px;"><span style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:18px; color:#7C5CFF;">DPA available</span><span style="fontSize:14px; color:#5A5A6B; line-height:1.5;">SOC 2 on the roadmap. Sign before you launch.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ DEV / DOCS CTA ============ -->
+  <section style="position:relative; background:#0B0B12; color:#fff; overflow:hidden;">
+    <div style="position:absolute; inset:0; opacity:0.5; background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px); background-size:32px 32px; pointer-events:none;"></div>
+    <div style="max-width:1240px; margin:0 auto; padding:clamp(64px,8vw,108px) 24px; position:relative;">
+      <div class="ftb-2col">
+        <div>
+          <div style="fontSize:13px; fontWeight:700; letterSpacing:0.08em; textTransform:uppercase; color:#22D3EE; margin-bottom:16px;">For developers</div>
+          <h2 style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:clamp(30px,4.2vw,48px); lineHeight:1.05; letterSpacing:-0.025em; margin:0 0 18px;">Everything you need to integrate in minutes.</h2>
+          <p style="fontSize:17px; line-height:1.6; color:#A9A9BC; margin:0 0 26px; max-width:480px;">Beautiful docs, a full API reference, SDKs in 5 languages, and a Postman collection. Built for the way payment engineers actually work.</p>
+          <div style="display:flex; flex-wrap:wrap; gap:12px;">
+            <a href="Docs.dc.html" style="text-decoration:none; fontWeight:600; fontSize:15.5px; color:#0B0B12; background:#C4F542; padding:13px 22px; border-radius:11px;">Read the docs</a>
+            <a href="Docs.dc.html#reference" style="text-decoration:none; fontWeight:600; fontSize:15.5px; color:#fff; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.16); padding:13px 22px; border-radius:11px;">API reference</a>
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+          <a href="Docs.dc.html" style="text-decoration:none; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:13px; padding:20px;" style-hover="border-color:rgba(34,211,238,0.5);"><div style="fontFamily:'JetBrains Mono',monospace; fontSize:13px; color:#22D3EE; margin-bottom:8px;">{ } </div><div style="fontWeight:700; fontSize:15.5px; color:#fff;">Docs</div><div style="fontSize:13px; color:#9A9AAE;">Guides &amp; quickstart</div></a>
+          <a href="Docs.dc.html#reference" style="text-decoration:none; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:13px; padding:20px;" style-hover="border-color:rgba(34,211,238,0.5);"><div style="fontFamily:'JetBrains Mono',monospace; fontSize:13px; color:#22D3EE; margin-bottom:8px;">GET</div><div style="fontWeight:700; fontSize:15.5px; color:#fff;">API Reference</div><div style="fontSize:13px; color:#9A9AAE;">Every endpoint</div></a>
+          <a href="Docs.dc.html#sdks" style="text-decoration:none; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:13px; padding:20px;" style-hover="border-color:rgba(34,211,238,0.5);"><div style="fontFamily:'JetBrains Mono',monospace; fontSize:13px; color:#22D3EE; margin-bottom:8px;">$ npm i</div><div style="fontWeight:700; fontSize:15.5px; color:#fff;">SDKs</div><div style="fontSize:13px; color:#9A9AAE;">5 languages</div></a>
+          <a href="Docs.dc.html#sdks" style="text-decoration:none; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:13px; padding:20px;" style-hover="border-color:rgba(34,211,238,0.5);"><div style="fontFamily:'JetBrains Mono',monospace; fontSize:13px; color:#22D3EE; margin-bottom:8px;">▶</div><div style="fontWeight:700; fontSize:15.5px; color:#fff;">Postman</div><div style="fontSize:13px; color:#9A9AAE;">Import &amp; run</div></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FINAL CTA ============ -->
+  <section style="position:relative; overflow:hidden; background:linear-gradient(125deg,#0B0B12 0%,#241a52 45%,#3B82F6 130%);">
+    <div style="position:absolute; top:-100px; left:30%; width:500px; height:500px; border-radius:50%; background:radial-gradient(circle,rgba(124,92,255,0.5),transparent 65%); filter:blur(30px); pointer-events:none;"></div>
+    <div style="max-width:880px; margin:0 auto; padding:clamp(72px,10vw,128px) 24px; position:relative; text-align:center;">
+      <h2 style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:clamp(34px,5.5vw,64px); lineHeight:1.03; letterSpacing:-0.03em; margin:0 0 22px; color:#fff;">Start building with FindThisBIN today.</h2>
+      <p style="fontSize:18px; line-height:1.6; color:#C7C7D6; margin:0 0 34px; max-width:520px; margin-left:auto; margin-right:auto;">From signup to your first lookup in under five minutes. No credit card required.</p>
+      <div style="display:flex; flex-wrap:wrap; gap:14px; justify-content:center;">
+        <a href="Pricing.dc.html#tiers" style="text-decoration:none; fontWeight:600; fontSize:16px; color:#0B0B12; background:#C4F542; padding:16px 30px; border-radius:12px; boxShadow:0 14px 40px -10px rgba(196,245,66,0.6);">Get your free API key</a>
+        <a href="Home.dc.html#" style="text-decoration:none; fontWeight:600; fontSize:16px; color:#fff; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); padding:16px 30px; border-radius:12px;">Talk to sales</a>
+      </div>
+    </div>
+  </section>
+
+  <dc-import name="Footer" hint-size="100%,420px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  state = {
+    bin: '53847012',
+    lang: 'curl',
+    counts: { bins: 0, countries: 0, lookups: 0 },
+  };
+
+  SAMPLES = {
+    '53847012': { bin:'53847012', scheme:'Mastercard', type:'Credit', category:'Consumer', product:'World Elite Mastercard', issuer:'Revolut Ltd', country:'GB', currency:'GBP', prepaid:false, commercial:false, regdebit:false, dcc:true, confidence:0.98, version:'2026-06-12' },
+    '45717360': { bin:'45717360', scheme:'Visa', type:'Debit', category:'Consumer', product:'Visa Classic Debit', issuer:'BNP Paribas', country:'FR', currency:'EUR', prepaid:false, commercial:false, regdebit:true, dcc:true, confidence:0.97, version:'2026-06-12' },
+    '37828224': { bin:'37828224', scheme:'Amex', type:'Charge', category:'Commercial', product:'Business Platinum Card', issuer:'American Express', country:'US', currency:'USD', prepaid:false, commercial:true, regdebit:false, dcc:false, confidence:0.95, version:'2026-06-12' },
+    '40128210': { bin:'40128210', scheme:'Visa', type:'Prepaid', category:'Consumer', product:'Visa Prepaid Reloadable', issuer:'Wise Payments', country:'BE', currency:'EUR', prepaid:true, commercial:false, regdebit:false, dcc:true, confidence:0.93, version:'2026-06-12' },
+  };
+
+  componentDidMount(){
+    const start = performance.now(), dur = 1500;
+    const tick = (now) => {
+      const t = Math.min(1, (now - start) / dur);
+      const e = 1 - Math.pow(1 - t, 3);
+      this.setState({ counts: { bins: 6.2 * e, countries: Math.round(242 * e), lookups: Math.round(184 * e) } });
+      if (t < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }
+
+  synth(raw){
+    const d = (raw || '').replace(/\D/g, '').slice(0, 8) || '00000000';
+    const f = d[0];
+    const scheme = f === '4' ? 'Visa' : (f === '5' || f === '2') ? 'Mastercard' : f === '3' ? 'Amex' : f === '6' ? 'Discover' : 'Unknown';
+    const sum = d.split('').reduce((a, c) => a + (+c || 0), 0);
+    const types = ['Credit', 'Debit', 'Prepaid', 'Charge'];
+    const type = types[sum % 4];
+    const commercial = sum % 5 === 0;
+    const countries = ['DE','FR','ES','NL','IT','US','GB','PL','IE','SE'];
+    const currencies = { DE:'EUR',FR:'EUR',ES:'EUR',NL:'EUR',IT:'EUR',US:'USD',GB:'GBP',PL:'PLN',IE:'EUR',SE:'SEK' };
+    const country = countries[sum % countries.length];
+    const issuers = ['Deutsche Bank','Santander','ING Group','UniCredit','Barclays','Citi','Nordea','Raiffeisen'];
+    return {
+      bin: d, scheme, type, category: commercial ? 'Commercial' : 'Consumer',
+      product: scheme + ' ' + type + (commercial ? ' Business' : ' Standard'),
+      issuer: issuers[sum % issuers.length], country, currency: currencies[country] || 'EUR',
+      prepaid: type === 'Prepaid', commercial, regdebit: type === 'Debit' && sum % 2 === 0,
+      dcc: scheme !== 'Amex', confidence: 0.84 + (sum % 9) / 100, version: '2026-06-12', bestGuess: true,
+    };
+  }
+
+  result(){
+    const key = (this.state.bin || '').replace(/\D/g, '').slice(0, 8);
+    return this.SAMPLES[key] || this.synth(this.state.bin);
+  }
+
+  renderVals(){
+    const c = this.state.counts;
+    const r = this.result();
+    const langs = ['curl','node','python','go','php'];
+    const labels = { curl:'cURL', node:'Node', python:'Python', go:'Go', php:'PHP' };
+    const tabs = langs.map(k => {
+      const on = this.state.lang === k;
+      return {
+        key: k, label: labels[k], onClick: () => this.setState({ lang: k }),
+        style: {
+          fontFamily:"'JetBrains Mono',monospace", fontSize:'13px', fontWeight:600, cursor:'pointer',
+          padding:'9px 16px', borderRadius:'9px', border:'1px solid ' + (on ? 'rgba(196,245,66,0.5)' : 'rgba(255,255,255,0.1)'),
+          background: on ? 'rgba(196,245,66,0.12)' : 'transparent', color: on ? '#C4F542' : '#9A9AAE', transition:'all .15s ease',
+        },
+      };
+    });
+    const flagsList = [
+      { label:'Prepaid', on:r.prepaid },
+      { label:'Commercial', on:r.commercial },
+      { label:'Regulated debit', on:r.regdebit },
+    ].map(x => ({
+      label: x.label, mark: x.on ? '✓' : '✕',
+      color: x.on ? '#0B0B12' : '#7A7A8C',
+      bg: x.on ? '#C4F542' : 'rgba(255,255,255,0.04)',
+      border: x.on ? 'transparent' : 'rgba(255,255,255,0.1)',
+    }));
+    return {
+      binsStr: c.bins.toFixed(1) + 'M',
+      countriesStr: String(c.countries),
+      lookupsStr: c.lookups + 'M',
+      bin: this.state.bin,
+      onBinInput: (e) => this.setState({ bin: e.target.value }),
+      onBinKey: () => {},
+      r,
+      confPct: Math.round(r.confidence * 100) + '%',
+      confBar: Math.round(r.confidence * 100) + '%',
+      dccLabel: r.dcc ? 'Eligible' : 'Not eligible',
+      dccColor: r.dcc ? '#22D3EE' : '#7A7A8C',
+      bestGuessHint: r.bestGuess ? 'Best-guess match · lower confidence' : 'Exact 8-digit range match',
+      flagsList,
+      tabs,
+      isCurl: this.state.lang === 'curl',
+      isNode: this.state.lang === 'node',
+      isPython: this.state.lang === 'python',
+      isGo: this.state.lang === 'go',
+      isPhp: this.state.lang === 'php',
+      tryExamples: ['53847012','45717360','37828224','40128210'].map(v => ({
+        value: v, onClick: () => this.setState({ bin: v }),
+      })),
+    };
+  }
+}
+</script>
+</body>
+</html>

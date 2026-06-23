@@ -1,0 +1,51 @@
+---
+/**
+ * Shared <head> contents: SEO meta, OpenGraph/Twitter, fonts, favicon.
+ * Honesty constraint: SOC 2 is "in progress", no PCI DSS claim, no fabricated
+ * social proof — keep copy in sync with the design spec.
+ */
+import { Font } from "astro:assets";
+import { SITE_NAME } from "../lib/site";
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  canonical?: string;
+}
+
+const { title, description, image = "/og-default.svg", canonical } = Astro.props;
+
+const canonicalURL = new URL(canonical ?? Astro.url.pathname, Astro.site);
+const imageURL = new URL(image, Astro.site);
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content={Astro.generator} />
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonicalURL.href} />
+
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<meta name="theme-color" content="#0B0B12" />
+
+<!-- OpenGraph -->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content={SITE_NAME} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonicalURL.href} />
+<meta property="og:image" content={imageURL.href} />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={imageURL.href} />
+
+<!-- Self-hosted fonts via Astro Fonts API (no third-party request at runtime) -->
+<Font cssVariable="--ff-display" preload />
+<Font cssVariable="--ff-body" preload />
+<Font cssVariable="--ff-mono" />

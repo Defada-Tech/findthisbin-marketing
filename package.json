@@ -1,0 +1,30 @@
+{
+  "name": "findthisbin-marketing",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro build && wrangler dev --config ./dist/server/wrangler.json",
+    "check": "astro check",
+    "types": "wrangler types",
+    "astro": "astro",
+    "deploy": "astro build && wrangler deploy --config ./dist/server/wrangler.json"
+  },
+  "dependencies": {
+    "@astrojs/cloudflare": "^13.7.0",
+    "@astrojs/sitemap": "^3.7.3",
+    "astro": "^6.4.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.9",
+    "@tailwindcss/vite": "^4.3.1",
+    "tailwindcss": "^4.3.1",
+    "typescript": "^6.0.3",
+    "wrangler": "^4.102.0"
+  },
+  "overrides": {
+    "vite": "^7.3.5"
+  }
+}

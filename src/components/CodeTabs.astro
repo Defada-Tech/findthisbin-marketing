@@ -1,0 +1,206 @@
+---
+import { Code } from "astro:components";
+import { codeTheme } from "../lib/codeTheme";
+
+export interface CodeTab {
+  label: string;
+  lang: string;
+  code: string;
+}
+
+interface Props {
+  tabs: CodeTab[];
+  /** Unique id to scope tab switching (required — multiple panels per page). */
+  id: string;
+  /** Optional traffic-light header with a mono label (e.g. "findthisbin · live"). */
+  headLabel?: string;
+  /** Optional request line shown above the code (e.g. GET /v1/bins/...). */
+  method?: string;
+  url?: string;
+  /** Optional footer line (e.g. "→ 200 OK"). */
+  footer?: string;
+  class?: string;
+}
+const { tabs, id, headLabel, method, url, footer, class: className } = Astro.props;
+---
+
+<div class:list={["code-tabs", className]} data-code-tabs id={id}>
+  {
+    headLabel && (
+      <div class="ct-head">
+        <span class="lights" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </span>
+        <span class="ct-head-label mono">{headLabel}</span>
+      </div>
+    )
+  }
+
+  <div class="ct-tabbar" role="tablist" aria-label="Code language">
+    {
+      tabs.map((t, i) => (
+        <button
+          class:list={["ct-tab", i === 0 && "active"]}
+          role="tab"
+          type="button"
+          aria-selected={i === 0 ? "true" : "false"}
+          data-tab={i}
+        >
+          {t.label}
+        </button>
+      ))
+    }
+  </div>
+
+  {
+    method && url && (
+      <div class="ct-req mono">
+        <span class="verb">{method}</span>
+        <span class="url">{url}</span>
+      </div>
+    )
+  }
+
+  <div class="ct-bodies">
+    {
+      tabs.map((t, i) => (
+        <div class:list={["ct-body", i === 0 && "active"]} data-body={i}>
+          <Code code={t.code} lang={t.lang as any} theme={codeTheme as any} />
+        </div>
+      ))
+    }
+  </div>
+
+  {footer && <div class="ct-foot mono">{footer}</div>}
+</div>
+
+<style>
+  .code-tabs {
+    background: var(--ink-2);
+    border: 1px solid var(--border-dark);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .ct-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: var(--ink-soft);
+    border-bottom: 1px solid var(--border-dark);
+  }
+  .lights {
+    display: inline-flex;
+    gap: 6px;
+  }
+  .lights span {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.16);
+  }
+  .lights span:first-child { background: #ff5f57; }
+  .lights span:nth-child(2) { background: #febc2e; }
+  .lights span:nth-child(3) { background: #28c840; }
+  .ct-head-label {
+    font-size: 12.5px;
+    color: var(--text-dark-muted);
+  }
+
+  .ct-tabbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border-dark);
+  }
+  .ct-tab {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--text-dark-muted);
+    background: transparent;
+    border: 1px solid var(--border-dark);
+    border-radius: 8px;
+    padding: 6px 12px;
+    cursor: pointer;
+    transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+  }
+  .ct-tab:hover {
+    color: #fff;
+  }
+  .ct-tab.active {
+    color: var(--lime);
+    background: rgba(196, 245, 66, 0.12);
+    border-color: rgba(196, 245, 66, 0.5);
+  }
+
+  .ct-req {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 18px;
+    font-size: 13px;
+    border-bottom: 1px solid var(--border-dark);
+    color: var(--text-dark-body);
+    word-break: break-all;
+  }
+  .ct-req .verb {
+    font-weight: 700;
+    color: var(--ink);
+    background: var(--lime);
+    padding: 2px 9px;
+    border-radius: 6px;
+    font-size: 12px;
+  }
+
+  .ct-bodies {
+    padding: 4px 6px 8px;
+  }
+  .ct-body {
+    display: none;
+  }
+  .ct-body.active {
+    display: block;
+  }
+  .ct-body :global(pre.astro-code) {
+    margin: 0;
+    padding: 16px 18px;
+    background: transparent !important;
+    border-radius: 9px;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    line-height: 1.75;
+    overflow-x: auto;
+  }
+  .ct-body :global(pre.astro-code code) {
+    font-family: var(--font-mono);
+  }
+
+  .ct-foot {
+    padding: 12px 18px;
+    border-top: 1px solid var(--border-dark);
+    font-size: 12.5px;
+    color: var(--check-green);
+  }
+</style>
+
+<script>
+  // Wire every code-tabs panel on the page. Module script runs once.
+  for (const panel of document.querySelectorAll<HTMLElement>("[data-code-tabs]")) {
+    const tabs = panel.querySelectorAll<HTMLButtonElement>(".ct-tab");
+    const bodies = panel.querySelectorAll<HTMLElement>(".ct-body");
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        const idx = tab.dataset.tab;
+        tabs.forEach((t) => {
+          const on = t.dataset.tab === idx;
+          t.classList.toggle("active", on);
+          t.setAttribute("aria-selected", String(on));
+        });
+        bodies.forEach((b) => b.classList.toggle("active", b.dataset.body === idx));
+      });
+    });
+  }
+</script>

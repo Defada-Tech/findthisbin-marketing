@@ -1,0 +1,7 @@
+# Copy to terraform.tfvars (gitignored) and fill in. Do NOT put the API token
+# here — export CLOUDFLARE_API_TOKEN in your shell instead.
+cloudflare_account_id = "your-account-id"
+cloudflare_zone_id    = "your-zone-id"
+domain                = "findthisbin.com"
+# worker_name         = "findthisbin-marketing"  # only if you renamed it
+# manage_www          = true

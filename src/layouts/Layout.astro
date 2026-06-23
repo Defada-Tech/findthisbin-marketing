@@ -1,0 +1,71 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import SiteNav from "../components/SiteNav.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  canonical?: string;
+  active?: "home" | "pricing" | "docs";
+}
+
+const { title, description, image, canonical, active } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={title} description={description} image={image} canonical={canonical} />
+    <!-- Fail-safe: if JS is disabled/fails, never leave reveal content invisible -->
+    <noscript>
+      <style>
+        [data-reveal] {
+          opacity: 1 !important;
+          transform: none !important;
+        }
+      </style>
+    </noscript>
+  </head>
+  <body>
+    <SiteNav active={active} />
+    <main>
+      <slot />
+    </main>
+    <SiteFooter />
+
+    <!-- Scroll reveal: rise+fade with three fail-safes (reduced-motion,
+         in-viewport, and a hard 1.2s timeout). ~0.6KB, no framework. -->
+    <script>
+      const els = Array.from(document.querySelectorAll<HTMLElement>("[data-reveal]"));
+      const show = (el: Element) => el.classList.add("is-visible");
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      if (reduce || !("IntersectionObserver" in window) || els.length === 0) {
+        els.forEach(show);
+      } else {
+        const vh = window.innerHeight || document.documentElement.clientHeight;
+        const io = new IntersectionObserver(
+          (entries, obs) => {
+            for (const e of entries) {
+              if (e.isIntersecting) {
+                show(e.target);
+                obs.unobserve(e.target);
+              }
+            }
+          },
+          { threshold: 0.1, rootMargin: "0px 0px -5% 0px" },
+        );
+        for (const el of els) {
+          // Already within (or near) the initial viewport → reveal now.
+          if (el.getBoundingClientRect().top < vh * 0.95) show(el);
+          else io.observe(el);
+        }
+        // Hard fail-safe: force everything visible after 1.2s regardless.
+        window.setTimeout(() => els.forEach(show), 1200);
+      }
+    </script>
+  </body>
+</html>

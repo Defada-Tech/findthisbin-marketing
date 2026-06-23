@@ -1,0 +1,201 @@
+---
+import Wordmark from "./Wordmark.astro";
+import {
+  PRICING_PATH,
+  DOCS_PATH,
+  API_REFERENCE_URL,
+  STATUS_URL,
+  GITHUB_URL,
+  X_URL,
+  LINKEDIN_URL,
+} from "../lib/site";
+
+const productLinks = [
+  { href: "/#product", label: "Overview" },
+  { href: "/#try", label: "Try it live" },
+  { href: PRICING_PATH, label: "Pricing" },
+  { href: "/#psp", label: "For platforms" },
+];
+const devLinks = [
+  { href: DOCS_PATH, label: "Docs" },
+  { href: API_REFERENCE_URL, label: "API Reference" },
+  { href: `${DOCS_PATH}#sdks`, label: "SDKs" },
+  { href: STATUS_URL, label: "Status" },
+];
+const companyLinks = [
+  { href: "/#", label: "About" },
+  { href: "/#", label: "Blog" },
+  { href: "/#", label: "Careers" },
+];
+const legalLinks = [
+  { href: "/#", label: "Privacy" },
+  { href: "/#", label: "Terms" },
+  { href: "/#", label: "DPA" },
+  { href: "/#", label: "GDPR" },
+];
+---
+
+<footer id="footer" class="site-footer">
+  <div class="footer-wrap">
+    <div class="footer-grid">
+      <div class="brand">
+        <Wordmark size={24} class="footer-wordmark" />
+        <p class="mission">
+          The card-intelligence layer for payment platforms. Any BIN, decoded in one fast API call.
+        </p>
+        <div class="eu-pill">
+          <span class="dot" aria-hidden="true"></span>
+          <span>EU-hosted · GDPR-clean</span>
+        </div>
+      </div>
+
+      <div class="col">
+        <h2>Product</h2>
+        <ul>{productLinks.map((l) => <li><a href={l.href}>{l.label}</a></li>)}</ul>
+      </div>
+      <div class="col">
+        <h2>Developers</h2>
+        <ul>{devLinks.map((l) => <li><a href={l.href}>{l.label}</a></li>)}</ul>
+      </div>
+      <div class="col" id="company">
+        <h2>Company</h2>
+        <ul>{companyLinks.map((l) => <li><a href={l.href}>{l.label}</a></li>)}</ul>
+      </div>
+      <div class="col">
+        <h2>Legal</h2>
+        <ul>{legalLinks.map((l) => <li><a href={l.href}>{l.label}</a></li>)}</ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span class="copyright">© 2026 FindThisBIN. All rights reserved.</span>
+      <div class="social">
+        <a href={GITHUB_URL} aria-label="GitHub" rel="noopener" target="_blank">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.5v-2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.5 11.5 0 016 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.3c0 .3.2.6.8.5 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"></path></svg>
+        </a>
+        <a href={X_URL} aria-label="X" rel="noopener" target="_blank">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24h-6.66l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg>
+        </a>
+        <a href={LINKEDIN_URL} aria-label="LinkedIn" rel="noopener" target="_blank">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46zM5.34 7.43a2.06 2.06 0 110-4.13 2.06 2.06 0 010 4.13zM7.12 20.45H3.55V9h3.57z"></path></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--ink-4);
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+    color: var(--text-dark-muted);
+  }
+  .footer-wrap {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 64px 24px 40px;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr;
+    gap: 40px 32px;
+  }
+  .brand { min-width: 200px; }
+  .footer-wordmark { margin-bottom: 18px; }
+  .mission {
+    margin: 0 0 20px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-dark-muted-2);
+    max-width: 280px;
+  }
+  .eu-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 12px;
+    border-radius: 999px;
+    background: rgba(34, 211, 238, 0.08);
+    border: 1px solid rgba(34, 211, 238, 0.22);
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--cyan);
+    letter-spacing: 0.02em;
+  }
+  .eu-pill .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--cyan);
+    box-shadow: 0 0 8px var(--cyan);
+  }
+
+  .col h2 {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-dark-faint);
+    margin: 0 0 16px;
+  }
+  .col ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+  }
+  .col a {
+    color: var(--text-dark-muted);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s ease;
+  }
+  .col a:hover {
+    color: #fff;
+  }
+
+  .footer-bottom {
+    margin-top: 52px;
+    padding-top: 26px;
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .copyright {
+    font-size: 13px;
+    color: var(--text-dark-faint);
+  }
+  .social {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  .social a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-dark-muted);
+    text-decoration: none;
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+  .social a:hover {
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.25);
+  }
+
+  @media (max-width: 900px) {
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 520px) {
+    .footer-grid { gap: 32px 20px; }
+  }
+</style>

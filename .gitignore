@@ -1,0 +1,30 @@
+# build output
+dist/
+.astro/
+
+# dependencies
+node_modules/
+
+# local env / secrets — NEVER commit
+.dev.vars
+.env
+.env.*
+!.env.example
+
+# cloudflare / wrangler
+.wrangler/
+
+# terraform
+infra/.terraform/
+infra/*.tfstate
+infra/*.tfstate.*
+infra/*.tfvars
+!infra/*.tfvars.example
+# .terraform.lock.hcl IS committed (pins provider versions) — do not ignore.
+
+# logs / os
+*.log
+.DS_Store
+
+# design-tool runtime (reference only, not shipped)
+design_files/support.js

@@ -1,0 +1,492 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Button from "../components/Button.astro";
+import {
+  GET_API_KEY_LABEL,
+  GET_API_KEY_URL,
+  TALK_TO_SALES_LABEL,
+  TALK_TO_SALES_URL,
+} from "../lib/site";
+
+interface Tier {
+  name: string;
+  aud: string;
+  price: string;
+  per?: string;
+  meta: string;
+  cta: string;
+  href: string;
+  features: string[];
+  popular?: boolean;
+  dark?: boolean;
+  ctaStyle: "soft" | "lime" | "ink";
+}
+
+const tiers: Tier[] = [
+  {
+    name: "Free", aud: "Evaluation & indie projects", price: "€0", meta: "5,000 lookups / month",
+    cta: "Start free", href: GET_API_KEY_URL, ctaStyle: "soft",
+    features: ["Community-grade data", "Test + live keys", "No credit card"],
+  },
+  {
+    name: "Pay-as-you-go", aud: "Variable or unpredictable traffic", price: "€0.004", meta: "per lookup · drops with volume",
+    cta: "Get your API key", href: GET_API_KEY_URL, ctaStyle: "soft",
+    features: ["Full 8-digit data", "Per-field confidence", "Volume discounts"],
+  },
+  {
+    name: "Growth / Scale", aud: "Production volume with SLAs", price: "€399", meta: "250,000 lookups included + overage",
+    cta: "Start free trial", href: GET_API_KEY_URL, ctaStyle: "lime", popular: true, dark: true,
+    features: ["99.9% uptime SLA", "EU-residency guarantee", "DCC module", "Priority support"],
+  },
+  {
+    name: "Enterprise / On-prem", aud: "High volume & custom deployment", price: "Custom", meta: "volume discounts & SLAs",
+    cta: "Talk to sales", href: TALK_TO_SALES_URL, ctaStyle: "ink",
+    features: ["Dataset export", "Private / on-prem deploy", "Dedicated support"],
+  },
+];
+
+const cols = ["Free", "PAYG", "Growth", "Enterprise"];
+const rows: { label: string; cells: string[] }[] = [
+  { label: "Monthly lookups included", cells: ["5,000", "Metered", "250,000", "Custom"] },
+  { label: "Overage rate", cells: ["—", "€0.004", "€0.003", "Volume"] },
+  { label: "8-digit range data", cells: ["✓", "✓", "✓", "✓"] },
+  { label: "Per-field confidence", cells: ["✓", "✓", "✓", "✓"] },
+  { label: "Multi-source corrections", cells: ["—", "✓", "✓", "✓"] },
+  { label: "DCC module", cells: ["—", "—", "✓", "✓"] },
+  { label: "Surcharging & interchange intelligence", cells: ["—", "✓", "✓", "✓"] },
+  { label: "Network-token indicators", cells: ["—", "—", "✓", "✓"] },
+  { label: "EU data-residency guarantee", cells: ["—", "—", "✓", "✓"] },
+  { label: "Uptime SLA", cells: ["—", "—", "99.9%", "Custom"] },
+  { label: "Support level", cells: ["Community", "Email", "Priority", "Dedicated"] },
+  { label: "Dataset export", cells: ["—", "—", "—", "✓"] },
+  { label: "On-prem / private deployment", cells: ["—", "—", "—", "✓"] },
+  { label: "DPA", cells: ["—", "✓", "✓", "✓"] },
+  { label: "SOC 2", cells: ["—", "Roadmap", "Roadmap", "✓"] },
+];
+
+const faqs = [
+  { q: "What counts as a lookup?", a: "A single API call to the BIN lookup or DCC endpoint that returns card intelligence. Cached repeat lookups within a session are not double-counted." },
+  { q: "Is the free tier really free — no card required?", a: "Yes. The Free plan needs no credit card and includes 5,000 lookups per month with test and live keys, indefinitely." },
+  { q: "Do you offer annual billing?", a: "Yes. Annual billing on Growth saves 20% versus monthly. Toggle above to see annual pricing." },
+  { q: "How does overage work?", a: "Once you exceed your included monthly volume, additional lookups are billed automatically at your plan’s overage rate. No throttling, no surprises." },
+  { q: "Where is my data hosted?", a: "Entirely within the EU. Growth and Enterprise plans include a contractual EU data-residency guarantee." },
+  { q: "Do you ever store full card numbers?", a: "Never. FindThisBIN only ever receives the 6–8 digit BIN — we are entirely out of PCI scope and never ingest a full PAN." },
+  { q: "Can I self-host or go on-prem?", a: "Yes, on the Enterprise plan. We offer private and on-prem deployment plus dataset export for air-gapped environments." },
+  { q: "How do I cancel?", a: "Cancel anytime from your dashboard. Pay-as-you-go simply stops billing; subscriptions run to the end of the current period." },
+];
+
+const cellKind = (c: string) => (c === "✓" ? "check" : c === "—" ? "dash" : "text");
+---
+
+<Layout
+  title="Pricing — FindThisBIN"
+  description="Pricing that scales with your volume. Start free, pay only for the lookups you make, and move to a subscription when you need SLAs and EU-residency guarantees."
+  active="pricing"
+>
+  <!-- ============ HEADER ============ -->
+  <section class="header">
+    <div class="header-bg" aria-hidden="true"></div>
+    <div class="wrap wrap-narrow header-wrap">
+      <span class="hero-pill">
+        <span class="dot" aria-hidden="true"></span>
+        Usage-based pricing · EU-hosted
+      </span>
+      <h1 class="h1-page">Pricing that scales with your volume.</h1>
+      <p class="header-lead">
+        Start free. Pay only for the lookups you make. Move to a subscription when you need SLAs,
+        EU-residency guarantees, and premium data.
+      </p>
+      <div class="billing-toggle" data-active="annual" role="group" aria-label="Billing period">
+        <button class="seg" data-billing="monthly" type="button">Monthly</button>
+        <button class="seg active" data-billing="annual" type="button">Annual <span class="off">–20%</span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TIERS ============ -->
+  <section id="tiers" class="band band-off tiers-band">
+    <div class="wrap">
+      <div class="tiers">
+        {
+          tiers.map((t) => (
+            <div class:list={["tier", t.dark && "dark"]}>
+              {t.popular && <span class="popular-badge">MOST POPULAR</span>}
+              <div class="tier-name">{t.name}</div>
+              <div class="tier-aud">{t.aud}</div>
+              {
+                t.popular ? (
+                  <div class="tier-price">
+                    €<span class="growth-amt" data-annual="399" data-monthly="499">399</span>
+                    <span class="tier-per growth-sub" data-annual="/mo · billed annually" data-monthly="/mo · billed monthly">/mo · billed annually</span>
+                  </div>
+                ) : (
+                  <div class="tier-price">{t.price}{t.per && <span class="tier-per">{t.per}</span>}</div>
+                )
+              }
+              <div class="tier-meta">{t.meta}</div>
+              <a href={t.href} class:list={["tier-cta", t.ctaStyle]}>{t.cta}</a>
+              <ul class="tier-features">
+                {t.features.map((f) => (
+                  <li><span class:list={["tick", t.dark ? "cyan" : "violet"]} aria-hidden="true">✓</span>{f}</li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ COMPARISON TABLE ============ -->
+  <section class="band band-white">
+    <div class="wrap">
+      <h2 class="h2 center-h2" data-reveal>Compare every plan</h2>
+      <div class="cmp" data-reveal>
+        <table>
+          <thead>
+            <tr>
+              <th class="feature-col">Feature</th>
+              {cols.map((c) => <th class:list={[c === "Growth" && "growth-col"]}>{c}</th>)}
+            </tr>
+          </thead>
+          <tbody>
+            {
+              rows.map((row) => (
+                <tr>
+                  <td class="feature-cell">{row.label}</td>
+                  {
+                    row.cells.map((c) => (
+                      <td class="c">
+                        {cellKind(c) === "check" && <span class="ck">✓</span>}
+                        {cellKind(c) === "dash" && <span class="dash">—</span>}
+                        {cellKind(c) === "text" && <span class="txt">{c}</span>}
+                      </td>
+                    ))
+                  }
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VOLUME CALLOUT ============ -->
+  <section class="band band-ink volume-band">
+    <div class="wrap">
+      <div class="volume-panel signature-gradient" data-anim data-reveal>
+        <div class="volume-copy">
+          <h2 class="h2 on-dark volume-h2">Doing millions of lookups a month?</h2>
+          <p class="volume-p">We'll build a plan around your volume, SLA, and data-residency needs.</p>
+        </div>
+        <Button href={TALK_TO_SALES_URL} label={TALK_TO_SALES_LABEL} variant="white" size="lg" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section class="band band-off">
+    <div class="wrap wrap-tight">
+      <h2 class="h2 center-h2" data-reveal>Pricing questions</h2>
+      <div class="faq" data-reveal>
+        {
+          faqs.map((f, i) => (
+            <div class:list={["faq-item", i === 0 && "open"]}>
+              <button class="faq-q" type="button" aria-expanded={i === 0 ? "true" : "false"}>
+                <span>{f.q}</span>
+                <span class="faq-sign" aria-hidden="true">{i === 0 ? "–" : "+"}</span>
+              </button>
+              <div class="faq-a"><p>{f.a}</p></div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CLOSE ============ -->
+  <section class="close">
+    <div class="close-blob" aria-hidden="true"></div>
+    <div class="wrap wrap-tight close-wrap">
+      <div class="close-trust" data-reveal>
+        <span>EU-hosted</span><span>·</span><span>GDPR-clean</span><span>·</span><span>No PCI scope</span><span>·</span><span>DPA available</span>
+      </div>
+      <h2 class="h1-page close-h2" data-reveal>Get your free API key today.</h2>
+      <div class="cta-row center close-cta" data-reveal>
+        <Button href={GET_API_KEY_URL} label={GET_API_KEY_LABEL} variant="primary" size="lg" />
+        <Button href={TALK_TO_SALES_URL} label={TALK_TO_SALES_LABEL} variant="ghost-dark" size="lg" />
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  /* ── Header ───────────────────────────────────────────────────────── */
+  .header { position: relative; background: var(--ink); overflow: hidden; }
+  .header-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(100% 80% at 50% -10%, rgba(124, 92, 255, 0.28), transparent 55%);
+  }
+  .header-wrap {
+    padding-top: clamp(56px, 8vw, 96px);
+    padding-bottom: clamp(40px, 5vw, 56px);
+    text-align: center;
+    z-index: 1;
+  }
+  .hero-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 7px 14px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    margin-bottom: 24px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #d7d7e2;
+  }
+  .hero-pill .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--lime); box-shadow: 0 0 10px var(--lime); }
+  .header-lead {
+    font-size: clamp(16px, 1.8vw, 19px);
+    line-height: 1.6;
+    color: var(--text-dark-body);
+    margin: 18px auto 30px;
+    max-width: 600px;
+  }
+  .billing-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+  }
+  .seg {
+    font-family: var(--font-sans);
+    font-size: 14.5px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 9px 18px;
+    border-radius: 9px;
+    border: 0;
+    background: transparent;
+    color: #c7c7d6;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .seg.active { background: #fff; color: var(--ink); }
+  .seg .off { color: var(--lime); font-size: 12px; }
+  .seg.active .off { color: var(--check-green); }
+
+  /* ── Tiers ────────────────────────────────────────────────────────── */
+  .tiers-band {
+    padding-top: clamp(40px, 5vw, 64px);
+    padding-bottom: clamp(56px, 7vw, 88px);
+  }
+  .tiers { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; align-items: stretch; }
+  .tier {
+    background: #fff;
+    border: 1px solid var(--border-light);
+    border-radius: 18px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  .tier.dark {
+    background: var(--ink);
+    color: #fff;
+    border-color: transparent;
+    box-shadow: var(--shadow-popular);
+  }
+  .popular-badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--lime);
+    color: var(--ink);
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 5px 13px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .tier-name { font-family: var(--font-display); font-weight: 700; font-size: 19px; }
+  .tier-aud { font-size: 13.5px; color: var(--text-light-muted); margin: 5px 0 20px; }
+  .tier.dark .tier-aud { color: var(--text-dark-muted); }
+  .tier-price { font-family: var(--font-display); font-weight: 700; font-size: 42px; letter-spacing: -0.03em; }
+  .tier-per { font-size: 15px; color: var(--text-light-faint); font-weight: 600; }
+  .tier.dark .tier-per { color: var(--text-dark-muted); }
+  .tier-meta { font-size: 13px; color: var(--text-light-faint); margin: 2px 0 22px; }
+  .tier.dark .tier-meta { color: var(--text-dark-muted-2); }
+  .tier-cta {
+    text-decoration: none;
+    text-align: center;
+    font-weight: 600;
+    font-size: 15px;
+    padding: 13px;
+    border-radius: 11px;
+    margin-bottom: 22px;
+    transition: transform 0.15s ease, filter 0.15s ease;
+  }
+  .tier-cta:hover { transform: translateY(-1px); }
+  .tier-cta.soft { color: var(--ink); background: var(--surface-light); border: 1px solid var(--border-light); }
+  .tier-cta.lime { color: var(--ink); background: var(--lime); }
+  .tier-cta.ink { color: #fff; background: var(--ink); }
+  .tier-features { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 11px; }
+  .tier-features li { font-size: 13.5px; color: var(--text-light-body-strong); display: flex; gap: 9px; }
+  .tier.dark .tier-features li { color: #c7c7d6; }
+  .tick.violet { color: var(--violet); }
+  .tick.cyan { color: var(--cyan); }
+  @media (max-width: 1040px) { .tiers { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) { .tiers { grid-template-columns: 1fr; } }
+
+  /* ── Comparison table ─────────────────────────────────────────────── */
+  .center-h2 { text-align: center; margin-bottom: 36px; }
+  .cmp { overflow-x: auto; border: 1px solid var(--border-light); border-radius: 16px; }
+  .cmp table { width: 100%; min-width: 760px; border-collapse: collapse; font-size: 14px; }
+  .cmp thead tr { background: var(--off-white); }
+  .cmp th {
+    text-align: center;
+    padding: 18px 16px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--ink);
+  }
+  .cmp th.feature-col { text-align: left; font-family: var(--font-sans); font-weight: 600; color: var(--text-light-muted); font-size: 13px; }
+  .cmp th.growth-col { color: var(--violet); }
+  .cmp td { padding: 15px 16px; border-top: 1px solid var(--border-light-2); }
+  .cmp td.feature-cell { text-align: left; color: var(--text-light-body-strong); font-weight: 500; }
+  .cmp td.c { text-align: center; }
+  .cmp .ck { color: var(--check-green); font-weight: 700; }
+  .cmp .dash { color: #c5c5d0; }
+  .cmp .txt { color: var(--ink); font-weight: 600; font-size: 13.5px; }
+
+  /* ── Volume callout ───────────────────────────────────────────────── */
+  .volume-band { padding-top: 0; }
+  .volume-panel {
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    padding: clamp(32px, 5vw, 56px);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .volume-copy { max-width: 560px; }
+  .volume-h2 { margin: 0 0 10px; font-size: clamp(24px, 3.4vw, 38px); letter-spacing: -0.02em; }
+  .volume-p { font-size: 16.5px; line-height: 1.55; color: rgba(255, 255, 255, 0.85); margin: 0; }
+
+  /* ── FAQ ──────────────────────────────────────────────────────────── */
+  .faq { display: flex; flex-direction: column; gap: 12px; }
+  .faq-item { background: #fff; border: 1px solid var(--border-light); border-radius: 14px; overflow: hidden; }
+  .faq-q {
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    padding: 20px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--ink);
+  }
+  .faq-sign { flex: none; font-family: var(--font-display); font-weight: 700; font-size: 22px; color: var(--violet); line-height: 1; }
+  .faq-a { padding: 0 22px 22px; }
+  .faq-a p { margin: 0; font-size: 15px; line-height: 1.6; color: var(--text-light-body); }
+  /* No-JS: all answers visible. JS on: only .open items show their answer. */
+  .faq[data-js="on"] .faq-item:not(.open) .faq-a { display: none; }
+
+  /* ── Close ────────────────────────────────────────────────────────── */
+  .close {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(125deg, #0b0b12 0%, #241a52 50%, #3b82f6 135%);
+  }
+  .close-blob {
+    position: absolute;
+    top: -100px;
+    left: 35%;
+    width: 480px;
+    height: 480px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(124, 92, 255, 0.5), transparent 65%);
+    filter: blur(30px);
+    pointer-events: none;
+  }
+  .close-wrap {
+    padding-top: clamp(64px, 9vw, 112px);
+    padding-bottom: clamp(64px, 9vw, 112px);
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+  .close-trust {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    justify-content: center;
+    margin-bottom: 28px;
+    font-size: 13.5px;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 500;
+  }
+  .close-h2 { color: #fff; margin-bottom: 30px; }
+  .close-cta { justify-content: center; }
+</style>
+
+<script>
+  // Monthly/Annual toggle — swaps the Growth price + sub-label.
+  const toggle = document.querySelector<HTMLElement>(".billing-toggle");
+  if (toggle) {
+    const segs = toggle.querySelectorAll<HTMLButtonElement>(".seg");
+    const amt = document.querySelector<HTMLElement>(".growth-amt");
+    const sub = document.querySelector<HTMLElement>(".growth-sub");
+    segs.forEach((seg) => {
+      seg.addEventListener("click", () => {
+        const billing = seg.dataset.billing as "monthly" | "annual";
+        toggle.dataset.active = billing;
+        segs.forEach((s) => s.classList.toggle("active", s === seg));
+        if (amt) amt.textContent = amt.dataset[billing] ?? amt.textContent;
+        if (sub) sub.textContent = sub.dataset[billing] ?? sub.textContent;
+      });
+    });
+  }
+
+  // FAQ accordion — single-open, first open by default.
+  const faq = document.querySelector<HTMLElement>(".faq");
+  if (faq) {
+    faq.dataset.js = "on";
+    const items = Array.from(faq.querySelectorAll<HTMLElement>(".faq-item"));
+    items.forEach((item) => {
+      const btn = item.querySelector<HTMLButtonElement>(".faq-q");
+      btn?.addEventListener("click", () => {
+        const willOpen = !item.classList.contains("open");
+        items.forEach((other) => {
+          const isThis = other === item && willOpen;
+          other.classList.toggle("open", isThis);
+          other.querySelector(".faq-q")?.setAttribute("aria-expanded", String(isThis));
+          const s = other.querySelector<HTMLElement>(".faq-sign");
+          if (s) s.textContent = isThis ? "–" : "+";
+        });
+      });
+    });
+  }
+</script>

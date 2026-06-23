@@ -1,0 +1,14 @@
+{
+  // Root Worker config — used by `wrangler types` (typed env) and as human-facing
+  // documentation of bindings. It intentionally OMITS `main`/`assets`: the
+  // @astrojs/cloudflare adapter injects those at build time and writes the actual
+  // deploy artifact to ./dist/server/wrangler.json. Deploy with:
+  //   astro build && wrangler deploy --config ./dist/server/wrangler.json
+  // (declaring `main` here would break `astro build`'s cfvite plugin.)
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "findthisbin-marketing",
+  "compatibility_date": "2026-04-15",
+  // Astro session store binding (auto-provisioned on first deploy; unused here).
+  "kv_namespaces": [{ "binding": "SESSION" }],
+  "observability": { "enabled": true }
+}

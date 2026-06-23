@@ -1,0 +1,224 @@
+---
+/**
+ * "Try it live" BIN playground. Server-renders the default record (works
+ * without JS); the inline island re-renders the card as the user types or
+ * picks a sample. Logic + card markup live in src/lib/bin.ts (single source).
+ */
+import { lookupBin, renderCardHTML, QUICK_PICKS } from "../lib/bin";
+
+const DEFAULT_BIN = "53847012";
+const initial = renderCardHTML(lookupBin(DEFAULT_BIN));
+---
+
+<div class="bin-playground">
+  <div class="bp-controls">
+    <label class="bp-input-wrap" for="bp-input">
+      <span class="bp-prefix mono" aria-hidden="true">/v1/bins/</span>
+      <input
+        id="bp-input"
+        class="bp-input mono"
+        type="text"
+        inputmode="numeric"
+        maxlength="8"
+        autocomplete="off"
+        spellcheck="false"
+        value={DEFAULT_BIN}
+        aria-label="BIN (first 8 digits)"
+      />
+    </label>
+    <div class="bp-picks" role="group" aria-label="Sample BINs">
+      {QUICK_PICKS.map((b) => <button type="button" class="bp-pick mono" data-bin={b}>{b}</button>)}
+    </div>
+  </div>
+
+  <div class="bp-result" id="bp-result" set:html={initial}></div>
+</div>
+
+<style is:global>
+  .bin-playground {
+    background: var(--ink-2);
+    border: 1px solid var(--border-dark);
+    border-radius: 18px;
+    padding: 22px;
+  }
+  .bin-playground .bp-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .bin-playground .bp-input-wrap {
+    display: flex;
+    align-items: center;
+    background: var(--ink-3);
+    border: 1px solid var(--border-dark);
+    border-radius: 11px;
+    padding: 0 14px;
+    transition: border-color 0.15s ease;
+  }
+  .bin-playground .bp-input-wrap:focus-within {
+    border-color: var(--violet);
+  }
+  .bin-playground .bp-prefix {
+    color: var(--text-dark-faint);
+    font-size: 13px;
+  }
+  .bin-playground .bp-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 18px;
+    letter-spacing: 0.08em;
+    padding: 13px 6px;
+    outline: none;
+    min-width: 0;
+  }
+  .bin-playground .bp-picks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .bin-playground .bp-pick {
+    font-size: 12.5px;
+    color: var(--text-dark-muted);
+    background: var(--ink-3);
+    border: 1px solid var(--border-dark);
+    border-radius: 999px;
+    padding: 6px 12px;
+    cursor: pointer;
+    transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+  }
+  .bin-playground .bp-pick:hover {
+    color: #fff;
+    border-color: rgba(124, 92, 255, 0.6);
+  }
+
+  /* Result card */
+  .bin-playground .bp-result {
+    border-top: 1px solid var(--border-dark);
+    padding-top: 20px;
+  }
+  .bin-playground .bp-empty {
+    color: var(--text-dark-faint);
+    font-size: 14px;
+    padding: 12px 0;
+  }
+  .bin-playground .bp-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .bin-playground .bp-field {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .bin-playground .bp-wide {
+    grid-column: span 2;
+  }
+  .bin-playground .bp-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-dark-faint);
+  }
+  .bin-playground .bp-value {
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+  }
+  .bin-playground .bp-sub {
+    font-size: 12.5px;
+    color: var(--text-dark-muted);
+  }
+  .bin-playground .dcc-on { color: var(--cyan); }
+  .bin-playground .dcc-off { color: var(--text-dark-faint); }
+
+  .bin-playground .bp-flags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 18px 0;
+  }
+  .bin-playground .flag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12.5px;
+    padding: 6px 11px;
+    border-radius: 999px;
+    border: 1px solid var(--border-dark);
+  }
+  .bin-playground .flag .ic { font-size: 11px; }
+  .bin-playground .flag.on {
+    color: var(--lime);
+    border-color: rgba(196, 245, 66, 0.4);
+    background: rgba(196, 245, 66, 0.08);
+  }
+  .bin-playground .flag.off {
+    color: var(--text-dark-faint);
+  }
+
+  .bin-playground .bp-conf-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  .bin-playground .bp-conf-pct {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 18px;
+    color: #fff;
+  }
+  .bin-playground .bp-bar {
+    height: 8px;
+    border-radius: 999px;
+    background: var(--ink-3);
+    overflow: hidden;
+  }
+  .bin-playground .bp-bar-fill {
+    display: block;
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--violet), var(--cyan));
+    transition: width 0.4s ease;
+  }
+  .bin-playground .bp-hint {
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--text-dark-faint);
+  }
+
+  @media (max-width: 520px) {
+    .bin-playground .bp-grid { grid-template-columns: 1fr; }
+    .bin-playground .bp-wide { grid-column: auto; }
+  }
+</style>
+
+<script>
+  import { lookupBin, renderCardHTML } from "../lib/bin";
+
+  const root = document.querySelector<HTMLElement>(".bin-playground");
+  const input = root?.querySelector<HTMLInputElement>(".bp-input");
+  const result = root?.querySelector<HTMLElement>("#bp-result");
+
+  if (root && input && result) {
+    const render = () => {
+      result.innerHTML = renderCardHTML(lookupBin(input.value));
+    };
+    input.addEventListener("input", () => {
+      // keep digits only, max 8
+      input.value = input.value.replace(/\D/g, "").slice(0, 8);
+      render();
+    });
+    root.querySelectorAll<HTMLButtonElement>(".bp-pick").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        input.value = btn.dataset.bin ?? "";
+        render();
+        input.focus();
+      });
+    });
+  }
+</script>

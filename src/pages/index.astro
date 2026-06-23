@@ -1,0 +1,877 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Eyebrow from "../components/Eyebrow.astro";
+import Button from "../components/Button.astro";
+import DemoPanel from "../components/DemoPanel.astro";
+import BinPlayground from "../components/BinPlayground.astro";
+import CodeTabs from "../components/CodeTabs.astro";
+import type { CodeTab } from "../components/CodeTabs.astro";
+import {
+  SITE_DESCRIPTION,
+  GET_API_KEY_LABEL,
+  GET_API_KEY_URL,
+  TALK_TO_SALES_LABEL,
+  TALK_TO_SALES_URL,
+  PRICING_PATH,
+  DOCS_PATH,
+  API_REFERENCE_URL,
+} from "../lib/site";
+
+const trust = ["EU-hosted", "GDPR-clean", "PCI-out-of-scope", "sub-10ms p99", "99.9% uptime"];
+const partners = ["NorthPay", "Volt", "Cadence", "Ledgerline", "Orbital", "Settle"];
+
+const fields = [
+  { k: "scheme", v: "Visa · MC · Amex" },
+  { k: "type", v: "Credit / Debit" },
+  { k: "category", v: "Consumer / Comm." },
+  { k: "product / level", v: "World Elite" },
+  { k: "issuer name", v: "Revolut Ltd" },
+  { k: "issuer country", v: "GB" },
+  { k: "issuer currency", v: "GBP" },
+  { k: "prepaid flag", v: "true / false" },
+  { k: "commercial flag", v: "true / false" },
+  { k: "regulated debit", v: "true / false" },
+  { k: "dcc_eligible", v: "true / false", hi: true },
+  { k: "confidence", v: "0.98", hi: true },
+  { k: "dataset_version", v: "2026-06-12" },
+];
+
+const useCases = [
+  { t: "Least-cost & debit routing", d: "Route on real card type and regulated-debit status to cut acceptance cost." },
+  { t: "Surcharging & interchange", d: "Charge and optimize correctly with consumer vs. commercial certainty." },
+  { t: "DCC eligibility (EU)", d: "Offer compliant dynamic currency conversion with ECB-rate disclosure." },
+  { t: "Checkout UX & card art", d: "Render the right scheme logo and card visuals the moment a BIN is typed." },
+  { t: "Fraud & risk signals", d: "Flag issuer-country mismatches and prepaid cards in your risk engine." },
+  { t: "Batch data enrichment", d: "Enrich historical transaction tables with accurate, versioned BIN data." },
+];
+
+const pspCards = [
+  { t: "Smarter routing", d: "Least-cost & debit routing decisions from accurate type and regulated-debit flags.", tone: "violet" },
+  { t: "Surcharging & interchange", d: "Apply correct surcharges and optimize interchange with commercial/consumer precision.", tone: "violet" },
+  { t: "DCC eligibility for EU flows", d: "PSD2 / CBPR-ready disclosure with ECB reference-rate data points.", tone: "cyan" },
+  { t: "Richer checkout UX & risk", d: "Card art and scheme logos, plus issuer-country signals for fraud screening.", tone: "cyan" },
+];
+
+const steps = [
+  { n: "1", t: "Get an API key", d: "Sign up free, grab test and live keys. No credit card.", tone: "violet" },
+  { n: "2", t: "Call the API", d: "One GET request with the BIN. SDKs for 5 languages.", tone: "violet" },
+  { n: "3", t: "Get rich card data", d: "Scheme, type, issuer, country, DCC, and confidence — in milliseconds.", tone: "cyan" },
+];
+
+const howTabs: CodeTab[] = [
+  { label: "cURL", lang: "bash", code: `curl https://api.findthisbin.com/v1/bins/53847012 \\\n  -H "Authorization: Bearer sk_live_..."` },
+  { label: "Node", lang: "js", code: `import { FindThisBIN } from 'findthisbin'\nconst ftb = new FindThisBIN('sk_live_...')\nconst card = await ftb.bins.get('53847012')` },
+  { label: "Python", lang: "python", code: `from findthisbin import FindThisBIN\nftb = FindThisBIN('sk_live_...')\ncard = ftb.bins.get('53847012')` },
+  { label: "Go", lang: "go", code: `ftb := findthisbin.New("sk_live_...")\ncard, err := ftb.Bins.Get("53847012")` },
+  { label: "PHP", lang: "php", code: `$ftb = new FindThisBIN('sk_live_...');\n$card = $ftb->bins->get('53847012');` },
+];
+
+const perfStats = [
+  { n: "<10ms", l: "p99 latency" },
+  { n: "99.9%", l: "uptime" },
+  { n: "6.2M", l: "BINs covered" },
+  { n: "242", l: "countries" },
+  { n: "EU", l: "data residency" },
+];
+
+const priceCards = [
+  { name: "Free", aud: "Evaluation & indie", price: "€0", meta: "5,000 lookups / mo", cta: "Start free", popular: false, dark: false },
+  { name: "Pay-as-you-go", aud: "Variable traffic", price: "€0.004", per: "/lookup", meta: "Drops with volume", cta: "Get your API key", popular: false, dark: false },
+  { name: "Growth / Scale", aud: "Production & SLAs", price: "€499", per: "/mo", meta: "250k included + overage", cta: "Start free trial", popular: true, dark: true },
+  { name: "Enterprise", aud: "On-prem & custom", price: "Custom", meta: "Dataset export, private deploy", cta: "Talk to sales", popular: false, dark: false },
+];
+
+const compliance = [
+  { t: "EU residency", d: "All data hosted and processed within the EU." },
+  { t: "GDPR-clean", d: "No personal data, no card numbers, ever." },
+  { t: "Out of PCI scope", d: "BIN-only — we never ingest full PANs." },
+  { t: "DPA available", d: "SOC 2 on the roadmap. Sign before you launch." },
+];
+
+const devCards = [
+  { token: "{ }", t: "Docs", d: "Guides & quickstart", href: DOCS_PATH },
+  { token: "GET", t: "API Reference", d: "Every endpoint", href: API_REFERENCE_URL },
+  { token: "$ npm i", t: "SDKs", d: "5 languages", href: `${DOCS_PATH}#sdks` },
+  { token: "▶", t: "Postman", d: "Import & run", href: `${DOCS_PATH}#sdks` },
+];
+---
+
+<Layout
+  title="FindThisBIN — Every card, decoded in one API call"
+  description={SITE_DESCRIPTION}
+  active="home"
+>
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="hero-bg" aria-hidden="true"></div>
+    <div class="hero-blob" aria-hidden="true"></div>
+    <div class="wrap hero-wrap">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <span class="hero-pill">
+            <span class="dot" aria-hidden="true"></span>
+            BIN intelligence API · EU-hosted
+          </span>
+          <h1 class="h1 hero-h1">Every card,<br />decoded in <span class="grad-text">one API call.</span></h1>
+          <p class="lead hero-lead">
+            FindThisBIN turns any 6–8 digit BIN into rich, accurate card data — scheme, type,
+            issuer, country, currency, and DCC eligibility — in a single sub-10ms request.
+            EU-hosted, developer-first, built for PSPs and payment platforms.
+          </p>
+          <div class="cta-row hero-cta">
+            <Button href={GET_API_KEY_URL} label={GET_API_KEY_LABEL} variant="primary" size="lg" />
+            <Button href={TALK_TO_SALES_URL} label={TALK_TO_SALES_LABEL} variant="ghost-dark" size="lg" />
+          </div>
+          <div class="trust">
+            {trust.map((t) => <span class="trust-item"><span class="trust-dot" aria-hidden="true">●</span>{t}</span>)}
+          </div>
+        </div>
+        <DemoPanel />
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SOCIAL PROOF ============ -->
+  <section class="band band-off social">
+    <div class="wrap">
+      <p class="social-label">Powering BIN intelligence for modern payment platforms</p>
+      <div class="partners">
+        {partners.map((p) => <span class="partner">{p}</span>)}
+      </div>
+      <div class="stats3">
+        <div class="stat">
+          <div class="stat-num" data-count="6.2" data-decimals="1" data-suffix="M">6.2M</div>
+          <div class="stat-label">BINs covered</div>
+        </div>
+        <div class="stat stat-bordered">
+          <div class="stat-num" data-count="242" data-suffix="">242</div>
+          <div class="stat-label">Countries &amp; territories</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num" data-count="184" data-suffix="M">184M</div>
+          <div class="stat-label">Lookups per day</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VALUE PILLARS ============ -->
+  <section id="product" class="band band-white">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <Eyebrow label="Why FindThisBIN" tone="violet" />
+        <h2 class="h2">Engineered for the teams that move money.</h2>
+      </div>
+      <div class="pillars" data-reveal>
+        <article class="pillar dark">
+          <div class="pillar-glow glow-violet" aria-hidden="true"></div>
+          <div class="pillar-body">
+            <div class="pillar-eyebrow lime">01 · DEVELOPER EXPERIENCE</div>
+            <h3 class="h3">Ships in minutes, not sprints.</h3>
+            <p class="pillar-text">Clean REST API, SDKs in 5 languages, test &amp; live keys, and a generous free tier. Signup to first lookup in under 5 minutes.</p>
+            <pre class="mini-code mono"><code><span class="kw">const</span> card <span class="pn">=</span> <span class="kw">await</span> ftb<span class="pn">.</span><span class="fn">lookup</span><span class="pn">(</span><span class="st">'53847012'</span><span class="pn">)</span>
+<span class="cm">// → {'{'} scheme, type, issuer, dcc... {'}'}</span></code></pre>
+          </div>
+        </article>
+
+        <article class="pillar light">
+          <div class="pillar-eyebrow violet">02 · EU &amp; COMPLIANCE</div>
+          <h3 class="h3 ink">EU-resident, compliance-ready.</h3>
+          <p class="pillar-text light">Hosted in the EU, GDPR-clean, and we never see a full card number — entirely out of PCI scope. DPA available. A built-in DCC module ships ECB reference-rate disclosure data for PSD2 / CBPR compliance.</p>
+          <div class="chips">
+            {["EU-hosted", "GDPR-clean", "PCI out-of-scope", "DCC module"].map((c) => <span class="chip">{c}</span>)}
+          </div>
+        </article>
+
+        <article class="pillar light">
+          <div class="pillar-eyebrow violet">03 · ACCURACY</div>
+          <h3 class="h3 ink">Accuracy you can underwrite.</h3>
+          <p class="pillar-text light">True 8-digit range precision — not legacy 6-digit guessing. Multi-source aggregation with per-field confidence and continuous corrections that catch the mislabeled prepaid and commercial cards raw network files miss.</p>
+          <div class="accuracy-stat">
+            <div class="big-8">8-digit</div>
+            <div class="big-8-sub">range precision<br />with per-field confidence</div>
+          </div>
+        </article>
+
+        <article class="pillar dark">
+          <div class="pillar-glow glow-cyan glow-bl" aria-hidden="true"></div>
+          <div class="pillar-body">
+            <div class="pillar-eyebrow cyan">04 · PERFORMANCE</div>
+            <h3 class="h3">Built for the checkout hot path.</h3>
+            <p class="pillar-text">Sub-10ms p99 lookups that survive BIN-enumeration bursts — engineered for high-volume, real-time decisioning at checkout.</p>
+            <div class="perf-mini">
+              <div><div class="perf-n">&lt;10ms</div><div class="perf-l">p99 latency</div></div>
+              <div><div class="perf-n">99.9%</div><div class="perf-l">uptime</div></div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TRY IT LIVE ============ -->
+  <section id="try" class="band band-ink try">
+    <div class="try-bg" aria-hidden="true"></div>
+    <div class="wrap wrap-narrow">
+      <div class="section-head center" data-reveal>
+        <Eyebrow label="Playground" tone="cyan" class="center-eyebrow" />
+        <h2 class="h2 on-dark">Look up any BIN, right now.</h2>
+        <p class="lead lead-center">Type a 6–8 digit BIN and see exactly what your integration receives.</p>
+      </div>
+      <div data-reveal>
+        <BinPlayground />
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WHAT YOU GET ============ -->
+  <section class="band band-off">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <Eyebrow label="One call, everything" tone="violet" />
+        <h2 class="h2">Every field your stack needs.</h2>
+        <p class="lead">A single BIN lookup returns the full card-intelligence record — typed, scored, and versioned.</p>
+      </div>
+      <div class="fields" data-reveal>
+        {
+          fields.map((f) => (
+            <div class="field-chip">
+              <div class="field-k mono">{f.k}</div>
+              <div class:list={["field-v", f.hi && "hi"]}>{f.v}</div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PSP SECTION ============ -->
+  <section id="psp" class="band band-ink psp">
+    <div class="psp-bg" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="two-col">
+        <div data-reveal>
+          <Eyebrow label="For payment platforms" tone="cyan" />
+          <h2 class="h2 on-dark psp-h2">Embed card intelligence across your entire stack.</h2>
+          <p class="lead on-dark">PSPs, orchestrators, and ISVs use FindThisBIN to power smarter routing, surcharging, DCC eligibility, richer checkout UX, and risk signals — all from one API. White-label, high-volume pricing, SLAs, and EU data-residency guarantees included.</p>
+          <div class="cta-row">
+            <Button href={TALK_TO_SALES_URL} label={TALK_TO_SALES_LABEL} variant="primary" />
+            <Button href={PRICING_PATH} label="See platform pricing" variant="ghost-dark" />
+          </div>
+        </div>
+        <div class="psp-cards" data-reveal>
+          {
+            pspCards.map((c) => (
+              <div class="psp-card">
+                <span class:list={["psp-arrow", c.tone]}>↳</span>
+                <div>
+                  <div class="psp-card-t">{c.t}</div>
+                  <div class="psp-card-d">{c.d}</div>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ USE CASES ============ -->
+  <section class="band band-white">
+    <div class="wrap">
+      <h2 class="h2 usecases-h2" data-reveal>One dataset, six revenue levers.</h2>
+      <div class="usecases" data-reveal>
+        {
+          useCases.map((u) => (
+            <div class="usecase">
+              <div class="usecase-t">{u.t}</div>
+              <div class="usecase-d">{u.d}</div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOW IT WORKS ============ -->
+  <section class="band band-ink">
+    <div class="wrap">
+      <div class="two-col two-col-start">
+        <div data-reveal>
+          <Eyebrow label="How it works" tone="lime" />
+          <h2 class="h2 on-dark how-h2">Three steps to rich card data.</h2>
+          <div class="steps">
+            {
+              steps.map((s) => (
+                <div class="step">
+                  <span class:list={["step-num", s.tone]}>{s.n}</span>
+                  <div>
+                    <div class="step-t">{s.t}</div>
+                    <div class="step-d">{s.d}</div>
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+        <div data-reveal>
+          <CodeTabs id="how-it-works" tabs={howTabs} />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PERFORMANCE BAND ============ -->
+  <section class="band signature-gradient perf-band" data-anim>
+    <div class="wrap">
+      <div class="perf-grid">
+        {
+          perfStats.map((s) => (
+            <div class="perf-stat">
+              <div class="stat-num perf-stat-num">{s.n}</div>
+              <div class="perf-stat-l">{s.l}</div>
+            </div>
+          ))
+        }
+      </div>
+      <p class="perf-foot">GDPR · PCI out-of-scope · SOC 2 (in progress)</p>
+    </div>
+  </section>
+
+  <!-- ============ PRICING PREVIEW ============ -->
+  <section class="band band-off">
+    <div class="wrap">
+      <div class="section-head center" data-reveal>
+        <h2 class="h2">Start free. Scale on usage.</h2>
+        <p class="lead lead-center">Pay only for the lookups you make. Move to a subscription when you need SLAs and EU-residency guarantees.</p>
+      </div>
+      <div class="price4" data-reveal>
+        {
+          priceCards.map((p) => (
+            <div class:list={["price-card", p.dark && "dark"]}>
+              {p.popular && <span class="popular-badge">MOST POPULAR</span>}
+              <div class="price-name">{p.name}</div>
+              <div class="price-aud">{p.aud}</div>
+              <div class="price-amt">{p.price}{p.per && <span class="price-per">{p.per}</span>}</div>
+              <div class="price-meta">{p.meta}</div>
+              <a
+                href={p.name === "Enterprise" ? TALK_TO_SALES_URL : GET_API_KEY_URL}
+                class:list={["price-cta", p.popular ? "lime" : p.dark ? "dark" : "soft"]}
+              >{p.cta}</a>
+            </div>
+          ))
+        }
+      </div>
+      <div class="price-compare">
+        <a href={PRICING_PATH}>Compare all plans &amp; features →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ COMPLIANCE CALLOUT ============ -->
+  <section class="band band-white compliance-band">
+    <div class="wrap">
+      <div class="compliance" data-reveal>
+        {
+          compliance.map((c) => (
+            <div class="compliance-item">
+              <span class="compliance-t">{c.t}</span>
+              <span class="compliance-d">{c.d}</span>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ DEV / DOCS CTA ============ -->
+  <section class="band band-ink dev">
+    <div class="dev-grid-bg" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="two-col">
+        <div data-reveal>
+          <Eyebrow label="For developers" tone="cyan" />
+          <h2 class="h2 on-dark dev-h2">Everything you need to integrate in minutes.</h2>
+          <p class="lead on-dark">Beautiful docs, a full API reference, SDKs in 5 languages, and a Postman collection. Built for the way payment engineers actually work.</p>
+          <div class="cta-row">
+            <Button href={DOCS_PATH} label="Read the docs" variant="primary" />
+            <Button href={API_REFERENCE_URL} label="API reference" variant="ghost-dark" />
+          </div>
+        </div>
+        <div class="dev-cards" data-reveal>
+          {
+            devCards.map((d) => (
+              <a href={d.href} class="dev-card">
+                <div class="dev-token mono">{d.token}</div>
+                <div class="dev-card-t">{d.t}</div>
+                <div class="dev-card-d">{d.d}</div>
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FINAL CTA ============ -->
+  <section class="final">
+    <div class="final-blob" aria-hidden="true"></div>
+    <div class="wrap wrap-tight final-wrap">
+      <h2 class="h1-page final-h2" data-reveal>Start building with FindThisBIN today.</h2>
+      <p class="final-lead" data-reveal>From signup to your first lookup in under five minutes. No credit card required.</p>
+      <div class="cta-row center final-cta" data-reveal>
+        <Button href={GET_API_KEY_URL} label={GET_API_KEY_LABEL} variant="primary" size="lg" />
+        <Button href={TALK_TO_SALES_URL} label={TALK_TO_SALES_LABEL} variant="ghost-dark" size="lg" />
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  /* ── Hero ─────────────────────────────────────────────────────────── */
+  .hero {
+    position: relative;
+    background: var(--ink);
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(120% 90% at 70% -10%, rgba(124, 92, 255, 0.3), rgba(11, 11, 18, 0) 55%),
+      radial-gradient(80% 70% at 8% 8%, rgba(34, 211, 238, 0.16), rgba(11, 11, 18, 0) 50%);
+  }
+  .hero-blob {
+    position: absolute;
+    top: -120px;
+    right: -80px;
+    width: 420px;
+    height: 420px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(124, 92, 255, 0.45), rgba(124, 92, 255, 0) 70%);
+    filter: blur(20px);
+    animation: ftbFloat 9s ease-in-out infinite;
+    pointer-events: none;
+  }
+  .hero-wrap {
+    padding-top: clamp(56px, 9vw, 108px);
+    padding-bottom: clamp(64px, 8vw, 96px);
+    z-index: 1;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: 56px;
+    align-items: center;
+  }
+  .hero-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 7px 14px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    margin-bottom: 26px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #d7d7e2;
+  }
+  .hero-pill .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--lime);
+    box-shadow: 0 0 10px var(--lime);
+  }
+  .hero-h1 { margin-bottom: 22px; }
+  .hero-lead { color: var(--text-dark-body); margin: 0 0 34px; max-width: 560px; }
+  .hero-cta { margin-bottom: 34px; }
+  .trust {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 18px;
+    align-items: center;
+    font-size: 13px;
+    color: var(--text-dark-muted-2);
+    font-weight: 500;
+  }
+  .trust-item { display: inline-flex; align-items: center; gap: 7px; }
+  .trust-dot { color: var(--cyan); font-size: 10px; }
+  @media (max-width: 980px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+  }
+
+  /* ── Section heads ────────────────────────────────────────────────── */
+  .section-head { max-width: 680px; margin-bottom: 44px; }
+  .section-head .h2 { margin-top: 14px; }
+  .section-head.center { max-width: 620px; margin-left: auto; margin-right: auto; text-align: center; }
+  .center-eyebrow { justify-content: center; display: flex; }
+  .lead-center { margin-left: auto; margin-right: auto; }
+
+  /* ── Social proof ─────────────────────────────────────────────────── */
+  .social-label {
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-light-faint);
+    margin: 0 0 36px;
+  }
+  .partners {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 24px 52px;
+    margin-bottom: 56px;
+  }
+  .partner {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 23px;
+    color: var(--ink);
+    opacity: 0.42;
+    letter-spacing: -0.02em;
+  }
+  .stats3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    max-width: 880px;
+    margin: 0 auto;
+  }
+  .stat { text-align: center; }
+  .stat-bordered {
+    border-left: 1px solid var(--border-light);
+    border-right: 1px solid var(--border-light);
+  }
+  .stat .stat-num { color: var(--ink); }
+  .stat-label { font-size: 14px; color: var(--text-light-muted); font-weight: 500; margin-top: 4px; }
+  @media (max-width: 600px) {
+    .stats3 { grid-template-columns: 1fr; gap: 8px; }
+    .stat-bordered { border: 0; padding: 14px 0; }
+  }
+
+  /* ── Pillars ──────────────────────────────────────────────────────── */
+  .pillars { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+  .pillar { border-radius: 18px; padding: 34px; position: relative; overflow: hidden; }
+  .pillar.dark { background: var(--ink); color: #fff; }
+  .pillar.light { background: var(--off-white); border: 1px solid var(--border-light); }
+  .pillar-body { position: relative; z-index: 1; }
+  .pillar-glow { position: absolute; width: 180px; height: 180px; filter: blur(10px); }
+  .glow-violet { top: -40px; right: -40px; background: radial-gradient(circle, rgba(124, 92, 255, 0.4), transparent 70%); }
+  .glow-cyan { background: radial-gradient(circle, rgba(34, 211, 238, 0.35), transparent 70%); }
+  .glow-bl { bottom: -40px; left: -40px; }
+  .pillar-eyebrow { font-size: 13px; font-weight: 700; letter-spacing: 0.05em; margin-bottom: 14px; }
+  .pillar-eyebrow.lime { color: var(--lime); }
+  .pillar-eyebrow.violet { color: var(--violet); }
+  .pillar-eyebrow.cyan { color: var(--cyan); }
+  .h3.ink { color: var(--ink); }
+  .pillar-text { font-size: 15.5px; line-height: 1.6; color: var(--text-dark-body); margin: 0 0 22px; }
+  .pillar-text.light { color: var(--text-light-body); margin-bottom: 20px; }
+  .mini-code {
+    background: #0a0a12;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 16px;
+    font-size: 12.5px;
+    line-height: 1.7;
+    margin: 0;
+    overflow-x: auto;
+    white-space: pre;
+  }
+  .mini-code .kw { color: #ff7b9c; }
+  .mini-code .fn { color: #b89cff; }
+  .mini-code .st { color: #9ee493; }
+  .mini-code .pn { color: #717184; }
+  .mini-code .cm { color: #717184; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--ink);
+    background: #fff;
+    border: 1px solid var(--border-light);
+    padding: 6px 11px;
+    border-radius: 8px;
+  }
+  .accuracy-stat { margin-top: 22px; display: flex; align-items: center; gap: 14px; }
+  .big-8 { font-family: var(--font-display); font-weight: 700; font-size: 40px; color: var(--ink); letter-spacing: -0.03em; }
+  .big-8-sub { font-size: 13.5px; color: var(--text-light-muted); line-height: 1.4; }
+  .perf-mini { display: flex; gap: 28px; }
+  .perf-n { font-family: var(--font-display); font-weight: 700; font-size: 32px; color: var(--lime); }
+  .perf-l { font-size: 13px; color: var(--text-dark-muted-2); }
+  @media (max-width: 820px) {
+    .pillars { grid-template-columns: 1fr; }
+  }
+
+  /* ── Try it live ──────────────────────────────────────────────────── */
+  .try { position: relative; }
+  .try-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(90% 80% at 50% 0%, rgba(124, 92, 255, 0.18), transparent 60%);
+  }
+  .try .wrap { z-index: 1; }
+
+  /* ── What you get ─────────────────────────────────────────────────── */
+  .fields {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 14px;
+  }
+  .field-chip { background: #fff; border: 1px solid var(--border-light); border-radius: 12px; padding: 18px; }
+  .field-k { font-size: 12px; color: var(--text-light-faint); margin-bottom: 5px; }
+  .field-v { font-family: var(--font-display); font-weight: 700; font-size: 17px; }
+  .field-v.hi { color: var(--violet); }
+
+  /* ── Two-column sections ──────────────────────────────────────────── */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: center; }
+  .two-col-start { align-items: start; }
+  @media (max-width: 900px) {
+    .two-col { grid-template-columns: 1fr; gap: 36px; }
+  }
+  .psp-h2, .dev-h2, .how-h2 { margin-top: 16px; }
+
+  /* ── PSP ──────────────────────────────────────────────────────────── */
+  .psp { position: relative; }
+  .psp-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(80% 70% at 90% 20%, rgba(124, 92, 255, 0.22), transparent 55%);
+  }
+  .psp .wrap { z-index: 1; }
+  .psp-cards { display: flex; flex-direction: column; gap: 12px; }
+  .psp-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 20px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .psp-arrow { font-family: var(--font-display); font-weight: 700; font-size: 15px; }
+  .psp-arrow.violet { color: var(--violet); }
+  .psp-arrow.cyan { color: var(--cyan); }
+  .psp-card-t { font-weight: 700; font-size: 16px; margin-bottom: 3px; color: #fff; }
+  .psp-card-d { font-size: 14px; color: var(--text-dark-muted); }
+
+  /* ── Use cases ────────────────────────────────────────────────────── */
+  .usecases-h2 { max-width: 560px; margin-bottom: 40px; }
+  .usecases { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+  .usecase { border: 1px solid var(--border-light); border-radius: 14px; padding: 24px; transition: border-color 0.15s ease; }
+  .usecase:hover { border-color: var(--violet); }
+  .usecase-t { font-family: var(--font-display); font-weight: 700; font-size: 18px; margin-bottom: 6px; }
+  .usecase-d { font-size: 14.5px; color: var(--text-light-body); line-height: 1.55; }
+
+  /* ── How it works ─────────────────────────────────────────────────── */
+  .steps { display: flex; flex-direction: column; gap: 22px; margin-top: 32px; }
+  .step { display: flex; gap: 16px; align-items: flex-start; }
+  .step-num {
+    flex: none;
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .step-num.violet { background: rgba(124, 92, 255, 0.16); border: 1px solid rgba(124, 92, 255, 0.4); color: var(--violet-light); }
+  .step-num.cyan { background: rgba(34, 211, 238, 0.16); border: 1px solid rgba(34, 211, 238, 0.4); color: var(--cyan); }
+  .step-t { font-weight: 700; font-size: 18px; color: #fff; }
+  .step-d { font-size: 15px; color: var(--text-dark-muted); margin-top: 2px; }
+
+  /* ── Performance band ─────────────────────────────────────────────── */
+  .perf-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 28px; text-align: center; }
+  .perf-stat-num { color: #fff; }
+  .perf-stat-l { font-size: 14px; color: rgba(255, 255, 255, 0.8); font-weight: 500; }
+  .perf-foot { text-align: center; margin: 30px 0 0; font-size: 14px; color: rgba(255, 255, 255, 0.85); font-weight: 500; letter-spacing: 0.02em; }
+
+  /* ── Pricing preview ──────────────────────────────────────────────── */
+  .price4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; align-items: stretch; }
+  .price-card {
+    background: #fff;
+    border: 1px solid var(--border-light);
+    border-radius: 16px;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  .price-card.dark {
+    background: var(--ink);
+    color: #fff;
+    border-color: transparent;
+    box-shadow: var(--shadow-popular);
+  }
+  .popular-badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--lime);
+    color: var(--ink);
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 5px 12px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .price-name { font-family: var(--font-display); font-weight: 700; font-size: 18px; }
+  .price-aud { font-size: 13.5px; color: var(--text-light-muted); margin: 4px 0 16px; }
+  .price-card.dark .price-aud { color: var(--text-dark-muted); }
+  .price-amt { font-family: var(--font-display); font-weight: 700; font-size: 38px; letter-spacing: -0.03em; }
+  .price-per { font-size: 15px; color: var(--text-light-faint); font-weight: 600; }
+  .price-card.dark .price-per { color: var(--text-dark-muted); }
+  .price-meta { font-size: 13px; color: var(--text-light-faint); margin-bottom: 18px; }
+  .price-card.dark .price-meta { color: var(--text-dark-muted-2); }
+  .price-cta {
+    margin-top: auto;
+    text-decoration: none;
+    text-align: center;
+    font-weight: 600;
+    font-size: 14.5px;
+    padding: 12px;
+    border-radius: 10px;
+    transition: transform 0.15s ease, filter 0.15s ease;
+  }
+  .price-cta:hover { transform: translateY(-1px); }
+  .price-cta.soft { color: var(--ink); background: var(--surface-light); border: 1px solid var(--border-light); }
+  .price-cta.lime { color: var(--ink); background: var(--lime); }
+  .price-cta.dark { color: #fff; background: var(--ink); }
+  .price-compare { text-align: center; margin-top: 24px; }
+  .price-compare a { font-size: 15px; font-weight: 600; color: var(--violet); text-decoration: none; }
+  @media (max-width: 1040px) { .price4 { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) { .price4 { grid-template-columns: 1fr; } }
+
+  /* ── Compliance ───────────────────────────────────────────────────── */
+  .compliance-band { padding: clamp(48px, 6vw, 80px) 0; }
+  .compliance {
+    background: var(--off-white);
+    border: 1px solid var(--border-light);
+    border-radius: 20px;
+    padding: clamp(28px, 4vw, 48px);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 28px;
+  }
+  .compliance-item { display: flex; flex-direction: column; gap: 6px; }
+  .compliance-t { font-family: var(--font-display); font-weight: 700; font-size: 18px; color: var(--violet); }
+  .compliance-d { font-size: 14px; color: var(--text-light-body); line-height: 1.5; }
+
+  /* ── Dev / docs CTA ───────────────────────────────────────────────── */
+  .dev { position: relative; }
+  .dev-grid-bg {
+    position: absolute;
+    inset: 0;
+    opacity: 0.5;
+    pointer-events: none;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+  .dev .wrap { z-index: 1; }
+  .dev-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .dev-card {
+    text-decoration: none;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 13px;
+    padding: 20px;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+  }
+  .dev-card:hover { border-color: rgba(34, 211, 238, 0.5); transform: translateY(-2px); }
+  .dev-token { font-size: 13px; color: var(--cyan); margin-bottom: 8px; }
+  .dev-card-t { font-weight: 700; font-size: 15.5px; color: #fff; }
+  .dev-card-d { font-size: 13px; color: var(--text-dark-muted); }
+
+  /* ── Final CTA ────────────────────────────────────────────────────── */
+  .final {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(125deg, #0b0b12 0%, #241a52 45%, #3b82f6 130%);
+  }
+  .final-blob {
+    position: absolute;
+    top: -100px;
+    left: 30%;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(124, 92, 255, 0.5), transparent 65%);
+    filter: blur(30px);
+    pointer-events: none;
+  }
+  .final-wrap {
+    padding-top: clamp(72px, 10vw, 128px);
+    padding-bottom: clamp(72px, 10vw, 128px);
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+  .final-h2 { color: #fff; margin-bottom: 22px; }
+  .final-lead {
+    font-size: 18px;
+    line-height: 1.6;
+    color: #c7c7d6;
+    margin: 0 auto 34px;
+    max-width: 520px;
+  }
+  .final-cta { justify-content: center; }
+</style>
+
+<script>
+  // Stat counters — ease-out cubic over 1.5s, fired when scrolled into view.
+  const counters = Array.from(document.querySelectorAll<HTMLElement>("[data-count]"));
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const run = (el: HTMLElement) => {
+    const target = parseFloat(el.dataset.count || "0");
+    const decimals = parseInt(el.dataset.decimals || "0", 10);
+    const suffix = el.dataset.suffix ?? "";
+    if (reduce) {
+      el.textContent = target.toFixed(decimals) + suffix;
+      return;
+    }
+    const dur = 1500;
+    let start: number | null = null;
+    const tick = (now: number) => {
+      if (start === null) start = now;
+      const t = Math.min(1, (now - start) / dur);
+      const e = 1 - Math.pow(1 - t, 3);
+      el.textContent = (target * e).toFixed(decimals) + suffix;
+      if (t < 1) requestAnimationFrame(tick);
+      else el.textContent = target.toFixed(decimals) + suffix;
+    };
+    requestAnimationFrame(tick);
+  };
+
+  if (counters.length) {
+    if (!("IntersectionObserver" in window)) {
+      counters.forEach(run);
+    } else {
+      const io = new IntersectionObserver(
+        (entries, obs) => {
+          for (const e of entries) {
+            if (e.isIntersecting) {
+              run(e.target as HTMLElement);
+              obs.unobserve(e.target);
+            }
+          }
+        },
+        { threshold: 0.4 },
+      );
+      counters.forEach((c) => io.observe(c));
+    }
+  }
+</script>

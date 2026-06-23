@@ -1,0 +1,50 @@
+---
+/**
+ * Uppercase eyebrow label. Default Inter; pass mono for the JetBrains-Mono
+ * variant used on Docs (`// docs`). Dot color via the `dot` prop.
+ */
+interface Props {
+  label: string;
+  tone?: "lime" | "violet" | "cyan" | "muted";
+  mono?: boolean;
+  dot?: boolean;
+  class?: string;
+}
+const { label, tone = "violet", mono = false, dot = false, class: className } = Astro.props;
+---
+
+<p class:list={["eyebrow", tone, mono && "mono", className]}>
+  {dot && <span class="dot" aria-hidden="true"></span>}{label}
+</p>
+
+<style>
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin: 0;
+  }
+  .eyebrow.mono {
+    font-family: var(--font-mono);
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .eyebrow.violet { color: var(--violet); }
+  .eyebrow.lime { color: var(--lime); }
+  .eyebrow.cyan { color: var(--cyan); }
+  .eyebrow.muted { color: var(--text-dark-faint); }
+
+  .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex: none;
+  }
+  .eyebrow.lime .dot { background: var(--lime); box-shadow: 0 0 8px rgba(196, 245, 66, 0.7); }
+  .eyebrow.violet .dot { background: var(--violet); box-shadow: 0 0 8px rgba(124, 92, 255, 0.7); }
+  .eyebrow.cyan .dot { background: var(--cyan); box-shadow: 0 0 8px var(--cyan); }
+</style>

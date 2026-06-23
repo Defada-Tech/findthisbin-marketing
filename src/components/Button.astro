@@ -1,0 +1,95 @@
+---
+/**
+ * CTA link with the design's button variants:
+ *  - primary       : lime fill + ink label + glow (the "Get your free API key" CTA)
+ *  - ghost-dark     : translucent ghost on dark bands, white label ("Talk to sales")
+ *  - ghost-light    : ghost on light bands, ink label/border
+ *  - white          : white fill + ink label (on signature-gradient panels)
+ * Keep CTA labels identical everywhere they appear (see src/lib/site.ts).
+ */
+interface Props {
+  href: string;
+  label: string;
+  variant?: "primary" | "ghost-dark" | "ghost-light" | "white";
+  arrow?: boolean;
+  size?: "md" | "lg";
+  class?: string;
+  rel?: string;
+  target?: string;
+}
+const {
+  href,
+  label,
+  variant = "primary",
+  arrow = false,
+  size = "md",
+  class: className,
+  rel,
+  target,
+} = Astro.props;
+---
+
+<a href={href} rel={rel} target={target} class:list={["btn", variant, size, className]}>
+  {label}{arrow && <span class="arrow" aria-hidden="true">→</span>}
+</a>
+
+<style>
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 11px;
+    font-weight: 600;
+    font-size: 15px;
+    text-decoration: none;
+    cursor: pointer;
+    white-space: nowrap;
+    border: 1px solid transparent;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease,
+      border-color 0.15s ease, filter 0.15s ease;
+  }
+  .md { padding: 12px 20px; }
+  .lg { padding: 14px 26px; font-size: 16px; }
+  .arrow { font-size: 1.05em; }
+
+  .primary {
+    background: var(--lime);
+    color: var(--ink);
+    box-shadow: 0 0 0 1px rgba(196, 245, 66, 0.4), 0 12px 36px -10px rgba(196, 245, 66, 0.6);
+  }
+  .primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 0 0 1px rgba(196, 245, 66, 0.6), 0 16px 40px -10px rgba(196, 245, 66, 0.7);
+  }
+
+  .ghost-dark {
+    background: rgba(255, 255, 255, 0.04);
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.18);
+  }
+  .ghost-dark:hover {
+    background: rgba(255, 255, 255, 0.09);
+    border-color: rgba(255, 255, 255, 0.32);
+    transform: translateY(-1px);
+  }
+
+  .ghost-light {
+    background: var(--white);
+    color: var(--ink);
+    border-color: var(--border-light);
+  }
+  .ghost-light:hover {
+    border-color: var(--violet);
+    transform: translateY(-1px);
+  }
+
+  .white {
+    background: #fff;
+    color: var(--ink);
+  }
+  .white:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 30px -12px rgba(0, 0, 0, 0.5);
+  }
+</style>

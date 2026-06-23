@@ -1,0 +1,154 @@
+---
+/**
+ * Hero "live" demo panel: the canonical BIN response, each line fading up
+ * staggered (ftbUp + increasing delay) with a blinking lime caret on the close
+ * brace. Scheme-coverage strip uses plain text (no trademarked logos).
+ */
+const schemes = ["VISA", "Mastercard", "AMEX", "Discover", "JCB", "UnionPay"];
+// JSON body lines (token-colored), in order, with stagger delays 0.05s → 0.72s.
+---
+
+<div class="demo">
+  <div class="glow-border">
+    <div class="panel">
+      <div class="head">
+        <span class="lights" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span class="head-label mono">findthisbin · live</span>
+      </div>
+
+      <div class="req mono">
+        <span class="verb">GET</span>
+        <span class="url">https://api.findthisbin.com/v1/bins/<span class="bin">53847012</span></span>
+      </div>
+
+      <pre class="body mono" aria-label="Example API response"><code>{
+<span class="ln" style="animation-delay:.05s"><span class="k">"bin"</span><span class="p">:</span> <span class="s">"53847012"</span><span class="p">,</span></span>
+<span class="ln" style="animation-delay:.10s"><span class="k">"scheme"</span><span class="p">:</span> <span class="s">"mastercard"</span><span class="p">,</span></span>
+<span class="ln" style="animation-delay:.16s"><span class="k">"type"</span><span class="p">:</span> <span class="s">"credit"</span><span class="p">,</span></span>
+<span class="ln" style="animation-delay:.22s"><span class="k">"category"</span><span class="p">:</span> <span class="s">"consumer"</span><span class="p">,</span></span>
+<span class="ln" style="animation-delay:.28s"><span class="k">"product"</span><span class="p">:</span> <span class="s">"World Elite Mastercard"</span><span class="p">,</span></span>
+<span class="ln" style="animation-delay:.36s"><span class="k">"issuer"</span><span class="p">:</span> <span class="p">{</span> <span class="k">"name"</span><span class="p">:</span> <span class="s">"Revolut Ltd"</span><span class="p">,</span> <span class="k">"country"</span><span class="p">:</span> <span class="s">"GB"</span><span class="p">,</span> <span class="k">"currency"</span><span class="p">:</span> <span class="s">"GBP"</span> <span class="p">}</span><span class="p">,</span></span>
+<span class="ln" style="animation-delay:.46s"><span class="k">"flags"</span><span class="p">:</span> <span class="p">{</span> <span class="k">"prepaid"</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span> <span class="k">"commercial"</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span> <span class="k">"regulated_debit"</span><span class="p">:</span> <span class="n">false</span> <span class="p">}</span><span class="p">,</span></span>
+<span class="ln" style="animation-delay:.56s"><span class="k">"dcc_eligible"</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span></span>
+<span class="ln" style="animation-delay:.64s"><span class="k">"confidence"</span><span class="p">:</span> <span class="n">0.98</span><span class="p">,</span></span>
+<span class="ln" style="animation-delay:.72s"><span class="k">"dataset_version"</span><span class="p">:</span> <span class="s">"2026-06-12"</span></span>
+}<span class="caret" aria-hidden="true"></span></code></pre>
+
+      <div class="schemes">
+        <span class="schemes-label">Coverage across every major scheme</span>
+        <div class="scheme-row">
+          {schemes.map((s) => <span class="scheme mono">{s}</span>)}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .demo { position: relative; z-index: 1; }
+  .glow-border {
+    border-radius: 18px;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(124, 92, 255, 0.7), rgba(34, 211, 238, 0.4), transparent 70%);
+    box-shadow: var(--shadow-panel);
+  }
+  .panel {
+    background: var(--ink-2);
+    border-radius: 17px;
+    overflow: hidden;
+  }
+  .head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: var(--ink-soft);
+    border-bottom: 1px solid var(--border-dark);
+  }
+  .lights { display: inline-flex; gap: 6px; }
+  .lights span { width: 11px; height: 11px; border-radius: 50%; }
+  .lights span:nth-child(1) { background: #ff5f57; }
+  .lights span:nth-child(2) { background: #febc2e; }
+  .lights span:nth-child(3) { background: #28c840; }
+  .head-label { font-size: 12.5px; color: var(--text-dark-muted); }
+
+  .req {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 14px 18px;
+    font-size: 13px;
+    border-bottom: 1px solid var(--border-dark);
+    color: var(--text-dark-body);
+    word-break: break-all;
+  }
+  .verb {
+    font-weight: 700;
+    color: var(--ink);
+    background: var(--lime);
+    padding: 2px 9px;
+    border-radius: 6px;
+    font-size: 12px;
+  }
+  .bin { color: var(--cyan); }
+
+  .body {
+    margin: 0;
+    padding: 18px;
+    font-size: 12.5px;
+    line-height: 1.8;
+    color: #e6e6f0;
+    overflow-x: auto;
+    white-space: pre;
+  }
+  .body .ln {
+    display: inline-block;
+    width: 100%;
+    padding-left: 1.4em;
+    animation: ftbUp 0.4s ease both;
+  }
+  .k { color: #7dd3fc; }
+  .s { color: #9ee493; }
+  .n { color: #c4a5ff; }
+  .p { color: #717184; }
+  .caret {
+    display: inline-block;
+    width: 8px;
+    height: 1.05em;
+    margin-left: 4px;
+    vertical-align: text-bottom;
+    background: var(--lime);
+    animation: ftbBlink 1s step-end infinite;
+  }
+
+  .schemes {
+    padding: 16px 18px 18px;
+    border-top: 1px solid var(--border-dark);
+  }
+  .schemes-label {
+    display: block;
+    font-size: 11.5px;
+    color: var(--text-dark-faint);
+    margin-bottom: 10px;
+  }
+  .scheme-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: center;
+  }
+  .scheme {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: #c9c9d6;
+    filter: grayscale(1);
+    opacity: 0.62;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .body .ln { animation: none; }
+    .caret { animation: none; }
+  }
+</style>

@@ -1,0 +1,53 @@
+---
+/**
+ * Brand lockup: the FindThisBIN icon mark (card + scan brackets, from
+ * logo_design_files/) followed by the wordmark — "FindThis" white + "BIN" cyan.
+ */
+interface Props {
+  size?: number;
+  class?: string;
+}
+const { size = 26, class: className } = Astro.props;
+---
+
+<a href="/" class:list={["wordmark", className]} aria-label="FindThisBIN — home">
+  <svg
+    class="mark"
+    width={size}
+    height={size}
+    viewBox="0 0 48 48"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    aria-hidden="true"
+  >
+    <rect width="48" height="48" rx="11" fill="#16121F"></rect>
+    <rect x="8" y="14" width="32" height="20" rx="5" fill="#7C5CFF"></rect>
+    <g stroke="#C4F542" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none">
+      <path d="M11 24 V20 H15"></path>
+      <path d="M33 20 H37 V24"></path>
+      <path d="M11 28 V32 H15"></path>
+      <path d="M33 32 H37 V28"></path>
+    </g>
+  </svg>
+  <span class="text"><span class="find">FindThis</span><span class="bin">BIN</span></span>
+</a>
+
+<style>
+  .wordmark {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    text-decoration: none;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 21px;
+    letter-spacing: -0.02em;
+    flex: none;
+  }
+  .mark {
+    flex: none;
+    border-radius: 7px;
+  }
+  .find { color: #ffffff; }
+  .bin { color: var(--cyan); }
+</style>
