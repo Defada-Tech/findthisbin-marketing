@@ -85,15 +85,26 @@ curl -sI  $BASE/sitemap-index.xml # 200
 
 ```bash
 export CLOUDFLARE_API_TOKEN=...      # scoped token — NEVER commit it / never in tfvars
+export AWS_ACCESS_KEY_ID=...         # B2 keyID         } remote-state creds (env only)
+export AWS_SECRET_ACCESS_KEY=...     # B2 applicationKey }
 cd infra
 cp terraform.tfvars.example terraform.tfvars
 #   cloudflare_account_id = "..."     (from step 0)
 #   cloudflare_zone_id    = "..."
 #   domain                = "findthisbin.com"
-tofu init
+cp backend.hcl.example backend.hcl   # fill in B2 bucket / region / endpoint
+tofu init -backend-config=backend.hcl   # configures the Backblaze B2 remote state
 tofu plan          # review — confirm resource/attribute names match your provider version
 tofu apply
 ```
+
+> **Remote state lives in Backblaze B2** (S3-compatible), configured via the
+> `backend "s3"` block in `main.tf` plus the gitignored `backend.hcl`. State
+> credentials are a **B2 application key** passed as `AWS_ACCESS_KEY_ID` (keyID) /
+> `AWS_SECRET_ACCESS_KEY` (applicationKey) — env only, never in a file. Locking is
+> off: B2's S3 API doesn't support the conditional write `use_lockfile` needs
+> ([hashicorp/terraform#37143](https://github.com/hashicorp/terraform/issues/37143)),
+> which is fine for a single operator — coordinate manually before concurrent applies.
 
 **API-token scopes** (least privilege) for the token in `CLOUDFLARE_API_TOKEN`:
 - Account → **Workers Scripts: Edit** (attach custom domain to the Worker)
