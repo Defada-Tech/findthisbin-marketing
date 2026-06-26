@@ -1,0 +1,15 @@
+# Copy to backend.hcl (gitignored), then init with:
+#     cd infra && tofu init -backend-config=backend.hcl
+#
+# This is the partial backend config for the Backblaze B2 (S3-compatible) remote
+# state — the non-secret "where" only. The static B2-vs-AWS compatibility flags
+# (skip_*/use_*) live in the backend block in versions.tf. Credentials come from
+# the AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY env vars (the B2 keyID /
+# applicationKey) — never put them here.
+bucket = "scaled-tfstates"                          # your B2 bucket name
+key    = "findthisbin-marketing/terraform.tfstate"  # path of the state object inside the bucket
+region = "eu-central-003"                            # your B2 bucket region
+
+endpoints = {
+  s3 = "https://s3.eu-central-003.backblazeb2.com" # https://s3.<region>.backblazeb2.com
+}

@@ -24,20 +24,12 @@
 #   export AWS_ACCESS_KEY_ID=...         # B2 keyID        (remote-state creds)
 #   export AWS_SECRET_ACCESS_KEY=...     # B2 applicationKey
 #   cd infra
-#   cp backend.hcl.example backend.hcl   # then fill in bucket / region / endpoint
+#   cp backend.hcl.example backend.hcl   # then adjust bucket / key / region / endpoint
 #   tofu init -backend-config=backend.hcl && tofu plan && tofu apply
 #   (terraform works identically — swap `tofu` for `terraform`.)
-#   See the `backend "s3"` block below for the Backblaze B2 remote-state setup.
-
-terraform {
-  required_version = ">= 1.6"
-  required_providers {
-    cloudflare = {
-      source  = "cloudflare/cloudflare"
-      version = "~> 5"
-    }
-  }
-}
+#
+# Version pins and the remote-state backend live in versions.tf; the backend's
+# bucket/key/region/endpoint come from backend.hcl at init time.
 
 # Token supplied via CLOUDFLARE_API_TOKEN env var (kept out of state).
 provider "cloudflare" {}

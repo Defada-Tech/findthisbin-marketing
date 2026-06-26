@@ -20,6 +20,8 @@ infra/*.tfstate
 infra/*.tfstate.*
 infra/*.tfvars
 !infra/*.tfvars.example
+infra/backend.hcl
+!infra/backend.hcl.example
 # .terraform.lock.hcl IS committed (pins provider versions) — do not ignore.
 
 # logs / os
