@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  html{ scroll-behavior:smooth; }
+  body{ margin:0; background:#0B0B12; }
+  *{ box-sizing:border-box; }
+  @keyframes ftbGrad{ 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+  .ftb-2col{ display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:start; }
+  @media (max-width: 900px){ .ftb-2col{ grid-template-columns:1fr; gap:32px; } }
+  .ftb-4col{ display:grid; grid-template-columns:repeat(4,1fr); gap:18px; }
+  @media (max-width: 880px){ .ftb-4col{ grid-template-columns:1fr 1fr; } }
+  @media (max-width: 520px){ .ftb-4col{ grid-template-columns:1fr; } }
+  .ftb-rolerow{ display:flex; align-items:center; justify-content:space-between; gap:16px; }
+  @media (max-width: 560px){ .ftb-rolerow{ flex-direction:column; align-items:flex-start; gap:10px; } }
+</style>
+</helmet>
+<div style="fontFamily:'IBM Plex Sans',sans-serif; background:#0B0B12; color:#fff; overflow-x:hidden;">
+  <dc-import name="Nav" active="company" hint-size="100%,68px"></dc-import>
+
+  <!-- HERO -->
+  <section style="position:relative; overflow:hidden;">
+    <div style="position:absolute; inset:0; background:radial-gradient(110% 80% at 70% -10%, rgba(124,92,255,0.26), transparent 55%), radial-gradient(60% 60% at 8% 10%, rgba(34,211,238,0.13), transparent 52%); pointer-events:none;"></div>
+    <div style="max-width:1000px; margin:0 auto; padding:clamp(56px,8vw,104px) 24px clamp(48px,6vw,72px); position:relative;">
+      <div style="display:inline-flex; align-items:center; gap:9px; padding:7px 14px; border-radius:999px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); margin-bottom:24px;">
+        <span style="width:7px; height:7px; border-radius:50%; background:#C4F542; box-shadow:0 0 10px #C4F542;"></span>
+        <span style="fontSize:13px; fontWeight:600; color:#D7D7E2;">Company</span>
+      </div>
+      <h1 style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:clamp(36px,5.6vw,66px); lineHeight:1.02; letterSpacing:-0.03em; margin:0 0 22px; max-width:820px;">Building the trust layer for <span style="background:linear-gradient(100deg,#A98BFF,#22D3EE); -webkit-background-clip:text; background-clip:text; color:transparent;">payments.</span></h1>
+      <p style="fontSize:clamp(17px,1.9vw,21px); lineHeight:1.55; color:#A9A9BC; margin:0; max-width:640px;">FindThisBIN exists to give payment platforms card intelligence they can underwrite — accurate, fast, and EU-resident by default.</p>
+    </div>
+  </section>
+
+  <!-- MISSION / STORY -->
+  <section style="background:#FFFFFF; color:#0B0B12;">
+    <div style="max-width:1000px; margin:0 auto; padding:clamp(56px,7vw,100px) 24px;">
+      <div class="ftb-2col">
+        <div>
+          <div style="fontSize:13px; fontWeight:700; letterSpacing:0.08em; textTransform:uppercase; color:#7C5CFF; margin-bottom:14px;">Why we exist</div>
+          <h2 style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:clamp(26px,3.4vw,38px); lineHeight:1.08; letterSpacing:-0.025em; margin:0;">BIN data was stuck in the 6-digit era. Payments moved on.</h2>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:18px;">
+          <p style="margin:0; fontSize:16.5px; line-height:1.7; color:#5A5A6B;">As card ranges migrated to 8 digits and EU regulation reshaped disclosure and DCC, the legacy BIN tables most providers still ship quietly fell out of date — mislabeling prepaid and commercial cards, guessing at issuer country, and ignoring residency entirely.</p>
+          <p style="margin:0; fontSize:16.5px; line-height:1.7; color:#5A5A6B;">We started FindThisBIN to fix that from first principles: true 8-digit precision, multi-source corrections, per-field confidence, and a sub-10ms API hosted entirely in the EU — built by people who have shipped payments infrastructure and know what a checkout hot path demands.</p>
+          <p style="margin:0; fontSize:16.5px; line-height:1.7; color:#5A5A6B;">Today that data powers routing, surcharging, DCC, checkout UX, and risk for modern payment platforms across the continent.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRINCIPLES -->
+  <section style="background:#F6F6FB; color:#0B0B12;">
+    <div style="max-width:1180px; margin:0 auto; padding:clamp(56px,7vw,100px) 24px;">
+      <div style="max-width:640px; margin-bottom:44px;">
+        <div style="fontSize:13px; fontWeight:700; letterSpacing:0.08em; textTransform:uppercase; color:#7C5CFF; margin-bottom:14px;">What we value</div>
+        <h2 style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:clamp(28px,4vw,46px); lineHeight:1.05; letterSpacing:-0.025em; margin:0;">Principles we build on.</h2>
+      </div>
+      <div class="ftb-4col">
+        <div style="background:#fff; border:1px solid #E6E6EF; border-radius:16px; padding:26px;">
+          <div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:30px; color:#7C5CFF; letterSpacing:-0.02em; margin-bottom:14px;">01</div>
+          <h3 style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:18px; margin:0 0 8px;">Precision over guesswork</h3>
+          <p style="fontSize:14px; line-height:1.6; color:#5A5A6B; margin:0;">If we’re not sure, we say so — with a confidence score on every field.</p>
+        </div>
+        <div style="background:#fff; border:1px solid #E6E6EF; border-radius:16px; padding:26px;">
+          <div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:30px; color:#7C5CFF; letterSpacing:-0.02em; margin-bottom:14px;">02</div>
+          <h3 style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:18px; margin:0 0 8px;">Developer-first</h3>
+          <p style="fontSize:14px; line-height:1.6; color:#5A5A6B; margin:0;">Great docs, clean SDKs, and a free tier. The integration should be the easy part.</p>
+        </div>
+        <div style="background:#fff; border:1px solid #E6E6EF; border-radius:16px; padding:26px;">
+          <div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:30px; color:#7C5CFF; letterSpacing:-0.02em; margin-bottom:14px;">03</div>
+          <h3 style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:18px; margin:0 0 8px;">EU-resident by default</h3>
+          <p style="fontSize:14px; line-height:1.6; color:#5A5A6B; margin:0;">Data hosted and processed in the EU — residency isn’t an upsell.</p>
+        </div>
+        <div style="background:#fff; border:1px solid #E6E6EF; border-radius:16px; padding:26px;">
+          <div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:30px; color:#7C5CFF; letterSpacing:-0.02em; margin-bottom:14px;">04</div>
+          <h3 style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:18px; margin:0 0 8px;">Out of PCI scope</h3>
+          <p style="fontSize:14px; line-height:1.6; color:#5A5A6B; margin:0;">We only ever touch the BIN — never a full card number, by design.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS BAND -->
+  <section style="position:relative; overflow:hidden; background:linear-gradient(115deg,#7C5CFF,#6366F1 45%,#3B82F6); background-size:200% 200%; animation:ftbGrad 14s ease infinite;">
+    <div style="max-width:1180px; margin:0 auto; padding:clamp(48px,6vw,84px) 24px;">
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:28px; text-align:center;">
+        <div><div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:clamp(30px,4.6vw,48px); color:#fff; letterSpacing:-0.03em;">EU</div><div style="fontSize:14px; color:rgba(255,255,255,0.82);">data residency</div></div>
+        <div><div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:clamp(30px,4.6vw,48px); color:#fff; letterSpacing:-0.03em;">242</div><div style="fontSize:14px; color:rgba(255,255,255,0.82);">countries covered</div></div>
+        <div><div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:clamp(30px,4.6vw,48px); color:#fff; letterSpacing:-0.03em;">6.2M</div><div style="fontSize:14px; color:rgba(255,255,255,0.82);">BINs in the dataset</div></div>
+        <div><div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:clamp(30px,4.6vw,48px); color:#fff; letterSpacing:-0.03em;">99.9%</div><div style="fontSize:14px; color:rgba(255,255,255,0.82);">uptime</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CAREERS -->
+  <section id="careers" style="background:#0B0B12; color:#fff;">
+    <div style="max-width:1000px; margin:0 auto; padding:clamp(56px,7vw,100px) 24px;">
+      <div style="max-width:620px; margin-bottom:36px;">
+        <div style="fontSize:13px; fontWeight:700; letterSpacing:0.08em; textTransform:uppercase; color:#22D3EE; margin-bottom:14px;">Careers</div>
+        <h2 style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:clamp(28px,4vw,46px); lineHeight:1.05; letterSpacing:-0.025em; margin:0 0 14px;">Come build payments infrastructure.</h2>
+        <p style="fontSize:16.5px; line-height:1.6; color:#A9A9BC; margin:0;">We’re a small, senior team based in the EU, working on data and APIs that thousands of transactions depend on every minute.</p>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:32px;">
+        <div class="ftb-rolerow" style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:20px 24px;">
+          <div><div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:17px;">Senior Data Engineer — BIN Pipeline</div><div style="fontSize:13.5px; color:#9A9AAE; margin-top:3px;">Remote (EU) · Full-time</div></div>
+          <a href="Company.dc.html#" style="text-decoration:none; flex:none; fontWeight:600; fontSize:14px; color:#22D3EE;">View role →</a>
+        </div>
+        <div class="ftb-rolerow" style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:20px 24px;">
+          <div><div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:17px;">Backend Engineer — Low-latency API</div><div style="fontSize:13.5px; color:#9A9AAE; margin-top:3px;">Remote (EU) · Full-time</div></div>
+          <a href="Company.dc.html#" style="text-decoration:none; flex:none; fontWeight:600; fontSize:14px; color:#22D3EE;">View role →</a>
+        </div>
+        <div class="ftb-rolerow" style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:20px 24px;">
+          <div><div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:17px;">Developer Advocate — Payments</div><div style="fontSize:13.5px; color:#9A9AAE; margin-top:3px;">Remote (EU) · Full-time</div></div>
+          <a href="Company.dc.html#" style="text-decoration:none; flex:none; fontWeight:600; fontSize:14px; color:#22D3EE;">View role →</a>
+        </div>
+      </div>
+      <a href="Contact.dc.html?intent=sales" style="text-decoration:none; fontWeight:600; fontSize:15px; color:#0B0B12; background:#C4F542; padding:13px 24px; border-radius:11px; display:inline-block;">Get in touch</a>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section style="position:relative; overflow:hidden; background:linear-gradient(125deg,#0B0B12 0%,#241a52 50%,#3B82F6 135%);">
+    <div style="position:absolute; top:-100px; left:34%; width:480px; height:480px; border-radius:50%; background:radial-gradient(circle,rgba(124,92,255,0.5),transparent 65%); filter:blur(30px); pointer-events:none;"></div>
+    <div style="max-width:820px; margin:0 auto; padding:clamp(64px,9vw,112px) 24px; position:relative; text-align:center;">
+      <h2 style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:clamp(32px,5vw,56px); lineHeight:1.04; letterSpacing:-0.03em; margin:0 0 26px; color:#fff;">Build on card intelligence you can trust.</h2>
+      <div style="display:flex; flex-wrap:wrap; gap:14px; justify-content:center;">
+        <a href="Contact.dc.html?intent=api-key" style="text-decoration:none; fontWeight:600; fontSize:16px; color:#0B0B12; background:#C4F542; padding:16px 30px; border-radius:12px; boxShadow:0 14px 40px -10px rgba(196,245,66,0.6);">Get your free API key</a>
+        <a href="Contact.dc.html?intent=sales" style="text-decoration:none; fontWeight:600; fontSize:16px; color:#fff; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); padding:16px 30px; border-radius:12px;">Talk to sales</a>
+      </div>
+    </div>
+  </section>
+
+  <dc-import name="Footer" hint-size="100%,420px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:900}}"></script>
+</body>
+</html>

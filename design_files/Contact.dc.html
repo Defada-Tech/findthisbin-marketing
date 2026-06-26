@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  html{ scroll-behavior:smooth; }
+  body{ margin:0; background:#0B0B12; }
+  *{ box-sizing:border-box; }
+  .ftb-contactgrid{ display:grid; grid-template-columns:0.85fr 1fr; gap:48px; align-items:start; }
+  @media (max-width: 940px){ .ftb-contactgrid{ grid-template-columns:1fr; gap:36px; } }
+  .ftb-namegrid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media (max-width: 520px){ .ftb-namegrid{ grid-template-columns:1fr; } }
+  .ftb-field:focus{ border-color:#7C5CFF !important; box-shadow:0 0 0 3px rgba(124,92,255,0.18) !important; }
+  .ftb-field::placeholder{ color:#5C5C6E; }
+</style>
+</helmet>
+<div style="fontFamily:'IBM Plex Sans',sans-serif; background:#0B0B12; color:#fff; min-height:100vh; overflow-x:hidden;">
+  <dc-import name="Nav" hint-size="100%,68px"></dc-import>
+
+  <section style="position:relative; overflow:hidden;">
+    <div style="position:absolute; inset:0; background:radial-gradient(100% 80% at 78% -10%, rgba(124,92,255,0.28), transparent 55%), radial-gradient(70% 60% at 5% 10%, rgba(34,211,238,0.14), transparent 55%); pointer-events:none;"></div>
+    <div style="max-width:1180px; margin:0 auto; padding:clamp(44px,6vw,80px) 24px clamp(56px,7vw,96px); position:relative;">
+      <div class="ftb-contactgrid">
+
+        <!-- LEFT: reassurance -->
+        <div>
+          <div style="display:inline-flex; align-items:center; gap:9px; padding:7px 14px; border-radius:999px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); margin-bottom:22px;">
+            <span style="width:7px; height:7px; border-radius:50%; background:#C4F542; box-shadow:0 0 10px #C4F542;"></span>
+            <span style="fontSize:13px; fontWeight:600; color:#D7D7E2;">{{ eyebrow }}</span>
+          </div>
+          <h1 style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:clamp(32px,4.6vw,52px); lineHeight:1.04; letterSpacing:-0.03em; margin:0 0 18px;">{{ heading }}</h1>
+          <p style="fontSize:clamp(16px,1.7vw,18px); lineHeight:1.6; color:#A9A9BC; margin:0 0 32px; max-width:440px;">{{ subhead }}</p>
+
+          <div style="display:flex; flex-direction:column; gap:16px; margin-bottom:34px;">
+            <div style="display:flex; gap:13px; align-items:flex-start;"><span style="flex:none; margin-top:1px; color:#C4F542;">✓</span><span style="fontSize:15px; color:#C7C7D6; line-height:1.5;">Signup to first BIN lookup in under 5 minutes</span></div>
+            <div style="display:flex; gap:13px; align-items:flex-start;"><span style="flex:none; margin-top:1px; color:#C4F542;">✓</span><span style="fontSize:15px; color:#C7C7D6; line-height:1.5;">EU-hosted · GDPR-clean · out of PCI scope</span></div>
+            <div style="display:flex; gap:13px; align-items:flex-start;"><span style="flex:none; margin-top:1px; color:#C4F542;">✓</span><span style="fontSize:15px; color:#C7C7D6; line-height:1.5;">Sub-10ms p99 · 99.9% uptime · DPA available</span></div>
+          </div>
+
+          <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:20px;">
+            <div style="fontFamily:'IBM Plex Mono',monospace; fontSize:12px; letterSpacing:0.04em; textTransform:uppercase; color:#6E6E80; margin-bottom:8px;">What happens next</div>
+            <p style="margin:0; fontSize:14px; line-height:1.6; color:#9A9AAE;">{{ nextStep }}</p>
+            <div style="margin-top:14px; fontSize:14px; color:#7A7A8C;">Prefer email? <a href="Contact.dc.html#" style="color:#22D3EE; text-decoration:none; fontWeight:500;">{{ emailLink }}</a></div>
+          </div>
+        </div>
+
+        <!-- RIGHT: form / success -->
+        <div style="position:relative;">
+          <div style="position:absolute; inset:-1px; border-radius:20px; background:linear-gradient(140deg,rgba(124,92,255,0.5),rgba(34,211,238,0.32),rgba(124,92,255,0.08)); filter:blur(2px); opacity:0.55; pointer-events:none;"></div>
+          <div style="position:relative; background:#0C0C16; border:1px solid rgba(255,255,255,0.08); border-radius:18px; padding:clamp(24px,3vw,36px); box-shadow:0 30px 80px -34px rgba(0,0,0,0.85);">
+
+            <sc-if value="{{ isSuccess }}" hint-placeholder-val="{{ false }}">
+              <div style="text-align:center; padding:24px 8px;">
+                <div style="width:64px; height:64px; border-radius:50%; background:rgba(196,245,66,0.14); border:1px solid rgba(196,245,66,0.4); display:flex; align-items:center; justify-content:center; margin:0 auto 22px;">
+                  <span style="color:#C4F542; fontSize:30px; line-height:1;">✓</span>
+                </div>
+                <h2 style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:26px; letterSpacing:-0.02em; margin:0 0 12px;">{{ successTitle }}</h2>
+                <p style="fontSize:15.5px; line-height:1.6; color:#A9A9BC; margin:0 auto 22px; max-width:380px;">{{ successBody }}</p>
+                <div style="display:inline-flex; align-items:center; gap:8px; fontFamily:'IBM Plex Mono',monospace; fontSize:12.5px; color:#6E6E80; background:#10101C; border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:8px 12px; margin-bottom:26px;">
+                  <span style="color:#7DD3FC;">ref</span><span style="color:#717184;">:</span><span style="color:#9EE493;">{{ refId }}</span>
+                </div>
+                <div style="display:flex; flex-wrap:wrap; gap:12px; justify-content:center;">
+                  <a href="Docs.dc.html" style="text-decoration:none; fontWeight:600; fontSize:15px; color:#0B0B12; background:#C4F542; padding:12px 22px; border-radius:11px;">Read the docs</a>
+                  <a href="Home.dc.html" style="text-decoration:none; fontWeight:600; fontSize:15px; color:#fff; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.16); padding:12px 22px; border-radius:11px;">Back to home</a>
+                </div>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ isForm }}" hint-placeholder-val="{{ true }}">
+              <form onSubmit="{{ submit }}" novalidate="true" style="display:flex; flex-direction:column; gap:18px;">
+                <div class="ftb-namegrid">
+                  <div>
+                    <label for="ftb-name" style="display:block; fontSize:13px; fontWeight:500; color:#C7C7D6; margin-bottom:7px;">Full name</label>
+                    <input id="ftb-name" class="ftb-field" value="{{ name }}" onInput="{{ onName }}" type="text" autocomplete="name" placeholder="Ada Lovelace" aria-invalid="{{ errName }}" style="width:100%; background:#10101C; border:1px solid {{ borderName }}; border-radius:10px; padding:12px 14px; color:#fff; fontSize:15px; fontFamily:'IBM Plex Sans',sans-serif; outline:none; transition:border-color .15s, box-shadow .15s;" />
+                    <sc-if value="{{ errName }}" hint-placeholder-val="{{ false }}"><div style="fontSize:12.5px; color:#FF8095; margin-top:6px;">Please enter your name.</div></sc-if>
+                  </div>
+                  <div>
+                    <label for="ftb-email" style="display:block; fontSize:13px; fontWeight:500; color:#C7C7D6; margin-bottom:7px;">Work email</label>
+                    <input id="ftb-email" class="ftb-field" value="{{ email }}" onInput="{{ onEmail }}" type="email" autocomplete="email" placeholder="ada@platform.com" aria-invalid="{{ errEmail }}" style="width:100%; background:#10101C; border:1px solid {{ borderEmail }}; border-radius:10px; padding:12px 14px; color:#fff; fontSize:15px; fontFamily:'IBM Plex Sans',sans-serif; outline:none; transition:border-color .15s, box-shadow .15s;" />
+                    <sc-if value="{{ errEmail }}" hint-placeholder-val="{{ false }}"><div style="fontSize:12.5px; color:#FF8095; margin-top:6px;">Enter a valid work email.</div></sc-if>
+                  </div>
+                </div>
+
+                <div>
+                  <label for="ftb-company" style="display:block; fontSize:13px; fontWeight:500; color:#C7C7D6; margin-bottom:7px;">Company</label>
+                  <input id="ftb-company" class="ftb-field" value="{{ company }}" onInput="{{ onCompany }}" type="text" autocomplete="organization" placeholder="Your platform or company" aria-invalid="{{ errCompany }}" style="width:100%; background:#10101C; border:1px solid {{ borderCompany }}; border-radius:10px; padding:12px 14px; color:#fff; fontSize:15px; fontFamily:'IBM Plex Sans',sans-serif; outline:none; transition:border-color .15s, box-shadow .15s;" />
+                  <sc-if value="{{ errCompany }}" hint-placeholder-val="{{ false }}"><div style="fontSize:12.5px; color:#FF8095; margin-top:6px;">Please enter your company.</div></sc-if>
+                </div>
+
+                <sc-if value="{{ showRole }}" hint-placeholder-val="{{ false }}">
+                  <div>
+                    <label for="ftb-role" style="display:block; fontSize:13px; fontWeight:500; color:#C7C7D6; margin-bottom:7px;">Your role <span style="color:#5C5C6E;">(optional)</span></label>
+                    <input id="ftb-role" class="ftb-field" value="{{ role }}" onInput="{{ onRole }}" type="text" placeholder="e.g. Head of Payments, Staff Engineer" style="width:100%; background:#10101C; border:1px solid rgba(255,255,255,0.12); border-radius:10px; padding:12px 14px; color:#fff; fontSize:15px; fontFamily:'IBM Plex Sans',sans-serif; outline:none; transition:border-color .15s, box-shadow .15s;" />
+                  </div>
+                </sc-if>
+
+                <div>
+                  <label for="ftb-volume" style="display:block; fontSize:13px; fontWeight:500; color:#C7C7D6; margin-bottom:7px;">Expected monthly lookups</label>
+                  <select id="ftb-volume" class="ftb-field" value="{{ volume }}" onChange="{{ onVolume }}" style="width:100%; background:#10101C; border:1px solid rgba(255,255,255,0.12); border-radius:10px; padding:12px 14px; color:#fff; fontSize:15px; fontFamily:'IBM Plex Sans',sans-serif; outline:none; appearance:none; cursor:pointer; transition:border-color .15s, box-shadow .15s;">
+                    <option style="background:#10101C;">Just exploring</option>
+                    <option style="background:#10101C;">Under 100k / mo</option>
+                    <option style="background:#10101C;">100k – 1M / mo</option>
+                    <option style="background:#10101C;">1M – 10M / mo</option>
+                    <option style="background:#10101C;">10M+ / mo</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label for="ftb-message" style="display:block; fontSize:13px; fontWeight:500; color:#C7C7D6; margin-bottom:7px;">{{ messageLabel }} <span style="color:#5C5C6E;">(optional)</span></label>
+                  <textarea id="ftb-message" class="ftb-field" value="{{ message }}" onInput="{{ onMessage }}" rows="3" placeholder="{{ messagePlaceholder }}" style="width:100%; background:#10101C; border:1px solid rgba(255,255,255,0.12); border-radius:10px; padding:12px 14px; color:#fff; fontSize:15px; fontFamily:'IBM Plex Sans',sans-serif; outline:none; resize:vertical; transition:border-color .15s, box-shadow .15s;"></textarea>
+                </div>
+
+                <button type="submit" disabled="{{ submitting }}" style="{{ submitStyle }}">{{ submitLabel }}</button>
+
+                <p style="margin:2px 0 0; fontSize:12.5px; line-height:1.55; color:#6E6E80; text-align:center;">By submitting you agree to our <a href="Home.dc.html#" style="color:#9A9AAE; text-decoration:underline;">Privacy Policy</a>. We never store full card numbers.</p>
+
+                <div style="text-align:center; borderTop:1px solid rgba(255,255,255,0.07); padding-top:18px; margin-top:2px;">
+                  <button type="button" onClick="{{ switchIntent }}" style="background:transparent; border:0; cursor:pointer; fontFamily:'IBM Plex Sans',sans-serif; fontSize:14px; fontWeight:500; color:#9A9AAE;" style-hover="color:#22D3EE;">{{ switchLabel }}</button>
+                </div>
+              </form>
+            </sc-if>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <dc-import name="Footer" hint-size="100%,420px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180,&quot;height&quot;:820}}">
+class Component extends DCLogic {
+  state = {
+    intent: 'api-key',
+    name: '', email: '', company: '', role: '', volume: 'Just exploring', message: '',
+    errors: {}, status: 'idle', refId: '',
+  };
+
+  componentDidMount(){
+    try {
+      const p = new URLSearchParams(window.location.search).get('intent');
+      if (p === 'sales' || p === 'api-key') this.setState({ intent: p });
+    } catch (e) {}
+  }
+
+  // The production app POSTs this to a server route (e.g. /api/contact),
+  // which forwards it to the Slack Incoming Webhook (URL kept in a server env var).
+  buildSlackPayload(){
+    const s = this.state;
+    const label = s.intent === 'sales' ? 'Talk to sales' : 'Free API key';
+    return {
+      text: 'New ' + label + ' request — FindThisBIN',
+      blocks: [
+        { type: 'header', text: { type: 'plain_text', text: '📥 New ' + label + ' request' } },
+        { type: 'section', fields: [
+          { type: 'mrkdwn', text: '*Name:*\n' + (s.name || '—') },
+          { type: 'mrkdwn', text: '*Work email:*\n' + (s.email || '—') },
+          { type: 'mrkdwn', text: '*Company:*\n' + (s.company || '—') },
+          { type: 'mrkdwn', text: '*Role:*\n' + (s.role || '—') },
+          { type: 'mrkdwn', text: '*Monthly lookups:*\n' + s.volume },
+          { type: 'mrkdwn', text: '*Intent:*\n' + s.intent },
+        ] },
+        { type: 'section', text: { type: 'mrkdwn', text: '*Message:*\n' + (s.message || '—') } },
+      ],
+    };
+  }
+
+  validate(){
+    const e = {};
+    if (!this.state.name.trim()) e.name = true;
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(this.state.email.trim())) e.email = true;
+    if (!this.state.company.trim()) e.company = true;
+    return e;
+  }
+
+  submit = (ev) => {
+    if (ev && ev.preventDefault) ev.preventDefault();
+    if (this.state.status === 'submitting') return;
+    const errors = this.validate();
+    if (Object.keys(errors).length){ this.setState({ errors }); return; }
+    this.setState({ errors: {}, status: 'submitting' });
+
+    const payload = this.buildSlackPayload();
+    // --- PRODUCTION ---
+    // await fetch('/api/contact', { method:'POST', headers:{'Content-Type':'application/json'},
+    //   body: JSON.stringify({ ...this.state, slack: payload }) });
+    // The /api/contact route does: fetch(process.env.SLACK_WEBHOOK_URL, { method:'POST', body: JSON.stringify(payload) })
+    // --- PROTOTYPE: simulate the round-trip ---
+    try { console.log('[FindThisBIN] would POST to Slack webhook:', payload); } catch (e) {}
+    const ref = 'ftb_' + Math.random().toString(36).slice(2, 8).toUpperCase();
+    setTimeout(() => this.setState({ status: 'success', refId: ref }), 900);
+  };
+
+  switchIntent = () => {
+    const next = this.state.intent === 'sales' ? 'api-key' : 'sales';
+    this.setState({ intent: next, errors: {} });
+    try { window.history.replaceState(null, '', 'Contact.dc.html?intent=' + next); } catch (e) {}
+  };
+
+  renderVals(){
+    const s = this.state;
+    const sales = s.intent === 'sales';
+    const err = s.errors;
+    const baseBorder = 'rgba(255,255,255,0.12)';
+    const errBorder = 'rgba(255,128,149,0.6)';
+    const submitting = s.status === 'submitting';
+    return {
+      intent: s.intent,
+      eyebrow: sales ? 'Talk to sales' : 'Free API key',
+      heading: sales ? 'Let’s talk volume.' : 'Get your free API key.',
+      subhead: sales
+        ? 'Tell us about your platform and we’ll build a plan around your volume, SLAs, and EU data-residency needs.'
+        : 'Create an account and make your first BIN lookup in under five minutes. Test and live keys, no credit card.',
+      nextStep: sales
+        ? 'A payments specialist reviews your note and replies within one business day to set up a call and a tailored plan.'
+        : 'We’ll send your test and live API keys to your inbox so you can start integrating right away.',
+      emailLink: sales ? 'sales@findthisbin.com' : 'support@findthisbin.com',
+
+      name: s.name, email: s.email, company: s.company, role: s.role, volume: s.volume, message: s.message,
+      onName: (e) => this.setState({ name: e.target.value }),
+      onEmail: (e) => this.setState({ email: e.target.value }),
+      onCompany: (e) => this.setState({ company: e.target.value }),
+      onRole: (e) => this.setState({ role: e.target.value }),
+      onVolume: (e) => this.setState({ volume: e.target.value }),
+      onMessage: (e) => this.setState({ message: e.target.value }),
+
+      errName: !!err.name, errEmail: !!err.email, errCompany: !!err.company,
+      borderName: err.name ? errBorder : baseBorder,
+      borderEmail: err.email ? errBorder : baseBorder,
+      borderCompany: err.company ? errBorder : baseBorder,
+
+      showRole: sales,
+      messageLabel: sales ? 'Anything we should know?' : 'What are you building?',
+      messagePlaceholder: sales ? 'Volumes, regions, timelines, current provider…' : 'Routing, surcharging, DCC, checkout UX…',
+
+      submit: this.submit,
+      submitting,
+      submitLabel: submitting ? 'Sending…' : (sales ? 'Request a call' : 'Get my API key'),
+      submitStyle: {
+        width: '100%', border: '0', cursor: submitting ? 'default' : 'pointer',
+        fontFamily: "'IBM Plex Sans',sans-serif", fontWeight: 600, fontSize: '16px',
+        color: '#0B0B12', background: '#C4F542', padding: '15px', borderRadius: '11px',
+        opacity: submitting ? 0.7 : 1, transition: 'opacity .15s, transform .15s',
+        boxShadow: '0 12px 36px -12px rgba(196,245,66,0.6)',
+      },
+
+      switchIntent: this.switchIntent,
+      switchLabel: sales ? 'Just want to start building? Get your free API key →' : 'Evaluating for a platform? Talk to sales →',
+
+      isForm: s.status !== 'success',
+      isSuccess: s.status === 'success',
+      successTitle: sales ? 'Request received.' : 'You’re all set.',
+      successBody: sales
+        ? 'Thanks — a payments specialist will reach out within one business day.'
+        : 'Check your inbox: your test and live API keys are on the way.',
+      refId: s.refId,
+    };
+  }
+}
+</script>
+</body>
+</html>

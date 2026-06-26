@@ -10,7 +10,7 @@
 <helmet>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   html{ scroll-behavior:smooth; }
   body{ margin:0; background:#0B0B12; }
@@ -34,7 +34,7 @@
   @media (max-width: 860px){ .ftb-cards3{ grid-template-columns:1fr; } }
 </style>
 </helmet>
-<div style="fontFamily:'Inter',sans-serif; background:#0B0B12; color:#fff; overflow-x:hidden;">
+<div style="fontFamily:'IBM Plex Sans',sans-serif; background:#0B0B12; color:#fff; overflow-x:hidden;">
   <dc-import name="Nav" active="home" hint-size="100%,68px"></dc-import>
 
   <!-- ============ HERO ============ -->
@@ -51,8 +51,8 @@
           <h1 style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:clamp(40px,6vw,72px); lineHeight:1.02; letterSpacing:-0.03em; margin:0 0 22px; color:#fff;">Every card,<br>decoded in <span style="background:linear-gradient(100deg,#A98BFF,#22D3EE); -webkit-background-clip:text; background-clip:text; color:transparent;">one API call.</span></h1>
           <p style="fontSize:clamp(16px,1.7vw,19px); lineHeight:1.6; color:#A9A9BC; margin:0 0 34px; max-width:560px;">FindThisBIN turns any 6–8 digit BIN into rich, accurate card data — scheme, type, issuer, country, currency, and DCC eligibility — in a single sub-10ms request. EU-hosted, developer-first, built for PSPs and payment platforms.</p>
           <div style="display:flex; flex-wrap:wrap; gap:14px; margin-bottom:34px;">
-            <a href="Pricing.dc.html#tiers" style="text-decoration:none; fontWeight:600; fontSize:16px; color:#0B0B12; background:#C4F542; padding:15px 26px; border-radius:12px; boxShadow:0 12px 36px -10px rgba(196,245,66,0.6); transition:transform .15s ease;" style-hover="transform:translateY(-2px);">Get your free API key</a>
-            <a href="Home.dc.html#" style="text-decoration:none; fontWeight:600; fontSize:16px; color:#fff; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.16); padding:15px 26px; border-radius:12px; transition:background .15s ease;" style-hover="background:rgba(255,255,255,0.12);">Talk to sales</a>
+            <a href="Contact.dc.html?intent=api-key" style="text-decoration:none; fontWeight:600; fontSize:16px; color:#0B0B12; background:#C4F542; padding:15px 26px; border-radius:12px; boxShadow:0 12px 36px -10px rgba(196,245,66,0.6); transition:transform .15s ease;" style-hover="transform:translateY(-2px);">Get your free API key</a>
+            <a href="Contact.dc.html?intent=sales" style="text-decoration:none; fontWeight:600; fontSize:16px; color:#fff; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.16); padding:15px 26px; border-radius:12px; transition:background .15s ease;" style-hover="background:rgba(255,255,255,0.12);">Talk to sales</a>
           </div>
           <div style="display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center; fontSize:13px; color:#7A7A8C; fontWeight:500;">
             <span style="display:inline-flex; align-items:center; gap:7px;"><span style="color:#22D3EE;">●</span>EU-hosted</span>
@@ -71,13 +71,13 @@
               <span style="width:11px; height:11px; border-radius:50%; background:#FF5F57;"></span>
               <span style="width:11px; height:11px; border-radius:50%; background:#FEBC2E;"></span>
               <span style="width:11px; height:11px; border-radius:50%; background:#28C840;"></span>
-              <span style="margin-left:10px; fontFamily:'JetBrains Mono',monospace; fontSize:12px; color:#6E6E80;">findthisbin · live</span>
+              <span style="margin-left:10px; fontFamily:'IBM Plex Mono',monospace; fontSize:12px; color:#6E6E80;">findthisbin · live</span>
             </div>
-            <div style="padding:18px 18px 6px; fontFamily:'JetBrains Mono',monospace; fontSize:13px; display:flex; align-items:center; gap:10px; flexWrap:wrap;">
+            <div style="padding:18px 18px 6px; fontFamily:'IBM Plex Mono',monospace; fontSize:13px; display:flex; align-items:center; gap:10px; flexWrap:wrap;">
               <span style="background:#C4F542; color:#0B0B12; fontWeight:700; padding:2px 8px; border-radius:6px; fontSize:11px;">GET</span>
               <span style="color:#9EE493;">https://api.findthisbin.com/v1/bins/<span style="color:#22D3EE;">53847012</span></span>
             </div>
-            <div style="padding:8px 20px 22px; fontFamily:'JetBrains Mono',monospace; fontSize:13px; lineHeight:1.7; color:#E6E6F0;">
+            <div style="padding:8px 20px 22px; fontFamily:'IBM Plex Mono',monospace; fontSize:13px; lineHeight:1.7; color:#E6E6F0;">
               <div style="animation:ftbUp .4s ease both; animation-delay:.05s;"><span style="color:#717184;">{</span></div>
               <div style="padding-left:18px; animation:ftbUp .4s ease both; animation-delay:.12s;"><span style="color:#7DD3FC;">"bin"</span><span style="color:#717184;">: </span><span style="color:#9EE493;">"53847012"</span><span style="color:#717184;">,</span></div>
               <div style="padding-left:18px; animation:ftbUp .4s ease both; animation-delay:.18s;"><span style="color:#7DD3FC;">"scheme"</span><span style="color:#717184;">: </span><span style="color:#9EE493;">"mastercard"</span><span style="color:#717184;">,</span></div>
@@ -153,7 +153,7 @@
             <div style="fontSize:13px; fontWeight:700; color:#C4F542; letterSpacing:0.05em; margin-bottom:14px;">01 · DEVELOPER EXPERIENCE</div>
             <h3 style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:26px; letterSpacing:-0.02em; margin:0 0 12px;">Ships in minutes, not sprints.</h3>
             <p style="fontSize:15.5px; line-height:1.6; color:#A9A9BC; margin:0 0 22px;">Clean REST API, SDKs in 5 languages, test &amp; live keys, and a generous free tier. Signup to first lookup in under 5 minutes.</p>
-            <div style="background:#0A0A12; border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:16px; fontFamily:'JetBrains Mono',monospace; fontSize:12.5px; line-height:1.7;">
+            <div style="background:#0A0A12; border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:16px; fontFamily:'IBM Plex Mono',monospace; fontSize:12.5px; line-height:1.7;">
               <div><span style="color:#FF7B9C;">const</span> <span style="color:#E6E6F0;">card</span> <span style="color:#717184;">=</span> <span style="color:#FF7B9C;">await</span> <span style="color:#E6E6F0;">ftb</span><span style="color:#717184;">.</span><span style="color:#B89CFF;">lookup</span><span style="color:#717184;">(</span><span style="color:#9EE493;">'53847012'</span><span style="color:#717184;">)</span></div>
               <div><span style="color:#717184;">// → { scheme, type, issuer, dcc... }</span></div>
             </div>
@@ -207,12 +207,12 @@
       <div style="background:#0C0C16; border:1px solid rgba(255,255,255,0.09); border-radius:18px; overflow:hidden; boxShadow:0 30px 80px -40px rgba(0,0,0,0.8);">
         <div style="padding:22px; display:flex; flex-wrap:wrap; gap:12px; align-items:center; borderBottom:1px solid rgba(255,255,255,0.07);">
           <div style="display:flex; align-items:center; gap:10px; flex:1; min-width:220px; background:#0A0A12; border:1px solid rgba(255,255,255,0.12); border-radius:11px; padding:0 14px;">
-            <span style="fontFamily:'JetBrains Mono',monospace; fontSize:13px; color:#5C5C6E;">/v1/bins/</span>
-            <input value="{{ bin }}" onInput="{{ onBinInput }}" inputmode="numeric" maxlength="8" placeholder="53847012" style="flex:1; background:transparent; border:0; outline:none; color:#fff; fontFamily:'JetBrains Mono',monospace; fontSize:16px; padding:14px 0; min-width:80px;" />
+            <span style="fontFamily:'IBM Plex Mono',monospace; fontSize:13px; color:#5C5C6E;">/v1/bins/</span>
+            <input value="{{ bin }}" onInput="{{ onBinInput }}" inputmode="numeric" maxlength="8" placeholder="53847012" style="flex:1; background:transparent; border:0; outline:none; color:#fff; fontFamily:'IBM Plex Mono',monospace; fontSize:16px; padding:14px 0; min-width:80px;" />
           </div>
           <span style="fontSize:13px; color:#6E6E80;">Try:</span>
           <sc-for list="{{ tryExamples }}" as="ex" hint-placeholder-count="4">
-            <button onClick="{{ ex.onClick }}" style="fontFamily:'JetBrains Mono',monospace; fontSize:12.5px; color:#C7C7D6; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:8px; padding:7px 10px; cursor:pointer;" style-hover="border-color:rgba(34,211,238,0.5); color:#22D3EE;">{{ ex.value }}</button>
+            <button onClick="{{ ex.onClick }}" style="fontFamily:'IBM Plex Mono',monospace; fontSize:12.5px; color:#C7C7D6; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:8px; padding:7px 10px; cursor:pointer;" style-hover="border-color:rgba(34,211,238,0.5); color:#22D3EE;">{{ ex.value }}</button>
           </sc-for>
         </div>
         <div style="padding:28px; display:grid; grid-template-columns:1fr 1fr; gap:14px;" class="ftb-pillars">
@@ -297,7 +297,7 @@
           <h2 style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:clamp(30px,4.4vw,52px); lineHeight:1.04; letterSpacing:-0.03em; margin:0 0 18px;">Embed card intelligence across your entire stack.</h2>
           <p style="fontSize:17px; line-height:1.65; color:#A9A9BC; margin:0 0 28px; max-width:520px;">PSPs, orchestrators, and ISVs use FindThisBIN to power smarter routing, surcharging, DCC eligibility, richer checkout UX, and risk signals — all from one API. White-label, high-volume pricing, SLAs, and EU data-residency guarantees included.</p>
           <div style="display:flex; flex-wrap:wrap; gap:12px;">
-            <a href="Home.dc.html#" style="text-decoration:none; fontWeight:600; fontSize:15.5px; color:#0B0B12; background:#C4F542; padding:13px 22px; border-radius:11px;">Talk to sales</a>
+            <a href="Contact.dc.html?intent=sales" style="text-decoration:none; fontWeight:600; fontSize:15.5px; color:#0B0B12; background:#C4F542; padding:13px 22px; border-radius:11px;">Talk to sales</a>
             <a href="Pricing.dc.html" style="text-decoration:none; fontWeight:600; fontSize:15.5px; color:#fff; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.16); padding:13px 22px; border-radius:11px;">See platform pricing</a>
           </div>
         </div>
@@ -345,7 +345,7 @@
               <button onClick="{{ t.onClick }}" style="{{ t.style }}">{{ t.label }}</button>
             </sc-for>
           </div>
-          <div style="padding:22px; fontFamily:'JetBrains Mono',monospace; fontSize:13px; line-height:1.75; min-height:170px;">
+          <div style="padding:22px; fontFamily:'IBM Plex Mono',monospace; fontSize:13px; line-height:1.75; min-height:170px;">
             <sc-if value="{{ isCurl }}" hint-placeholder-val="{{ true }}">
               <div><span style="color:#B89CFF;">curl</span> <span style="color:#9EE493;">https://api.findthisbin.com/v1/bins/53847012</span> <span style="color:#717184;">\</span></div>
               <div style="padding-left:18px;"><span style="color:#717184;">-H</span> <span style="color:#9EE493;">"Authorization: Bearer sk_live_..."</span></div>
@@ -401,14 +401,14 @@
           <div style="fontSize:13.5px; color:#6E6E80; margin:4px 0 16px;">Evaluation &amp; indie</div>
           <div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:38px; letterSpacing:-0.03em;">€0</div>
           <div style="fontSize:13px; color:#8A8A9A; margin-bottom:18px;">5,000 lookups / mo</div>
-          <a href="Pricing.dc.html#tiers" style="text-decoration:none; text-align:center; fontWeight:600; fontSize:14.5px; color:#0B0B12; background:#F0F0F6; border:1px solid #E6E6EF; padding:12px; border-radius:10px;">Start free</a>
+          <a href="Contact.dc.html?intent=api-key" style="text-decoration:none; text-align:center; fontWeight:600; fontSize:14.5px; color:#0B0B12; background:#F0F0F6; border:1px solid #E6E6EF; padding:12px; border-radius:10px;">Start free</a>
         </div>
         <div style="background:#fff; border:1px solid #E6E6EF; border-radius:16px; padding:28px; display:flex; flex-direction:column;">
           <div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:18px;">Pay-as-you-go</div>
           <div style="fontSize:13.5px; color:#6E6E80; margin:4px 0 16px;">Variable traffic</div>
           <div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:38px; letterSpacing:-0.03em;">€0.004<span style="fontSize:15px; color:#8A8A9A; fontWeight:600;">/lookup</span></div>
           <div style="fontSize:13px; color:#8A8A9A; margin-bottom:18px;">Drops with volume</div>
-          <a href="Pricing.dc.html#tiers" style="text-decoration:none; text-align:center; fontWeight:600; fontSize:14.5px; color:#0B0B12; background:#F0F0F6; border:1px solid #E6E6EF; padding:12px; border-radius:10px;">Get your API key</a>
+          <a href="Contact.dc.html?intent=api-key" style="text-decoration:none; text-align:center; fontWeight:600; fontSize:14.5px; color:#0B0B12; background:#F0F0F6; border:1px solid #E6E6EF; padding:12px; border-radius:10px;">Get your API key</a>
         </div>
         <div style="background:#0B0B12; color:#fff; border-radius:16px; padding:28px; display:flex; flex-direction:column; position:relative; box-shadow:0 24px 60px -24px rgba(124,92,255,0.6);">
           <div style="position:absolute; top:-12px; left:50%; transform:translateX(-50%); background:#C4F542; color:#0B0B12; fontSize:11.5px; fontWeight:700; letterSpacing:0.04em; padding:5px 12px; border-radius:999px;">MOST POPULAR</div>
@@ -416,14 +416,14 @@
           <div style="fontSize:13.5px; color:#9A9AAE; margin:4px 0 16px;">Production &amp; SLAs</div>
           <div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:38px; letterSpacing:-0.03em;">€499<span style="fontSize:15px; color:#9A9AAE; fontWeight:600;">/mo</span></div>
           <div style="fontSize:13px; color:#7A7A8C; margin-bottom:18px;">250k included + overage</div>
-          <a href="Pricing.dc.html#tiers" style="text-decoration:none; text-align:center; fontWeight:600; fontSize:14.5px; color:#0B0B12; background:#C4F542; padding:12px; border-radius:10px;">Start free trial</a>
+          <a href="Contact.dc.html?intent=api-key" style="text-decoration:none; text-align:center; fontWeight:600; fontSize:14.5px; color:#0B0B12; background:#C4F542; padding:12px; border-radius:10px;">Start free trial</a>
         </div>
         <div style="background:#fff; border:1px solid #E6E6EF; border-radius:16px; padding:28px; display:flex; flex-direction:column;">
           <div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:18px;">Enterprise</div>
           <div style="fontSize:13.5px; color:#6E6E80; margin:4px 0 16px;">On-prem &amp; custom</div>
           <div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:38px; letterSpacing:-0.03em;">Custom</div>
           <div style="fontSize:13px; color:#8A8A9A; margin-bottom:18px;">Dataset export, private deploy</div>
-          <a href="Home.dc.html#" style="text-decoration:none; text-align:center; fontWeight:600; fontSize:14.5px; color:#fff; background:#0B0B12; padding:12px; border-radius:10px;">Talk to sales</a>
+          <a href="Contact.dc.html?intent=sales" style="text-decoration:none; text-align:center; fontWeight:600; fontSize:14.5px; color:#fff; background:#0B0B12; padding:12px; border-radius:10px;">Talk to sales</a>
         </div>
       </div>
       <div style="text-align:center; margin-top:24px;"><a href="Pricing.dc.html" style="fontSize:15px; fontWeight:600; color:#7C5CFF; text-decoration:none;">Compare all plans &amp; features →</a></div>
@@ -457,10 +457,10 @@
           </div>
         </div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-          <a href="Docs.dc.html" style="text-decoration:none; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:13px; padding:20px;" style-hover="border-color:rgba(34,211,238,0.5);"><div style="fontFamily:'JetBrains Mono',monospace; fontSize:13px; color:#22D3EE; margin-bottom:8px;">{ } </div><div style="fontWeight:700; fontSize:15.5px; color:#fff;">Docs</div><div style="fontSize:13px; color:#9A9AAE;">Guides &amp; quickstart</div></a>
-          <a href="Docs.dc.html#reference" style="text-decoration:none; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:13px; padding:20px;" style-hover="border-color:rgba(34,211,238,0.5);"><div style="fontFamily:'JetBrains Mono',monospace; fontSize:13px; color:#22D3EE; margin-bottom:8px;">GET</div><div style="fontWeight:700; fontSize:15.5px; color:#fff;">API Reference</div><div style="fontSize:13px; color:#9A9AAE;">Every endpoint</div></a>
-          <a href="Docs.dc.html#sdks" style="text-decoration:none; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:13px; padding:20px;" style-hover="border-color:rgba(34,211,238,0.5);"><div style="fontFamily:'JetBrains Mono',monospace; fontSize:13px; color:#22D3EE; margin-bottom:8px;">$ npm i</div><div style="fontWeight:700; fontSize:15.5px; color:#fff;">SDKs</div><div style="fontSize:13px; color:#9A9AAE;">5 languages</div></a>
-          <a href="Docs.dc.html#sdks" style="text-decoration:none; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:13px; padding:20px;" style-hover="border-color:rgba(34,211,238,0.5);"><div style="fontFamily:'JetBrains Mono',monospace; fontSize:13px; color:#22D3EE; margin-bottom:8px;">▶</div><div style="fontWeight:700; fontSize:15.5px; color:#fff;">Postman</div><div style="fontSize:13px; color:#9A9AAE;">Import &amp; run</div></a>
+          <a href="Docs.dc.html" style="text-decoration:none; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:13px; padding:20px;" style-hover="border-color:rgba(34,211,238,0.5);"><div style="fontFamily:'IBM Plex Mono',monospace; fontSize:13px; color:#22D3EE; margin-bottom:8px;">{ } </div><div style="fontWeight:700; fontSize:15.5px; color:#fff;">Docs</div><div style="fontSize:13px; color:#9A9AAE;">Guides &amp; quickstart</div></a>
+          <a href="Docs.dc.html#reference" style="text-decoration:none; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:13px; padding:20px;" style-hover="border-color:rgba(34,211,238,0.5);"><div style="fontFamily:'IBM Plex Mono',monospace; fontSize:13px; color:#22D3EE; margin-bottom:8px;">GET</div><div style="fontWeight:700; fontSize:15.5px; color:#fff;">API Reference</div><div style="fontSize:13px; color:#9A9AAE;">Every endpoint</div></a>
+          <a href="Docs.dc.html#sdks" style="text-decoration:none; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:13px; padding:20px;" style-hover="border-color:rgba(34,211,238,0.5);"><div style="fontFamily:'IBM Plex Mono',monospace; fontSize:13px; color:#22D3EE; margin-bottom:8px;">$ npm i</div><div style="fontWeight:700; fontSize:15.5px; color:#fff;">SDKs</div><div style="fontSize:13px; color:#9A9AAE;">5 languages</div></a>
+          <a href="Docs.dc.html#sdks" style="text-decoration:none; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:13px; padding:20px;" style-hover="border-color:rgba(34,211,238,0.5);"><div style="fontFamily:'IBM Plex Mono',monospace; fontSize:13px; color:#22D3EE; margin-bottom:8px;">▶</div><div style="fontWeight:700; fontSize:15.5px; color:#fff;">Postman</div><div style="fontSize:13px; color:#9A9AAE;">Import &amp; run</div></a>
         </div>
       </div>
     </div>
@@ -473,8 +473,8 @@
       <h2 style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:clamp(34px,5.5vw,64px); lineHeight:1.03; letterSpacing:-0.03em; margin:0 0 22px; color:#fff;">Start building with FindThisBIN today.</h2>
       <p style="fontSize:18px; line-height:1.6; color:#C7C7D6; margin:0 0 34px; max-width:520px; margin-left:auto; margin-right:auto;">From signup to your first lookup in under five minutes. No credit card required.</p>
       <div style="display:flex; flex-wrap:wrap; gap:14px; justify-content:center;">
-        <a href="Pricing.dc.html#tiers" style="text-decoration:none; fontWeight:600; fontSize:16px; color:#0B0B12; background:#C4F542; padding:16px 30px; border-radius:12px; boxShadow:0 14px 40px -10px rgba(196,245,66,0.6);">Get your free API key</a>
-        <a href="Home.dc.html#" style="text-decoration:none; fontWeight:600; fontSize:16px; color:#fff; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); padding:16px 30px; border-radius:12px;">Talk to sales</a>
+        <a href="Contact.dc.html?intent=api-key" style="text-decoration:none; fontWeight:600; fontSize:16px; color:#0B0B12; background:#C4F542; padding:16px 30px; border-radius:12px; boxShadow:0 14px 40px -10px rgba(196,245,66,0.6);">Get your free API key</a>
+        <a href="Contact.dc.html?intent=sales" style="text-decoration:none; fontWeight:600; fontSize:16px; color:#fff; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); padding:16px 30px; border-radius:12px;">Talk to sales</a>
       </div>
     </div>
   </section>
@@ -544,7 +544,7 @@ class Component extends DCLogic {
       return {
         key: k, label: labels[k], onClick: () => this.setState({ lang: k }),
         style: {
-          fontFamily:"'JetBrains Mono',monospace", fontSize:'13px', fontWeight:600, cursor:'pointer',
+          fontFamily:"'IBM Plex Mono',monospace", fontSize:'13px', fontWeight:600, cursor:'pointer',
           padding:'9px 16px', borderRadius:'9px', border:'1px solid ' + (on ? 'rgba(196,245,66,0.5)' : 'rgba(255,255,255,0.1)'),
           background: on ? 'rgba(196,245,66,0.12)' : 'transparent', color: on ? '#C4F542' : '#9A9AAE', transition:'all .15s ease',
         },

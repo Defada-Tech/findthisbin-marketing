@@ -7,6 +7,12 @@ A bold, modern, conversion-focused **multi-page marketing site** for **FindThisB
 2. **Pricing** (`Pricing.dc.html`)
 3. **Docs landing** (`Docs.dc.html`)
 
+Plus three supporting pages that share the same nav, footer, and identity:
+
+4. **Product** (`Product.dc.html`) — product/feature deep-dive
+5. **Company** (`Company.dc.html`) — about + careers (`#careers`)
+6. **Contact / Book-a-demo** (`Contact.dc.html`) — the form behind both primary CTAs; submits a Slack message via webhook (see its section below)
+
 The audience is PSPs/payment platforms whose engineers run the technical evaluation. Message priority: (1) developer experience & speed, (2) EU residency & compliance, (3) data accuracy & coverage, (4) fraud-prevention signals.
 
 ## Target: Static Astro site
@@ -16,27 +22,33 @@ The audience is PSPs/payment platforms whose engineers run the technical evaluat
 src/
   layouts/BaseLayout.astro      ← <html>, <head> (fonts, meta), global CSS, <Nav/> + <slot/> + <Footer/>
   components/
-    Nav.astro                   ← sticky nav, takes an `active` prop ("home" | "pricing" | "docs")
+    Nav.astro                   ← sticky nav, `active` prop ("home"|"product"|"pricing"|"docs"|"company")
     Footer.astro
     CodeBlock.astro             ← reusable syntax-highlighted code panel
     PricingCard.astro
-    BinPlayground.astro         ← interactive (see "Islands" below)
+    BinPlayground.astro         ← interactive island (see "Islands" below)
+    ContactForm.astro           ← interactive island: book-a-demo / get-API-key form
   pages/
     index.astro                 ← Home
+    product.astro
     pricing.astro
     docs.astro
+    company.astro
+    contact.astro               ← reads ?intent=api-key|sales
+    api/contact.ts              ← SSR endpoint → Slack webhook (prerender=false)
   styles/tokens.css             ← CSS custom properties (the design tokens below)
 ```
 
-**Routing:** the design files cross-link as `Home.dc.html`, `Pricing.dc.html`, `Docs.dc.html`. In Astro these become `/`, `/pricing`, `/docs`. Replace every `*.dc.html` href accordingly. In-page anchors (`#try`, `#psp`, `#product`, `#tiers`, `#reference`, `#sdks`, `#company`, `#footer`) must be preserved as section `id`s.
+**Routing:** the design files cross-link as `*.dc.html`; in Astro these become routes — `Home`→`/`, `Product`→`/product`, `Pricing`→`/pricing`, `Docs`→`/docs`, `Company`→`/company`, `Contact`→`/contact`. Replace every `*.dc.html` href accordingly (e.g. `Contact.dc.html?intent=sales` → `/contact?intent=sales`). Preserve in-page anchors as section `id`s: `#try`, `#psp`, `#tiers`, `#reference`, `#sdks`, `#careers` (Company), `#footer`. Note `#product` / `#company` are now **real pages** (`/product`, `/company`), not Home anchors.
 
-**Interactivity → Astro Islands.** Most of the site is static markup. Only four things need client JS. Implement each as a framework island (React/Preact/Svelte/Vue — your choice; `client:visible` or `client:load`) or a small inline `<script>`:
+**Interactivity → Astro Islands.** Most of the site is static markup. Only a few things need client JS. Implement each as a framework island (React/Preact/Svelte/Vue — your choice; `client:visible` or `client:load`) or a small inline `<script>`:
 - Nav scroll-translucency + mobile menu toggle
 - Hero JSON staggered reveal animation (pure CSS — see below; no JS needed)
 - Stat counters that animate up on mount
 - Live BIN playground (Home)
 - Code-language tab switcher (Home "How it works", Docs quickstart)
 - Pricing monthly/annual toggle + FAQ accordion
+- Contact form: field validation, intent switch, submit → POST `/api/contact` (Slack)
 
 Keep islands small and scoped; the rest of every page should ship as zero-JS static HTML.
 
@@ -88,11 +100,22 @@ To preview a reference file locally, open the `.dc.html` in a browser (it self-b
 **Glow blobs:** `radial-gradient(circle, rgba(124,92,255,0.45), transparent 70%)` with `filter:blur(14–30px)`, absolutely positioned behind hero/CTA sections.
 
 ### Typography
-Load via Google Fonts:
+Load via Astro's font system (the project's exact config below), or Google Fonts otherwise:
+
+```js
+// astro.config.mjs — import { fontProviders } from 'astro/config'; experimental: { fonts: [...] }
+fonts: [
+  { provider: fontProviders.google(), name: "Space Grotesk", cssVariable: "--ff-display", weights: [500,600,700], subsets: ["latin"], fallbacks: ["system-ui","sans-serif"] },
+  { provider: fontProviders.google(), name: "IBM Plex Sans",  cssVariable: "--ff-body",    weights: [400,500],     subsets: ["latin"], fallbacks: ["system-ui","sans-serif"] },
+  { provider: fontProviders.google(), name: "IBM Plex Mono",  cssVariable: "--ff-mono",    weights: [500],         subsets: ["latin"], fallbacks: ["ui-monospace","monospace"] },
+],
+```
+
+Map to CSS vars: `--ff-display` (Space Grotesk, headings), `--ff-body` (IBM Plex Sans, body/UI), `--ff-mono` (IBM Plex Mono, code). **⚠ Weight note:** the design uses IBM Plex Sans **600 & 700** for buttons, eyebrows, footer headers and labels, and IBM Plex Mono **400** in some code — the provided `weights` arrays omit these, so either add `600,700` to IBM Plex Sans and `400` to IBM Plex Mono, or those weights will synthesize (faux-bold). Quick reference:
 ```
 Space Grotesk: 500,600,700   (display / headings)
-Inter: 400,500,600,700        (body / UI)
-JetBrains Mono: 400,500,700   (code, eyebrows, mono tokens)
+IBM Plex Sans: 400,500 (+600,700 used)        (body / UI)
+IBM Plex Mono: 400,500   (code, eyebrows, mono tokens)
 ```
 | Role | Family | Weight | Size | Tracking | Line-height |
 |---|---|---|---|---|---|
@@ -100,10 +123,10 @@ JetBrains Mono: 400,500,700   (code, eyebrows, mono tokens)
 | Page H1 (Pricing/Docs) | Space Grotesk | 700 | `clamp(36px,5.5vw,64px)` | `-0.03em` | 1.03 |
 | Section H2 | Space Grotesk | 700 | `clamp(30px,4.2vw,48px)` | `-0.025em` | 1.05 |
 | Card title H3 | Space Grotesk | 700 | 26px | `-0.02em` | 1.1 |
-| Eyebrow label | Inter (or JetBrains Mono on Docs) | 700 | 13px | `0.08em` | uppercase |
-| Body | Inter | 400 | `clamp(16px,1.7vw,19px)` | normal | 1.6 |
-| Small / meta | Inter | 500 | 13–14px | normal | 1.5 |
-| Code | JetBrains Mono | 400–500 | 12.5–13px | normal | 1.7–1.8 |
+| Eyebrow label | IBM Plex Sans (or IBM Plex Mono on Docs) | 700 | 13px | `0.08em` | uppercase |
+| Body | IBM Plex Sans | 400 | `clamp(16px,1.7vw,19px)` | normal | 1.6 |
+| Small / meta | IBM Plex Sans | 500 | 13–14px | normal | 1.5 |
+| Code | IBM Plex Mono | 400–500 | 12.5–13px | normal | 1.7–1.8 |
 | Big stat | Space Grotesk | 700 | `clamp(34px,5vw,56px)` | `-0.03em` | 1 |
 
 ### Spacing & shape
@@ -142,15 +165,15 @@ JetBrains Mono: 400,500,700   (code, eyebrows, mono tokens)
 - Sticky, `top:0`, `z-index:1000`, `height:68px`, `backdrop-filter:blur(14px)`.
 - Background **changes on scroll**: `rgba(11,11,18,0.32)` at top → `rgba(11,11,18,0.85)` once `window.scrollY > 12`, with a bottom border fading in (`rgba(255,255,255,0.08)`). 0.3s transition. *(island / inline script)*
 - Left: wordmark **FindThis**(white)**BIN**(cyan `#22D3EE`), Space Grotesk 700, 21px, `-0.02em`. Links to `/`.
-- Center links: Product (`/#product`), Pricing (`/pricing`), Docs (`/docs`), Company (`/#company`). Inactive `#9A9AAE`, active `#FFFFFF`, hover `#FFFFFF`. Active link determined by `active` prop.
-- Right: "Sign in" (text, `#C7C7D6`) + **"Get your free API key"** button — lime `#C4F542` fill, `#0B0B12` text, `radius:10px`, glow shadow, `translateY(-1px)` on hover.
+- Center links: Product (`/product`), Pricing (`/pricing`), Docs (`/docs`), Company (`/company`). Inactive `#9A9AAE`, active `#FFFFFF`, hover `#FFFFFF`. Active link determined by `active` prop.
+- Right: "Sign in" (text, `#C7C7D6`, placeholder `#`) + **"Get your free API key"** button → `/contact?intent=api-key` — lime `#C4F542` fill, `#0B0B12` text, `radius:10px`, glow shadow, `translateY(-1px)` on hover.
 - **Mobile (≤860px):** hide center links + Sign in, show hamburger button (40×40, `radius:10px`, translucent border). Toggling opens a full-width panel (`rgba(11,11,18,0.97)`) with stacked links. *(island)*
 
 ### Footer (`Footer.astro`)
 - Background `#08080E`, top border `rgba(255,255,255,0.07)`, `padding:64px 24px 40px`, max-width 1240.
 - Grid `1.6fr 1fr 1fr 1fr 1fr` → `1fr 1fr` at ≤900px.
 - Col 1: wordmark, tagline ("The card-intelligence layer for payment platforms…"), and an **"EU-hosted · GDPR-clean"** pill (cyan dot + cyan text, `rgba(34,211,238,0.08)` bg).
-- Columns: **Product** (Overview, Try it live, Pricing, For platforms) · **Developers** (Docs, API Reference, SDKs, Status) · **Company** (About, Blog, Careers — wrap in `id="company"`) · **Legal** (Privacy, Terms, DPA, GDPR).
+- Columns: **Product** (Overview → `/product`, Try it live → `/#try`, Pricing, For platforms → `/#psp`) · **Developers** (Docs, API Reference, SDKs, Status) · **Company** (About → `/company`, Blog, Careers → `/company#careers`) · **Legal** (Privacy, Terms, DPA, GDPR).
 - Bottom bar: "© 2026 FindThisBIN…" + GitHub / X / LinkedIn icon links (inline SVGs in the reference, monochrome `#9A9AAE` → `#fff` hover). `id="footer"` on the `<footer>`.
 - Link colors `#9A9AAE` → `#fff` hover; uppercase column headers `#5C5C6E`, 12px, `0.08em`.
 
@@ -215,6 +238,74 @@ Sections, in order (alternating dark / light for rhythm):
 6. **Guides** (`#F6F6FB`). H2 "Guides." `auto-fill minmax(280px,1fr)` of 4 link rows: Detecting prepaid & commercial cards · DCC compliance in the EU (ECB rates) · The 8-digit BIN migration · Working with match confidence.
 7. **Docs utility bar** (white, top border). Status (green dot) · Changelog · Support + persistent "Get your free API key" lime CTA.
 8. **Footer.**
+
+---
+
+## Page 4 — Product (`product.astro`) — dark/light rhythm
+1. **Hero** (dark, centered). Eyebrow "Product". H1 "The card-intelligence layer for **payment platforms.**" (last phrase gradient-clipped). Subhead + dual CTA (api-key / sales).
+2. **Anatomy of a lookup** (white). 2-col: copy + 4 grouped bullets (Identity / Issuer / Flags & DCC / Provenance) | dark code panel showing `GET /v1/bins/{bin}` + the canonical JSON.
+3. **Capabilities** (`#F6F6FB`). H2 "Four things we obsess over." Same 2×2 pillar grid as Home (DX dark / EU light / Accuracy light / Performance dark), copy tightened.
+4. **Endpoints** (dark). H2 "Three endpoints. Everything you need." 3 cards: `GET /v1/bins/{bin}` Single lookup · `POST /v1/bins/batch` Batch (≤10k) · `GET /v1/dcc/{bin}` DCC disclosure. Link → `/docs#reference`.
+5. **Fits your stack** (white). H2 "Plugs into every decision in your flow." 6 cards (same six use cases as Home, one line each).
+6. **Coverage stats** (gradient band): 6.2M BINs · 242 countries · 8-digit · <10ms.
+7. **CTA** (gradient): "See it on your own BINs." + dual CTA. **Footer.**
+
+## Page 5 — Company (`company.astro`)
+1. **Hero** (dark). Eyebrow "Company". H1 "Building the trust layer for **payments.**" + mission subhead.
+2. **Mission / story** (white). 2-col: H2 "BIN data was stuck in the 6-digit era. Payments moved on." | 3 short paragraphs (full copy in `Company.dc.html`).
+3. **Principles** (`#F6F6FB`). H2 "Principles we build on." 4 numbered cards: Precision over guesswork · Developer-first · EU-resident by default · Out of PCI scope.
+4. **Stats band** (gradient): EU residency · 242 countries · 6.2M BINs · 99.9% uptime.
+5. **Careers** (`id="careers"`, dark). H2 "Come build payments infrastructure." + 3 placeholder roles (title + "Remote (EU) · Full-time" + "View role →") + "Get in touch" CTA → `/contact?intent=sales`. The footer Careers link targets `#careers`.
+6. **Final CTA** (gradient). **Footer.**
+
+## Page 6 — Contact / Book-a-demo (`contact.astro`) + Slack webhook
+The single destination for **both** primary CTAs, switched by `?intent=`:
+- `?intent=api-key` (default) — "Get your free API key." Self-serve framing; CTA "Get my API key"; success "You're all set. Check your inbox…".
+- `?intent=sales` — "Let's talk volume." Adds a **Role** field; CTA "Request a call"; success "Request received…".
+
+**Layout** (dark, 2-col `0.85fr 1fr`, stacks ≤940px): left = intent-driven heading/subhead + 3 reassurance check-rows + a "What happens next" card with a contact-email link; right = form card with gradient glow border.
+
+**Fields:** Full name\*, Work email\*, Company\* (name+email in a 2-col row), Role (sales only), Expected monthly lookups (`<select>`: Just exploring / Under 100k / 100k–1M / 1M–10M / 10M+), Message (textarea; label switches "What are you building?" ↔ "Anything we should know?"). Validate: name non-empty, email `^[^@\s]+@[^@\s]+\.[^@\s]+$`, company non-empty; inline errors (border `rgba(255,128,149,0.6)`, text `#FF8095`). Inputs: bg `#10101C`, border `rgba(255,255,255,0.12)`, radius 10px, focus → violet border + `0 0 0 3px rgba(124,92,255,0.18)`. Submit = lime, disabled + "Sending…" while submitting. A link below the form toggles intent and updates the `?intent=` query.
+
+**On submit → Slack message via webhook.** *Do NOT call the Slack webhook from the browser* — the URL must stay secret and Slack blocks browser CORS. Wire it server-side:
+1. The form POSTs the field values to an Astro endpoint **`src/pages/api/contact.ts`** (`export const prerender = false;`, with an SSR adapter such as `@astrojs/node` / Vercel / Netlify — the marketing pages stay static).
+2. That endpoint reads `SLACK_WEBHOOK_URL` from a server env var and `fetch`es it with a Block Kit payload, then returns `{ ok: true }`.
+
+```ts
+// src/pages/api/contact.ts
+export const prerender = false;
+export async function POST({ request }) {
+  const d = await request.json();
+  const label = d.intent === 'sales' ? 'Talk to sales' : 'Free API key';
+  const payload = {
+    text: `New ${label} request — FindThisBIN`,
+    blocks: [
+      { type: 'header', text: { type: 'plain_text', text: `📥 New ${label} request` } },
+      { type: 'section', fields: [
+        { type: 'mrkdwn', text: `*Name:*\n${d.name}` },
+        { type: 'mrkdwn', text: `*Work email:*\n${d.email}` },
+        { type: 'mrkdwn', text: `*Company:*\n${d.company}` },
+        { type: 'mrkdwn', text: `*Role:*\n${d.role || '—'}` },
+        { type: 'mrkdwn', text: `*Monthly lookups:*\n${d.volume}` },
+        { type: 'mrkdwn', text: `*Intent:*\n${d.intent}` },
+      ] },
+      { type: 'section', text: { type: 'mrkdwn', text: `*Message:*\n${d.message || '—'}` } },
+    ],
+  };
+  const r = await fetch(import.meta.env.SLACK_WEBHOOK_URL, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+  });
+  return new Response(JSON.stringify({ ok: r.ok }), { status: r.ok ? 200 : 502 });
+}
+```
+
+Set `SLACK_WEBHOOK_URL` in `.env` and your host's env. Create it in Slack → *Apps → Incoming Webhooks → Add to a channel*. Add a honeypot field + basic rate limiting before launch. The reference `Contact.dc.html` builds this exact payload in `buildSlackPayload()` and simulates the round-trip (it `console.log`s the payload and shows the success state) — swap the simulation for a real `fetch('/api/contact', …)`.
+
+## CTA wiring (global)
+Every primary CTA points to the contact page, by intent:
+- **"Get your free API key"** (nav button, hero, the pricing tiers' Start free / Get your API key / Start free trial, all closers, docs utility bar) → **`/contact?intent=api-key`**.
+- **"Talk to sales"** (hero, PSP, enterprise tier, volume callout, all closers, company "Get in touch") → **`/contact?intent=sales`**.
+- **"Sign in"** (nav only) stays a placeholder (`#`).
 
 ---
 
@@ -284,7 +375,7 @@ curl https://api.findthisbin.com/v1/bins/53847012 \
 Mobile-first. Breakpoints used in the prototype: **860px** (nav collapses), **980px** (hero stacks), **900px** (2-col sections + footer + docs 2-col stack), **820px** (pillars stack), **1040px / 560px** (pricing 4→2→1), **600px** (stat trio stacks). Fluid type/spacing via `clamp()` (values above) reduces the number of hard breakpoints needed. Comparison table scrolls horizontally under 760px. **Accessibility:** maintain WCAG AA contrast on dark sections (the muted greys above are chosen for this), semantic landmarks (`<header><nav><main><section><footer>`), keyboard-operable toggles/accordions/tabs (real `<button>`s, `aria-expanded`), and visible focus states.
 
 ## Assets
-- **Fonts:** Space Grotesk, Inter, JetBrains Mono (Google Fonts) — no local files.
+- **Fonts:** Space Grotesk, IBM Plex Sans, IBM Plex Mono (Google Fonts / Astro fonts) — no local files. See the Typography section for the exact `fonts` config and the weight note.
 - **Icons:** inline SVGs only (search magnifier, footer GitHub/X/LinkedIn). No icon library required; copy the SVG paths from the reference files or use your preferred set.
 - **Logos:** FindThisBIN is a **text wordmark** (no image). Partner logos are placeholder text wordmarks — replace with real customer logos when available. Card-scheme names are rendered as plain text / generic motifs; **do not introduce official trademarked scheme logo files.**
 - **No raster images** are used anywhere — all visuals are CSS gradients, glows, and type.
@@ -292,9 +383,12 @@ Mobile-first. Breakpoints used in the prototype: **860px** (nav collapses), **98
 ## Files in this bundle
 `design_files/` contains the HTML design references (open in a browser to preview):
 - `Home.dc.html` — landing page (all 14 sections + interactions/logic)
+- `Product.dc.html` — product/feature deep-dive
 - `Pricing.dc.html` — pricing page (toggle, table, FAQ)
 - `Docs.dc.html` — docs landing
-- `Nav.dc.html` — shared nav (scroll/mobile logic)
+- `Company.dc.html` — about + careers (`#careers`)
+- `Contact.dc.html` — book-a-demo / get-API-key form (intent switch, validation, Slack payload in `buildSlackPayload()`)
+- `Nav.dc.html` — shared nav (scroll/mobile logic, active states for all 5 nav targets)
 - `Footer.dc.html` — shared footer
 - `support.js` — prototype runtime (reference only; **do not port to Astro**)
 
