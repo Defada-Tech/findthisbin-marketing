@@ -1,8 +1,11 @@
 ---
 import Wordmark from "./Wordmark.astro";
 import {
+  HOME_PATH,
+  PRODUCT_PATH,
   PRICING_PATH,
   DOCS_PATH,
+  COMPANY_PATH,
   API_REFERENCE_URL,
   STATUS_URL,
   GITHUB_URL,
@@ -11,10 +14,10 @@ import {
 } from "../lib/site";
 
 const productLinks = [
-  { href: "/#product", label: "Overview" },
-  { href: "/#try", label: "Try it live" },
+  { href: PRODUCT_PATH, label: "Overview" },
+  { href: `${HOME_PATH}#try`, label: "Try it live" },
   { href: PRICING_PATH, label: "Pricing" },
-  { href: "/#psp", label: "For platforms" },
+  { href: `${HOME_PATH}#psp`, label: "For platforms" },
 ];
 const devLinks = [
   { href: DOCS_PATH, label: "Docs" },
@@ -23,9 +26,8 @@ const devLinks = [
   { href: STATUS_URL, label: "Status" },
 ];
 const companyLinks = [
-  { href: "/#", label: "About" },
+  { href: COMPANY_PATH, label: "About" },
   { href: "/#", label: "Blog" },
-  { href: "/#", label: "Careers" },
 ];
 const legalLinks = [
   { href: "/#", label: "Privacy" },

@@ -1,22 +1,26 @@
 # FindThisBIN — marketing site
 
 Marketing site for **FindThisBIN** (findthisbin.com), a developer-first BIN
-(Bank Identification Number) intelligence API for payment platforms. Three
-pages — Home (`/`), Pricing (`/pricing`), Docs (`/docs`) — built as a
-near-zero-JS static site on **Astro 6** and deployed to **Cloudflare Workers
-(Static Assets)**.
+(Bank Identification Number) intelligence API for payment platforms. Six pages
+— Home (`/`), Product (`/product`), Pricing (`/pricing`), Docs (`/docs`),
+Company (`/company`), and a Contact form (`/contact`) — built as a near-zero-JS
+site on **Astro 6** and deployed to **Cloudflare Workers (Static Assets)**.
+Every page prerenders except the contact form's `/api/contact` endpoint, the one
+on-demand route (it posts submissions to Slack).
 
 ## Stack
 
-- **Astro 6** — `output: "static"` (all pages prerender), `@astrojs/cloudflare` adapter
+- **Astro 6** — `output: "static"` (all pages prerender; `/api/contact` opts out with `prerender = false`), `@astrojs/cloudflare` adapter
 - **Tailwind CSS v4** via `@tailwindcss/vite` — design tokens live in `src/styles/global.css`
-- **Self-hosted fonts** via the Astro Fonts API (Space Grotesk, Inter, JetBrains Mono)
+- **Self-hosted fonts** via the Astro Fonts API (Space Grotesk, IBM Plex Sans, IBM Plex Mono)
 - **@astrojs/sitemap**, **TypeScript** (strict), **Wrangler** for deploy, **Terraform** for edge config
 
-No UI framework runtime: the six interactions (nav scroll/menu, stat counters,
-BIN playground, code-language tabs, pricing toggle, FAQ accordion) are small
-scoped vanilla scripts. Code highlighting is build-time via Astro's Shiki with a
-custom theme (`src/lib/codeTheme.ts`).
+No UI framework runtime: the interactions (nav scroll/menu, BIN playground,
+code-language tabs, pricing toggle, FAQ accordion, and the
+progressively-enhanced contact form) are small scoped vanilla scripts. Code
+highlighting is build-time via Astro's Shiki with a custom theme
+(`src/lib/codeTheme.ts`). The contact form works without JS (native POST →
+`/api/contact` → 303 redirect with a query-param success/error pane).
 
 ## Commands
 
@@ -42,11 +46,13 @@ src/
     CodeTabs.astro              ← tabbed, Shiki-highlighted code panel
     DemoPanel.astro             ← hero animated JSON response
     BinPlayground.astro         ← "Try it live" interactive widget
+    ContactForm.astro           ← contact form island (intent switch, JS-off fallback)
   lib/
     site.ts                     ← site-wide routes, labels, external URLs
     bin.ts                      ← BIN playground data + lookup/synthesis + card renderer
     codeTheme.ts                ← custom Shiki theme (README palette)
-  pages/{index,pricing,docs}.astro
+  pages/{index,product,pricing,docs,company,contact}.astro
+  pages/api/contact.ts          ← SSR endpoint (prerender=false) → Slack webhook
   styles/global.css             ← design tokens, @theme bridge, keyframes, shared utilities
 public/                         ← brand logos, og-default.svg, robots.txt
 infra/                          ← Terraform (Cloudflare edge config only)
@@ -59,6 +65,9 @@ The site deploys to Cloudflare Workers Static Assets.
 1. **Worker** (script + assets): `npm run deploy`. The `@astrojs/cloudflare`
    adapter writes the real deploy config to `dist/server/wrangler.json`; the
    root `wrangler.jsonc` is human-facing and intentionally omits `main`/`assets`.
+   The contact form needs the `SLACK_WEBHOOK_URL` secret set once via
+   `npx wrangler secret put SLACK_WEBHOOK_URL` (locally, copy `.dev.vars.example`
+   → `.dev.vars`). Without it the form returns a friendly error and logs the lead.
 2. **Edge config** (custom domains, Always-HTTPS, apex→www redirect): `cd infra
    && tofu init && tofu apply` with a scoped `CLOUDFLARE_API_TOKEN` exported.
    Terraform owns edge config only — never the Worker script.

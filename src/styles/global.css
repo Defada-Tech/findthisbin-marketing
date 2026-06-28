@@ -79,8 +79,8 @@
      (--ff-* include size-adjusted fallbacks). Literal "Space Grotesk" etc.
      in component styles still resolve to the same @font-face. */
   --font-display: var(--ff-display, "Space Grotesk", system-ui, sans-serif);
-  --font-sans: var(--ff-body, "Inter", system-ui, sans-serif);
-  --font-mono: var(--ff-mono, "JetBrains Mono", ui-monospace, monospace);
+  --font-sans: var(--ff-body, "IBM Plex Sans", system-ui, sans-serif);
+  --font-mono: var(--ff-mono, "IBM Plex Mono", ui-monospace, monospace);
 }
 
 /* ── Base ─────────────────────────────────────────────────────────────── */
@@ -176,7 +176,7 @@ a {
 
 /* Headings */
 .eyebrow {
-  font-family: "Inter", var(--font-sans);
+  font-family: "IBM Plex Sans", var(--font-sans);
   font-weight: 700;
   font-size: 13px;
   letter-spacing: 0.08em;

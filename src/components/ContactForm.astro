@@ -1,0 +1,344 @@
+---
+import { CONTACT_PATH, DOCS_PATH, HOME_PATH } from "../lib/site";
+
+/**
+ * Contact form card. Intent-driven (api-key | sales) + progressive enhancement:
+ *  - Native: <form> POSTs to /api/contact; the endpoint 303-redirects back with
+ *    ?sent=1 / ?error=1 (preserving &intent=) and the (SSR) page re-renders the
+ *    matching pane. Works fully without JS.
+ *  - Enhanced: a tiny script intercepts submit, fetches with Accept: json, and
+ *    swaps to the success pane inline — no navigation.
+ * Server-side validation + Slack delivery live in src/pages/api/contact.ts.
+ */
+interface Props {
+  intent?: "api-key" | "sales";
+  submitted?: boolean;
+  error?: string;
+  refId: string;
+}
+const { intent = "api-key", submitted = false, error, refId } = Astro.props;
+
+const sales = intent === "sales";
+const otherIntent = sales ? "api-key" : "sales";
+const messageLabel = sales ? "Anything we should know?" : "What are you building?";
+const messagePlaceholder = sales
+  ? "Volumes, regions, timelines, current provider…"
+  : "Routing, surcharging, DCC, checkout UX…";
+const submitLabel = sales ? "Request a call" : "Get my API key";
+const switchLabel = sales
+  ? "Just want to start building? Get your free API key →"
+  : "Evaluating for a platform? Talk to sales →";
+const successTitle = sales ? "Request received." : "You’re all set.";
+const successBody = sales
+  ? "Thanks — a payments specialist will reach out within one business day to set up a call and a tailored plan."
+  : "Check your inbox: your test and live API keys are on the way so you can start integrating right now.";
+---
+
+<div class="form-card">
+  <div class="glow-border" aria-hidden="true"></div>
+  <div class="form-inner">
+    <div class="form-pane" data-form hidden={submitted}>
+      <form method="POST" action="/api/contact" data-contact-form>
+        <input type="hidden" name="intent" value={intent} />
+
+        <div class="name-grid">
+          <div class="field">
+            <label for="name">Full name</label>
+            <input id="name" name="name" type="text" required autocomplete="name" placeholder="Ada Lovelace" />
+          </div>
+          <div class="field">
+            <label for="email">Work email</label>
+            <input id="email" name="email" type="email" required autocomplete="email" placeholder="ada@platform.com" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="company">Company</label>
+          <input id="company" name="company" type="text" required autocomplete="organization" placeholder="Your platform or company" />
+        </div>
+
+        {sales && (
+          <div class="field">
+            <label for="role">Your role <span class="optional">(optional)</span></label>
+            <input id="role" name="role" type="text" placeholder="e.g. Head of Payments, Staff Engineer" />
+          </div>
+        )}
+
+        <div class="field">
+          <label for="volume">Expected monthly lookups</label>
+          <select id="volume" name="volume">
+            <option>Just exploring</option>
+            <option>Under 100k / mo</option>
+            <option>100k – 1M / mo</option>
+            <option>1M – 10M / mo</option>
+            <option>10M+ / mo</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="message">{messageLabel} <span class="optional">(optional)</span></label>
+          <textarea id="message" name="message" rows="3" placeholder={messagePlaceholder}></textarea>
+        </div>
+
+        {/* honeypot — must stay empty; hidden from users + assistive tech */}
+        <div class="hp" aria-hidden="true">
+          <label for="website">Website</label>
+          <input id="website" name="website" type="text" tabindex="-1" autocomplete="off" />
+        </div>
+
+        <div class="err" data-err hidden={!error} role="alert">{error}</div>
+
+        <button type="submit" class="submit" data-submit>{submitLabel}</button>
+
+        <p class="privacy">
+          By submitting you agree to our <a href={`${HOME_PATH}#`}>Privacy Policy</a>. We never store full card numbers.
+        </p>
+
+        <div class="switch-row">
+          <a class="switch" href={`${CONTACT_PATH}?intent=${otherIntent}`}>{switchLabel}</a>
+        </div>
+      </form>
+    </div>
+
+    <div class="success-pane" data-success hidden={!submitted}>
+      <div class="check" aria-hidden="true">✓</div>
+      <h2>{successTitle}</h2>
+      <p>{successBody}</p>
+      <div class="ref" aria-label={`Reference ${refId}`}>
+        <span class="ref-key">ref</span><span class="ref-colon">:</span><span class="ref-val">{refId}</span>
+      </div>
+      <div class="success-cta-row">
+        <a href={DOCS_PATH} class="cta-lime">Read the docs</a>
+        <a href={HOME_PATH} class="cta-ghost">Back to home</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .form-card {
+    position: relative;
+  }
+  /* Soft violet→cyan gradient halo behind the card (matches the prototype). */
+  .glow-border {
+    position: absolute;
+    inset: -1px;
+    border-radius: 20px;
+    background: linear-gradient(140deg, rgba(124, 92, 255, 0.5), rgba(34, 211, 238, 0.32), rgba(124, 92, 255, 0.08));
+    filter: blur(2px);
+    opacity: 0.55;
+    pointer-events: none;
+  }
+  .form-inner {
+    position: relative;
+    background: var(--ink-2);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    padding: clamp(24px, 3vw, 36px);
+    box-shadow: var(--shadow-panel);
+  }
+
+  form { display: flex; flex-direction: column; gap: 18px; }
+  .name-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 520px) { .name-grid { grid-template-columns: 1fr; } }
+
+  .field { display: flex; flex-direction: column; gap: 7px; }
+  label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #c7c7d6;
+  }
+  .optional { color: var(--text-dark-faint); font-weight: 400; }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    font-family: var(--font-sans);
+    font-size: 15px;
+    color: #fff;
+    background: var(--ink-3);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+    padding: 12px 14px;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  select { appearance: none; cursor: pointer; }
+  textarea { resize: vertical; }
+  input::placeholder,
+  textarea::placeholder { color: var(--text-dark-faint); }
+  input:focus,
+  select:focus,
+  textarea:focus {
+    outline: none;
+    border-color: var(--violet);
+    box-shadow: 0 0 0 3px rgba(124, 92, 255, 0.18);
+  }
+
+  /* honeypot: visually + AT hidden, but not display:none (some bots skip those) */
+  .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+  .err {
+    font-size: 13px;
+    color: #ff8095;
+    background: rgba(255, 128, 149, 0.08);
+    border: 1px solid rgba(255, 128, 149, 0.3);
+    border-radius: 9px;
+    padding: 0.6rem 0.8rem;
+  }
+
+  .submit {
+    width: 100%;
+    border: 0;
+    cursor: pointer;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--ink);
+    background: var(--lime);
+    padding: 15px;
+    border-radius: 11px;
+    box-shadow: var(--shadow-lime);
+    transition: opacity 0.15s ease, transform 0.15s ease;
+  }
+  .submit:hover { transform: translateY(-1px); }
+  .submit[disabled] { opacity: 0.7; cursor: progress; transform: none; }
+
+  .privacy {
+    margin: 2px 0 0;
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: var(--text-light-muted);
+    text-align: center;
+  }
+  .privacy a { color: var(--text-dark-muted); text-decoration: underline; }
+
+  .switch-row {
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+    padding-top: 18px;
+    margin-top: 2px;
+  }
+  .switch {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-dark-muted);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  .switch:hover { color: var(--cyan); }
+
+  /* Success pane */
+  .success-pane {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0;
+    padding: 24px 8px;
+  }
+  .check {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: rgba(196, 245, 66, 0.14);
+    border: 1px solid rgba(196, 245, 66, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--lime);
+    font-size: 30px;
+    line-height: 1;
+    margin-bottom: 22px;
+  }
+  .success-pane h2 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 26px;
+    letter-spacing: -0.02em;
+    margin: 0 0 12px;
+  }
+  .success-pane p {
+    font-size: 15.5px;
+    line-height: 1.6;
+    color: var(--text-dark-body);
+    margin: 0 auto 22px;
+    max-width: 38ch;
+  }
+  .ref {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    color: var(--text-light-muted);
+    background: var(--ink-3);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin-bottom: 26px;
+  }
+  .ref-key { color: #7dd3fc; }
+  .ref-colon { color: var(--text-dark-faint); }
+  .ref-val { color: #9ee493; }
+  .success-cta-row { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+  .cta-lime,
+  .cta-ghost {
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 15px;
+    padding: 12px 22px;
+    border-radius: 11px;
+    transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+  }
+  .cta-lime { color: var(--ink); background: var(--lime); }
+  .cta-lime:hover { transform: translateY(-1px); }
+  .cta-ghost {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+  }
+  .cta-ghost:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.28); }
+</style>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>("[data-contact-form]");
+  if (form) {
+    form.addEventListener("submit", async (e) => {
+      // Native HTML5 validation (required/type=email) runs before this fires.
+      e.preventDefault();
+      const card = form.closest(".form-card")!;
+      const errEl = form.querySelector<HTMLElement>("[data-err]")!;
+      const btn = form.querySelector<HTMLButtonElement>("[data-submit]")!;
+      const formPane = card.querySelector<HTMLElement>("[data-form]")!;
+      const successPane = card.querySelector<HTMLElement>("[data-success]")!;
+      btn.disabled = true;
+      const label = btn.textContent;
+      btn.textContent = "Sending…";
+      errEl.hidden = true;
+      try {
+        const res = await fetch(form.action, {
+          method: "POST",
+          body: new FormData(form),
+          headers: { Accept: "application/json" },
+        });
+        const data = (await res.json().catch(() => ({ ok: res.ok }))) as {
+          ok?: boolean;
+          error?: string;
+        };
+        if (res.ok && data.ok !== false) {
+          formPane.hidden = true;
+          successPane.hidden = false;
+          successPane.scrollIntoView({ block: "nearest" });
+          return;
+        }
+        errEl.textContent = data.error || "Something went wrong. Please try again.";
+      } catch {
+        errEl.textContent = "Network error. Please try again.";
+      }
+      errEl.hidden = false;
+      btn.disabled = false;
+      btn.textContent = label;
+    });
+  }
+</script>

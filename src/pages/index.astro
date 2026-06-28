@@ -18,7 +18,6 @@ import {
 } from "../lib/site";
 
 const trust = ["EU-hosted", "GDPR-clean", "PCI-out-of-scope", "sub-10ms p99", "99.9% uptime"];
-const partners = ["NorthPay", "Volt", "Cadence", "Ledgerline", "Orbital", "Settle"];
 
 const fields = [
   { k: "scheme", v: "Visa · MC · Amex" },
@@ -64,14 +63,6 @@ const howTabs: CodeTab[] = [
   { label: "Python", lang: "python", code: `from findthisbin import FindThisBIN\nftb = FindThisBIN('sk_live_...')\ncard = ftb.bins.get('53847012')` },
   { label: "Go", lang: "go", code: `ftb := findthisbin.New("sk_live_...")\ncard, err := ftb.Bins.Get("53847012")` },
   { label: "PHP", lang: "php", code: `$ftb = new FindThisBIN('sk_live_...');\n$card = $ftb->bins->get('53847012');` },
-];
-
-const perfStats = [
-  { n: "<10ms", l: "p99 latency" },
-  { n: "99.9%", l: "uptime" },
-  { n: "6.2M", l: "BINs covered" },
-  { n: "242", l: "countries" },
-  { n: "EU", l: "data residency" },
 ];
 
 const priceCards = [
@@ -131,32 +122,8 @@ const devCards = [
     </div>
   </section>
 
-  <!-- ============ SOCIAL PROOF ============ -->
-  <section class="band band-off social">
-    <div class="wrap">
-      <p class="social-label">Powering BIN intelligence for modern payment platforms</p>
-      <div class="partners">
-        {partners.map((p) => <span class="partner">{p}</span>)}
-      </div>
-      <div class="stats3">
-        <div class="stat">
-          <div class="stat-num" data-count="6.2" data-decimals="1" data-suffix="M">6.2M</div>
-          <div class="stat-label">BINs covered</div>
-        </div>
-        <div class="stat stat-bordered">
-          <div class="stat-num" data-count="242" data-suffix="">242</div>
-          <div class="stat-label">Countries &amp; territories</div>
-        </div>
-        <div class="stat">
-          <div class="stat-num" data-count="184" data-suffix="M">184M</div>
-          <div class="stat-label">Lookups per day</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- ============ VALUE PILLARS ============ -->
-  <section id="product" class="band band-white">
+  <section class="band band-white">
     <div class="wrap">
       <div class="section-head" data-reveal>
         <Eyebrow label="Why FindThisBIN" tone="violet" />
@@ -318,23 +285,6 @@ const devCards = [
           <CodeTabs id="how-it-works" tabs={howTabs} />
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- ============ PERFORMANCE BAND ============ -->
-  <section class="band signature-gradient perf-band" data-anim>
-    <div class="wrap">
-      <div class="perf-grid">
-        {
-          perfStats.map((s) => (
-            <div class="perf-stat">
-              <div class="stat-num perf-stat-num">{s.n}</div>
-              <div class="perf-stat-l">{s.l}</div>
-            </div>
-          ))
-        }
-      </div>
-      <p class="perf-foot">GDPR · PCI out-of-scope · SOC 2 (in progress)</p>
     </div>
   </section>
 
@@ -510,51 +460,6 @@ const devCards = [
   .center-eyebrow { justify-content: center; display: flex; }
   .lead-center { margin-left: auto; margin-right: auto; }
 
-  /* ── Social proof ─────────────────────────────────────────────────── */
-  .social-label {
-    text-align: center;
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--text-light-faint);
-    margin: 0 0 36px;
-  }
-  .partners {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 24px 52px;
-    margin-bottom: 56px;
-  }
-  .partner {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 23px;
-    color: var(--ink);
-    opacity: 0.42;
-    letter-spacing: -0.02em;
-  }
-  .stats3 {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-    max-width: 880px;
-    margin: 0 auto;
-  }
-  .stat { text-align: center; }
-  .stat-bordered {
-    border-left: 1px solid var(--border-light);
-    border-right: 1px solid var(--border-light);
-  }
-  .stat .stat-num { color: var(--ink); }
-  .stat-label { font-size: 14px; color: var(--text-light-muted); font-weight: 500; margin-top: 4px; }
-  @media (max-width: 600px) {
-    .stats3 { grid-template-columns: 1fr; gap: 8px; }
-    .stat-bordered { border: 0; padding: 14px 0; }
-  }
-
   /* ── Pillars ──────────────────────────────────────────────────────── */
   .pillars { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
   .pillar { border-radius: 18px; padding: 34px; position: relative; overflow: hidden; }
@@ -688,12 +593,6 @@ const devCards = [
   .step-num.cyan { background: rgba(34, 211, 238, 0.16); border: 1px solid rgba(34, 211, 238, 0.4); color: var(--cyan); }
   .step-t { font-weight: 700; font-size: 18px; color: #fff; }
   .step-d { font-size: 15px; color: var(--text-dark-muted); margin-top: 2px; }
-
-  /* ── Performance band ─────────────────────────────────────────────── */
-  .perf-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 28px; text-align: center; }
-  .perf-stat-num { color: #fff; }
-  .perf-stat-l { font-size: 14px; color: rgba(255, 255, 255, 0.8); font-weight: 500; }
-  .perf-foot { text-align: center; margin: 30px 0 0; font-size: 14px; color: rgba(255, 255, 255, 0.85); font-weight: 500; letter-spacing: 0.02em; }
 
   /* ── Pricing preview ──────────────────────────────────────────────── */
   .price4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; align-items: stretch; }
@@ -829,49 +728,3 @@ const devCards = [
   }
   .final-cta { justify-content: center; }
 </style>
-
-<script>
-  // Stat counters — ease-out cubic over 1.5s, fired when scrolled into view.
-  const counters = Array.from(document.querySelectorAll<HTMLElement>("[data-count]"));
-  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-  const run = (el: HTMLElement) => {
-    const target = parseFloat(el.dataset.count || "0");
-    const decimals = parseInt(el.dataset.decimals || "0", 10);
-    const suffix = el.dataset.suffix ?? "";
-    if (reduce) {
-      el.textContent = target.toFixed(decimals) + suffix;
-      return;
-    }
-    const dur = 1500;
-    let start: number | null = null;
-    const tick = (now: number) => {
-      if (start === null) start = now;
-      const t = Math.min(1, (now - start) / dur);
-      const e = 1 - Math.pow(1 - t, 3);
-      el.textContent = (target * e).toFixed(decimals) + suffix;
-      if (t < 1) requestAnimationFrame(tick);
-      else el.textContent = target.toFixed(decimals) + suffix;
-    };
-    requestAnimationFrame(tick);
-  };
-
-  if (counters.length) {
-    if (!("IntersectionObserver" in window)) {
-      counters.forEach(run);
-    } else {
-      const io = new IntersectionObserver(
-        (entries, obs) => {
-          for (const e of entries) {
-            if (e.isIntersecting) {
-              run(e.target as HTMLElement);
-              obs.unobserve(e.target);
-            }
-          }
-        },
-        { threshold: 0.4 },
-      );
-      counters.forEach((c) => io.observe(c));
-    }
-  }
-</script>

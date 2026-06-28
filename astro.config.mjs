@@ -30,7 +30,7 @@ export default defineConfig({
     },
     {
       provider: fontProviders.google(),
-      name: "Inter",
+      name: "IBM Plex Sans",
       cssVariable: "--ff-body",
       weights: [400, 500, 600, 700],
       subsets: ["latin"],
@@ -38,9 +38,9 @@ export default defineConfig({
     },
     {
       provider: fontProviders.google(),
-      name: "JetBrains Mono",
+      name: "IBM Plex Mono",
       cssVariable: "--ff-mono",
-      weights: [400, 500, 700],
+      weights: [400, 500],
       subsets: ["latin"],
       fallbacks: ["ui-monospace", "monospace"],
     },

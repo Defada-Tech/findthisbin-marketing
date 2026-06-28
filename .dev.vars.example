@@ -1,0 +1,6 @@
+# Local development secrets for `wrangler dev` / `astro dev`.
+# Copy to `.dev.vars` (gitignored) and fill in real values.
+# In production these are set with `wrangler secret put <NAME>` (NOT committed, NOT in Terraform state).
+
+# Slack incoming webhook that receives Contact (Get-API-key / Talk-to-sales) submissions.
+SLACK_WEBHOOK_URL="https://hooks.slack.com/services/T000/B000/XXXXXXXX"

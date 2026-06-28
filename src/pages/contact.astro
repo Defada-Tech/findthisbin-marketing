@@ -1,0 +1,180 @@
+---
+export const prerender = false; // SSR so success/error render without JS (reads query params)
+
+import Layout from "../layouts/Layout.astro";
+import ContactForm from "../components/ContactForm.astro";
+
+const params = Astro.url.searchParams;
+const intent = params.get("intent") === "sales" ? "sales" : "api-key";
+const submitted = params.get("sent") === "1";
+const error =
+  params.get("error") === "1"
+    ? "Please provide your name, a valid work email, and your company."
+    : undefined;
+
+const sales = intent === "sales";
+
+// Cosmetic reference shown in the success pane (runs on the Worker at request time).
+const refId = "ftb_" + Math.random().toString(36).slice(2, 8).toUpperCase();
+
+const copy = sales
+  ? {
+      eyebrow: "Talk to sales",
+      heading: "Let’s talk volume.",
+      subhead:
+        "Tell us about your platform and we’ll build a plan around your volume, SLAs, and EU data-residency needs.",
+      nextStep:
+        "A payments specialist reviews your note and replies within one business day to set up a call and a tailored plan.",
+      emailLabel: "sales@findthisbin.com",
+      emailHref: "mailto:sales@findthisbin.com",
+    }
+  : {
+      eyebrow: "Free API key",
+      heading: "Get your free API key.",
+      subhead:
+        "Create an account and make your first BIN lookup in under five minutes. Test and live keys, no credit card.",
+      nextStep:
+        "We’ll send your test and live API keys to your inbox so you can start integrating right away.",
+      emailLabel: "support@findthisbin.com",
+      emailHref: "mailto:support@findthisbin.com",
+    };
+
+const points = [
+  "Signup to first BIN lookup in under 5 minutes",
+  "EU-hosted · GDPR-clean · out of PCI scope",
+  "Sub-10ms p99 · 99.9% uptime · DPA available",
+];
+
+const title = `${copy.heading.replace(/’/g, "'").replace(/\.$/, "")} — FindThisBIN`;
+const description = sales
+  ? "Talk to the FindThisBIN team about high-volume BIN intelligence, SLAs, and EU data residency for your payment platform."
+  : "Get a free FindThisBIN API key and make your first BIN lookup in under five minutes — test and live keys, no credit card.";
+---
+
+<Layout title={title} description={description}>
+  <section class="band band-ink contact">
+    <div class="bg" aria-hidden="true"></div>
+    <div class="wrap contact-grid">
+      <!-- LEFT: reassurance -->
+      <div class="reassure-col" data-reveal>
+        <div class="pill">
+          <span class="dot" aria-hidden="true"></span>
+          <span>{copy.eyebrow}</span>
+        </div>
+        <h1 class="h1-page">{copy.heading}</h1>
+        <p class="lead">{copy.subhead}</p>
+
+        <ul class="points">
+          {points.map((p) => (
+            <li><span class="tick" aria-hidden="true">✓</span><span>{p}</span></li>
+          ))}
+        </ul>
+
+        <div class="next-card">
+          <div class="next-label">What happens next</div>
+          <p>{copy.nextStep}</p>
+          <div class="next-email">
+            Prefer email? <a href={copy.emailHref}>{copy.emailLabel}</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: form / success -->
+      <div class="form-col" data-reveal>
+        <ContactForm intent={intent} submitted={submitted} error={error} refId={refId} />
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .contact { display: flex; align-items: flex-start; }
+  .bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(100% 80% at 78% -10%, rgba(124, 92, 255, 0.28), transparent 55%),
+      radial-gradient(70% 60% at 5% 10%, rgba(34, 211, 238, 0.14), transparent 55%);
+  }
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 0.85fr 1fr;
+    gap: 48px;
+    align-items: start;
+    width: 100%;
+  }
+  @media (max-width: 940px) {
+    .contact-grid { grid-template-columns: 1fr; gap: 36px; }
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 7px 14px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    margin-bottom: 22px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #d7d7e2;
+  }
+  .pill .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--lime);
+    box-shadow: 0 0 10px var(--lime);
+  }
+
+  .h1-page { margin: 0 0 18px; max-width: 14ch; }
+  .reassure-col .lead { color: var(--text-dark-body); margin: 0 0 32px; max-width: 440px; }
+
+  .points {
+    list-style: none;
+    margin: 0 0 34px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .points li {
+    display: flex;
+    gap: 13px;
+    align-items: flex-start;
+    font-size: 15px;
+    line-height: 1.5;
+    color: #c7c7d6;
+  }
+  .tick { flex: none; margin-top: 1px; color: var(--lime); }
+
+  .next-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 20px;
+  }
+  .next-label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-light-muted);
+    margin-bottom: 8px;
+  }
+  .next-card p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-dark-muted);
+  }
+  .next-email {
+    margin-top: 14px;
+    font-size: 14px;
+    color: var(--text-dark-muted-2);
+  }
+  .next-email a { color: var(--cyan); text-decoration: none; font-weight: 500; }
+  .next-email a:hover { text-decoration: underline; }
+</style>

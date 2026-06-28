@@ -1,23 +1,25 @@
 ---
 import Wordmark from "./Wordmark.astro";
 import {
+  PRODUCT_PATH,
   PRICING_PATH,
   DOCS_PATH,
+  COMPANY_PATH,
   SIGN_IN_URL,
   GET_API_KEY_LABEL,
   GET_API_KEY_URL,
 } from "../lib/site";
 
 interface Props {
-  active?: "home" | "pricing" | "docs";
+  active?: "home" | "product" | "pricing" | "docs" | "company";
 }
 const { active } = Astro.props;
 
 const links = [
-  { href: "/#product", label: "Product", key: "product" },
+  { href: PRODUCT_PATH, label: "Product", key: "product" },
   { href: PRICING_PATH, label: "Pricing", key: "pricing" },
   { href: DOCS_PATH, label: "Docs", key: "docs" },
-  { href: "/#company", label: "Company", key: "company" },
+  { href: COMPANY_PATH, label: "Company", key: "company" },
 ];
 ---
 

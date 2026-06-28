@@ -12,14 +12,18 @@ export const SITE_DESCRIPTION =
 
 /* Internal routes */
 export const HOME_PATH = "/";
+export const PRODUCT_PATH = "/product";
 export const PRICING_PATH = "/pricing";
 export const DOCS_PATH = "/docs";
+export const COMPANY_PATH = "/company";
+export const CONTACT_PATH = "/contact";
 
-/* Primary CTAs — keep labels identical everywhere they appear. */
+/* Primary CTAs — keep labels identical everywhere they appear. Both route
+   through the on-site contact form, switched by the `intent` query param. */
 export const GET_API_KEY_LABEL = "Get your free API key";
-export const GET_API_KEY_URL = "https://app.findthisbin.com/signup";
+export const GET_API_KEY_URL = "/contact?intent=api-key";
 export const TALK_TO_SALES_LABEL = "Talk to sales";
-export const TALK_TO_SALES_URL = "mailto:sales@findthisbin.com";
+export const TALK_TO_SALES_URL = "/contact?intent=sales";
 
 /* External app / developer surfaces (placeholders for the live dashboard). */
 export const SIGN_IN_URL = "https://app.findthisbin.com/login";
