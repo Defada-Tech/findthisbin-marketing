@@ -4,29 +4,36 @@ import Eyebrow from "../components/Eyebrow.astro";
 import CodeTabs from "../components/CodeTabs.astro";
 import type { CodeTab } from "../components/CodeTabs.astro";
 import {
-  GET_API_KEY_LABEL,
-  GET_API_KEY_URL,
+  BOOK_DEMO_LABEL,
+  BOOK_DEMO_URL,
   API_REFERENCE_URL,
   OPENAPI_SPEC_URL,
   POSTMAN_URL,
   STATUS_URL,
   GITHUB_URL,
+  ENGINE_BASE_URL,
 } from "../lib/site";
 
 const quickTabs: CodeTab[] = [
-  { label: "cURL", lang: "bash", code: `curl https://api.findthisbin.com/v1/bins/53847012 \\\n  -H "Authorization: Bearer sk_live_..."` },
-  { label: "Node", lang: "js", code: `import { FindThisBIN } from 'findthisbin'\nconst ftb = new FindThisBIN('sk_live_...')\nconst card = await ftb.bins.get('53847012')` },
-  { label: "Python", lang: "python", code: `from findthisbin import FindThisBIN\nftb = FindThisBIN('sk_live_...')\ncard = ftb.bins.get('53847012')` },
+  { label: "cURL", lang: "bash", code: `curl ${ENGINE_BASE_URL}/v1/bins/53847012 \\\n  -H "Authorization: Bearer sk_live_..."` },
+  { label: "Node", lang: "js", code: `import { FindThisBIN } from 'findthisbin'\nconst ftb = new FindThisBIN({ baseUrl: '${ENGINE_BASE_URL}', apiKey: 'sk_live_...' })\nconst card = await ftb.bins.get('53847012')` },
+  { label: "Python", lang: "python", code: `from findthisbin import FindThisBIN\nftb = FindThisBIN(base_url='${ENGINE_BASE_URL}', api_key='sk_live_...')\ncard = ftb.bins.get('53847012')` },
 ];
 
 const quickSteps = [
-  { n: "1", t: "Get an API key", d: "Sign up free — test & live keys, no card.", tone: "violet" },
-  { n: "2", t: "Make your first request", d: "One GET call with the BIN.", tone: "violet" },
-  { n: "3", t: "Read the response", d: "Rich, typed, scored card data.", tone: "cyan" },
+  { n: "1", t: "Deploy the engine", d: "Install via Helm or container in your VPC.", tone: "violet" },
+  { n: "2", t: "Connect a data source", d: "Plug in a license or start on seed data.", tone: "violet" },
+  { n: "3", t: "Make your first lookup", d: "One GET call returns rich, scored card data.", tone: "cyan" },
 ];
 
 const docCards = [
-  { icon: "▸", t: "Quickstart", d: "Your first lookup in 5 minutes.", href: "#" },
+  { icon: "▸", t: "Quickstart", d: "Deploy in your cloud in 15 minutes.", href: "#" },
+  { icon: "helm", t: "Deployment", d: "Self-host, managed, or multi-tenant.", href: "#" },
+  { icon: "src", t: "Connecting data sources", d: "VBASS, Mastercard, commercial, CSV.", href: "#" },
+  { icon: "lic", t: "License configuration", d: "Wire up the licenses you bring.", href: "#" },
+  { icon: "tnt", t: "Tenant setup", d: "Isolated tenants for managed mode.", href: "#" },
+  { icon: "ops", t: "Upgrades & operations", d: "Roll out new engine & dataset versions.", href: "#" },
+  { icon: "obs", t: "Observability", d: "Metrics, logs, and health checks.", href: "#" },
   { icon: "key", t: "Authentication", d: "API keys, test vs live.", href: "#" },
   { icon: "GET", t: "BIN Lookup API", d: "The core single-BIN endpoint.", href: "#reference" },
   { icon: "[ ]", t: "Batch Lookup", d: "Enrich up to 10k BINs per call.", href: "#" },
@@ -55,7 +62,7 @@ const guides = [
 
 <Layout
   title="Docs — FindThisBIN"
-  description="Build with FindThisBIN. From your first BIN lookup to production in minutes — quickstart, API reference, SDKs in five languages, and guides."
+  description="Build with FindThisBIN. From deploying the engine in your cloud to your first lookup in minutes — quickstart, deployment & operations, connecting data sources, API reference, and SDKs in five languages."
   active="docs"
 >
   <!-- ============ HEADER ============ -->
@@ -63,7 +70,7 @@ const guides = [
     <div class="wrap wrap-narrow">
       <p class="eyebrow-mono mono">// docs</p>
       <h1 class="h1-page ink-h1">Build with FindThisBIN.</h1>
-      <p class="doc-sub">From your first BIN lookup to production in minutes.</p>
+      <p class="doc-sub">From deploying the engine in your cloud to your first lookup — in minutes.</p>
       <div class="search">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8A8A9A" stroke-width="2" aria-hidden="true">
           <circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.3-4.3"></path>
@@ -83,9 +90,9 @@ const guides = [
           <div class="quick-inner">
             <span class="quick-pill">
               <span class="dot" aria-hidden="true"></span>
-              5-minute quickstart
+              15-minute quickstart
             </span>
-            <h2 class="quick-h2">First lookup in three steps.</h2>
+            <h2 class="quick-h2">Deploy in your cloud in 15 minutes.</h2>
             <div class="quick-steps">
               {
                 quickSteps.map((s) => (
@@ -99,7 +106,7 @@ const guides = [
                 ))
               }
             </div>
-            <a href={GET_API_KEY_URL} class="quick-cta">Start here</a>
+            <a href={BOOK_DEMO_URL} class="quick-cta">Start here</a>
           </div>
         </div>
         <div class="quick-code" data-reveal>
@@ -165,7 +172,7 @@ const guides = [
         <div data-reveal>
           <Eyebrow label="API reference" tone="cyan" />
           <h2 class="h2 on-dark ref-h2">Full API reference.</h2>
-          <p class="lead on-dark ref-lead">Every endpoint, parameter, and field — with copy-ready examples in five languages.</p>
+          <p class="lead on-dark ref-lead">Integrate the engine you’ve deployed — every endpoint, parameter, and field, with copy-ready examples in five languages.</p>
           <a href={API_REFERENCE_URL} class="ref-cta">Open reference</a>
         </div>
         <div class="ref-panel" data-reveal>
@@ -217,7 +224,7 @@ const guides = [
         <a href="#">Changelog</a>
         <a href="#">Support</a>
       </div>
-      <a href={GET_API_KEY_URL} class="util-cta">{GET_API_KEY_LABEL}</a>
+      <a href={BOOK_DEMO_URL} class="util-cta">{BOOK_DEMO_LABEL}</a>
     </div>
   </section>
 </Layout>
