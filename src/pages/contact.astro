@@ -5,7 +5,7 @@ import Layout from "../layouts/Layout.astro";
 import ContactForm from "../components/ContactForm.astro";
 
 const params = Astro.url.searchParams;
-const intent = params.get("intent") === "sales" ? "sales" : "api-key";
+const intent = params.get("intent") === "sales" ? "sales" : "demo";
 const submitted = params.get("sent") === "1";
 const error =
   params.get("error") === "1"
@@ -20,35 +20,35 @@ const refId = "ftb_" + Math.random().toString(36).slice(2, 8).toUpperCase();
 const copy = sales
   ? {
       eyebrow: "Talk to sales",
-      heading: "Let’s talk volume.",
+      heading: "Let’s talk deployment.",
       subhead:
-        "Tell us about your platform and we’ll build a plan around your volume, SLAs, and EU data-residency needs.",
+        "Tell us about your platform and we’ll scope the right deployment model, connectors, SLA, and data-residency setup for you.",
       nextStep:
-        "A payments specialist reviews your note and replies within one business day to set up a call and a tailored plan.",
+        "A solutions engineer reviews your note and replies within one business day to scope deployment and pricing.",
       emailLabel: "sales@findthisbin.com",
       emailHref: "mailto:sales@findthisbin.com",
     }
   : {
-      eyebrow: "Free API key",
-      heading: "Get your free API key.",
+      eyebrow: "Book a demo",
+      heading: "See the engine in your stack.",
       subhead:
-        "Create an account and make your first BIN lookup in under five minutes. Test and live keys, no credit card.",
+        "Book a walkthrough with a solutions engineer. We’ll show the engine running in a cloud like yours, with licensed sources plugged in — and scope a proof-of-concept.",
       nextStep:
-        "We’ll send your test and live API keys to your inbox so you can start integrating right away.",
-      emailLabel: "support@findthisbin.com",
-      emailHref: "mailto:support@findthisbin.com",
+        "A solutions engineer reaches out within one business day to schedule your walkthrough and a proof-of-concept deployed in your cloud.",
+      emailLabel: "demo@findthisbin.com",
+      emailHref: "mailto:demo@findthisbin.com",
     };
 
 const points = [
-  "Signup to first BIN lookup in under 5 minutes",
-  "EU-hosted · GDPR-clean · out of PCI scope",
-  "Sub-10ms p99 · 99.9% uptime · DPA available",
+  "Deployed in your cloud in days, not months",
+  "Your data never leaves your environment",
+  "Out of PCI scope · DPA · EU-hosting option",
 ];
 
 const title = `${copy.heading.replace(/’/g, "'").replace(/\.$/, "")} — FindThisBIN`;
 const description = sales
-  ? "Talk to the FindThisBIN team about high-volume BIN intelligence, SLAs, and EU data residency for your payment platform."
-  : "Get a free FindThisBIN API key and make your first BIN lookup in under five minutes — test and live keys, no credit card.";
+  ? "Talk to the FindThisBIN team about deploying the BIN intelligence engine in your cloud — deployment models, connectors, SLAs, and EU data residency."
+  : "Book a FindThisBIN demo: see the BIN intelligence engine running in a cloud like yours, with your licensed sources plugged in, and scope a proof-of-concept.";
 ---
 
 <Layout title={title} description={description}>

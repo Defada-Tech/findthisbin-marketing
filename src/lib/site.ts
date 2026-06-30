@@ -6,9 +6,12 @@
 
 export const SITE_NAME = "FindThisBIN";
 export const SITE_TAGLINE =
-  "The card-intelligence layer for payment platforms.";
+  "The BIN intelligence engine for payment platforms.";
 export const SITE_DESCRIPTION =
-  "A developer-first BIN intelligence API for payment platforms. Scheme, type, issuer, country, DCC eligibility and fraud signals for every card — EU-hosted, GDPR-clean, sub-10ms p99.";
+  "A deployable BIN intelligence engine for payment platforms. Run it in your own cloud (self-hosted, managed, or fully managed), plug in your data licenses, and turn any BIN into a typed, scored card record — your data never leaves your environment.";
+
+/* Engine host shown in code/demo URLs — signals self-hosting (vs a hosted API). */
+export const ENGINE_BASE_URL = "https://bins.internal";
 
 /* Internal routes */
 export const HOME_PATH = "/";
@@ -18,12 +21,21 @@ export const DOCS_PATH = "/docs";
 export const COMPANY_PATH = "/company";
 export const CONTACT_PATH = "/contact";
 
-/* Primary CTAs — keep labels identical everywhere they appear. Both route
-   through the on-site contact form, switched by the `intent` query param. */
-export const GET_API_KEY_LABEL = "Get your free API key";
-export const GET_API_KEY_URL = "/contact?intent=api-key";
+/* Primary CTAs — keep labels identical everywhere they appear. All route
+   through the on-site contact form, switched by the `intent` query param.
+   There is no self-serve signup: the primary action is "Book a demo". */
+export const BOOK_DEMO_LABEL = "Book a demo";
+export const BOOK_DEMO_URL = "/contact?intent=demo";
 export const TALK_TO_SALES_LABEL = "Talk to sales";
 export const TALK_TO_SALES_URL = "/contact?intent=sales";
+/* Home secondary CTA → the deployment-models section anchor. */
+export const SEE_DEPLOYMENT_LABEL = "See deployment options";
+export const SEE_DEPLOYMENT_URL = "/#deployment";
+
+/* @deprecated transitional aliases — pages still being migrated import these.
+   Removed once every page uses BOOK_DEMO_*. Do not use in new markup. */
+export const GET_API_KEY_LABEL = BOOK_DEMO_LABEL;
+export const GET_API_KEY_URL = BOOK_DEMO_URL;
 
 /* External app / developer surfaces (placeholders for the live dashboard). */
 export const SIGN_IN_URL = "https://app.findthisbin.com/login";
@@ -39,9 +51,9 @@ export const LINKEDIN_URL = "https://www.linkedin.com/company/findthisbin";
 
 /* Trust strip — reused on hero + pricing close. */
 export const TRUST_POINTS = [
-  "EU-hosted",
-  "GDPR-clean",
-  "PCI out-of-scope",
+  "Runs in your cloud",
+  "Your data never leaves",
+  "Out of PCI scope",
+  "EU-hosted option",
   "sub-10ms p99",
-  "99.9% uptime",
 ] as const;

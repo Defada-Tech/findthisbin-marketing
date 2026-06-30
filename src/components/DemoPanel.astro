@@ -1,11 +1,17 @@
 ---
 /**
- * Hero "live" demo panel: the canonical BIN response, each line fading up
- * staggered (ftbUp + increasing delay) with a blinking lime caret on the close
- * brace. Scheme-coverage strip uses plain text (no trademarked logos).
+ * Hero "deployment" demo panel: a deployment motif (your licensed sources →
+ * the engine → your API, all inside *your* cloud) above the canonical BIN
+ * response. Each JSON line fades up staggered (ftbUp + increasing delay) with a
+ * blinking lime caret on the close brace. The request host is bins.internal to
+ * signal self-hosting. Scheme-coverage strip uses plain text (no trademarked
+ * logos).
  */
+import { ENGINE_BASE_URL } from "../lib/site";
+
 const schemes = ["VISA", "Mastercard", "AMEX", "Discover", "JCB", "UnionPay"];
-// JSON body lines (token-colored), in order, with stagger delays 0.05s → 0.72s.
+const sources = ["VBASS", "Mastercard", "CSV"];
+const requestUrl = `${ENGINE_BASE_URL}/v1/bins/`;
 ---
 
 <div class="demo">
@@ -13,12 +19,31 @@ const schemes = ["VISA", "Mastercard", "AMEX", "Discover", "JCB", "UnionPay"];
     <div class="panel">
       <div class="head">
         <span class="lights" aria-hidden="true"><span></span><span></span><span></span></span>
-        <span class="head-label mono">findthisbin · live</span>
+        <span class="head-label mono">findthisbin-engine · your-cloud</span>
+      </div>
+
+      <div class="cloud">
+        <div class="cloud-head">
+          <span class="cloud-region mono">your cloud · eu-west-1 · vpc</span>
+          <span class="cloud-note mono">data stays here</span>
+        </div>
+        <div class="flow">
+          <div class="sources">
+            {sources.map((s) => <span class="src mono">{s}</span>)}
+          </div>
+          <span class="arrow" aria-hidden="true">→</span>
+          <div class="engine">
+            <span class="engine-name">FindThisBIN engine</span>
+            <span class="engine-sub mono">8-digit · multi-source merge</span>
+          </div>
+          <span class="arrow" aria-hidden="true">→</span>
+          <span class="output mono">your API</span>
+        </div>
       </div>
 
       <div class="req mono">
         <span class="verb">GET</span>
-        <span class="url">https://api.findthisbin.com/v1/bins/<span class="bin">53847012</span></span>
+        <span class="url">{requestUrl}<span class="bin">53847012</span></span>
       </div>
 
       <pre class="body mono" aria-label="Example API response"><code>{
@@ -71,6 +96,67 @@ const schemes = ["VISA", "Mastercard", "AMEX", "Discover", "JCB", "UnionPay"];
   .lights span:nth-child(2) { background: #febc2e; }
   .lights span:nth-child(3) { background: #28c840; }
   .head-label { font-size: 12.5px; color: var(--text-dark-muted); }
+
+  /* Deployment motif — the "your cloud" box */
+  .cloud {
+    margin: 16px 16px 4px;
+    padding: 12px 14px 14px;
+    border: 1px dashed rgba(124, 92, 255, 0.4);
+    border-radius: 12px;
+    background: rgba(124, 92, 255, 0.05);
+  }
+  .cloud-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .cloud-region { font-size: 11px; color: var(--cyan); letter-spacing: 0.02em; }
+  .cloud-note { font-size: 11px; color: var(--text-dark-faint); }
+  .flow {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .sources { display: inline-flex; flex-direction: column; gap: 5px; }
+  .src {
+    font-size: 11px;
+    color: var(--text-dark-muted);
+    background: var(--ink-3);
+    border: 1px solid var(--border-dark);
+    border-radius: 6px;
+    padding: 3px 8px;
+    text-align: center;
+  }
+  .arrow { color: var(--text-dark-faint); font-size: 14px; }
+  .engine {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 2px;
+    background: var(--ink-3);
+    border: 1px solid rgba(124, 92, 255, 0.5);
+    border-radius: 9px;
+    padding: 9px 12px;
+    box-shadow: 0 0 0 3px rgba(124, 92, 255, 0.08);
+  }
+  .engine-name {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 13px;
+    color: #fff;
+  }
+  .engine-sub { font-size: 10.5px; color: var(--text-dark-faint); }
+  .output {
+    font-size: 11.5px;
+    font-weight: 500;
+    color: var(--lime);
+    background: rgba(196, 245, 66, 0.1);
+    border: 1px solid rgba(196, 245, 66, 0.35);
+    border-radius: 6px;
+    padding: 6px 10px;
+  }
 
   .req {
     display: flex;

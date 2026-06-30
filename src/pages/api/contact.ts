@@ -30,7 +30,7 @@ interface Lead {
 }
 
 async function notifySlack(webhook: string, lead: Lead): Promise<void> {
-  const label = lead.intent === "sales" ? "Talk to sales" : "Free API key";
+  const label = lead.intent === "sales" ? "Talk to sales" : "Book a demo";
   const payload = {
     text: `New ${label} request — FindThisBIN`,
     blocks: [
@@ -42,7 +42,7 @@ async function notifySlack(webhook: string, lead: Lead): Promise<void> {
           { type: "mrkdwn", text: `*Work email:*\n${lead.email || "—"}` },
           { type: "mrkdwn", text: `*Company:*\n${lead.company || "—"}` },
           { type: "mrkdwn", text: `*Role:*\n${lead.role || "—"}` },
-          { type: "mrkdwn", text: `*Monthly lookups:*\n${lead.volume || "—"}` },
+          { type: "mrkdwn", text: `*Deployment preference:*\n${lead.volume || "—"}` },
           { type: "mrkdwn", text: `*Intent:*\n${lead.intent}` },
         ],
       },
@@ -65,11 +65,11 @@ export const POST: APIRoute = async ({ request }) => {
   try {
     form = await request.formData();
   } catch {
-    return fail(request, "Invalid form submission.", "api-key");
+    return fail(request, "Invalid form submission.", "demo");
   }
 
   const get = (k: string) => (form.get(k) ?? "").toString().trim();
-  const intent = get("intent") === "sales" ? "sales" : "api-key";
+  const intent = get("intent") === "sales" ? "sales" : "demo";
 
   // Honeypot: real users never fill `website`. Pretend success, deliver nothing.
   if (get("website") !== "") return ok(request, intent);
