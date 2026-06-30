@@ -32,11 +32,6 @@ export const TALK_TO_SALES_URL = "/contact?intent=sales";
 export const SEE_DEPLOYMENT_LABEL = "See deployment options";
 export const SEE_DEPLOYMENT_URL = "/#deployment";
 
-/* @deprecated transitional aliases — pages still being migrated import these.
-   Removed once every page uses BOOK_DEMO_*. Do not use in new markup. */
-export const GET_API_KEY_LABEL = BOOK_DEMO_LABEL;
-export const GET_API_KEY_URL = BOOK_DEMO_URL;
-
 /* External app / developer surfaces (placeholders for the live dashboard). */
 export const SIGN_IN_URL = "https://app.findthisbin.com/login";
 export const API_REFERENCE_URL = "https://app.findthisbin.com/reference";

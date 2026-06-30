@@ -15,9 +15,8 @@
   html{ scroll-behavior:smooth; }
   body{ margin:0; background:#0B0B12; }
   *{ box-sizing:border-box; }
-  .ftb-pricing4{ display:grid; grid-template-columns:repeat(4,1fr); gap:18px; align-items:stretch; }
-  @media (max-width: 1040px){ .ftb-pricing4{ grid-template-columns:1fr 1fr; } }
-  @media (max-width: 560px){ .ftb-pricing4{ grid-template-columns:1fr; } }
+  .ftb-cards3{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; align-items:stretch; }
+  @media (max-width: 900px){ .ftb-cards3{ grid-template-columns:1fr; } }
 </style>
 </helmet>
 <div style="fontFamily:'IBM Plex Sans',sans-serif; background:#0B0B12; color:#fff; overflow-x:hidden;">
@@ -29,95 +28,94 @@
     <div style="max-width:900px; margin:0 auto; padding:clamp(56px,8vw,96px) 24px clamp(40px,5vw,56px); position:relative; text-align:center;">
       <div style="display:inline-flex; align-items:center; gap:9px; padding:7px 14px; border-radius:999px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); margin-bottom:24px;">
         <span style="width:7px; height:7px; border-radius:50%; background:#C4F542; box-shadow:0 0 10px #C4F542;"></span>
-        <span style="fontSize:13px; fontWeight:600; color:#D7D7E2;">Usage-based pricing · EU-hosted</span>
+        <span style="fontSize:13px; fontWeight:600; color:#D7D7E2;">Deployment-based pricing · Runs in your cloud</span>
       </div>
-      <h1 style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:clamp(36px,5.5vw,64px); lineHeight:1.03; letterSpacing:-0.03em; margin:0 0 18px;">Pricing that scales with your volume.</h1>
-      <p style="fontSize:clamp(16px,1.8vw,19px); lineHeight:1.6; color:#A9A9BC; margin:0 auto 30px; max-width:600px;">Start free. Pay only for the lookups you make. Move to a subscription when you need SLAs, EU-residency guarantees, and premium data.</p>
-      <div style="display:inline-flex; align-items:center; gap:5px; padding:5px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); border-radius:12px;">
-        <button onClick="{{ setMonthly }}" style="{{ monthlyStyle }}">Monthly</button>
-        <button onClick="{{ setAnnual }}" style="{{ annualStyle }}">Annual <span style="color:#C4F542; fontSize:12px;">–20%</span></button>
-      </div>
+      <h1 style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:clamp(36px,5.5vw,64px); lineHeight:1.03; letterSpacing:-0.03em; margin:0 0 18px;">Pricing that fits your deployment.</h1>
+      <p style="fontSize:clamp(16px,1.8vw,19px); lineHeight:1.6; color:#A9A9BC; margin:0 auto 8px; max-width:620px;">Plans scale from a single deployment to multi-environment and fully-managed. We scope a plan around your volume, connectors, SLAs, and data-residency needs — then prove it with a POC in your cloud.</p>
     </div>
   </section>
 
   <!-- TIERS -->
   <section id="tiers" style="background:#F6F6FB; color:#0B0B12;">
-    <div style="max-width:1240px; margin:0 auto; padding:clamp(40px,5vw,64px) 24px clamp(56px,7vw,88px);">
-      <div class="ftb-pricing4">
+    <div style="max-width:1140px; margin:0 auto; padding:clamp(40px,5vw,64px) 24px clamp(40px,5vw,56px);">
+      <div class="ftb-cards3">
         <div style="background:#fff; border:1px solid #E6E6EF; border-radius:18px; padding:30px; display:flex; flex-direction:column;">
-          <div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:19px;">Free</div>
-          <div style="fontSize:13.5px; color:#6E6E80; margin:5px 0 20px;">Evaluation &amp; indie projects</div>
-          <div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:42px; letterSpacing:-0.03em;">€0</div>
-          <div style="fontSize:13px; color:#8A8A9A; margin:2px 0 22px;">5,000 lookups / month</div>
-          <a href="Contact.dc.html?intent=api-key" style="text-decoration:none; text-align:center; fontWeight:600; fontSize:15px; color:#0B0B12; background:#F0F0F6; border:1px solid #E6E6EF; padding:13px; border-radius:11px; margin-bottom:22px;">Start free</a>
+          <div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:19px;">Startup</div>
+          <div style="fontSize:13.5px; color:#6E6E80; margin:5px 0 20px;">A single deployment</div>
+          <div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:34px; letterSpacing:-0.02em;">Let’s talk</div>
+          <div style="fontSize:13px; color:#8A8A9A; margin:6px 0 22px;">Scoped to your volume</div>
+          <a href="Contact.dc.html?intent=sales" style="text-decoration:none; text-align:center; fontWeight:600; fontSize:15px; color:#0B0B12; background:#F0F0F6; border:1px solid #E6E6EF; padding:13px; border-radius:11px; margin-bottom:22px;">Request pricing</a>
           <ul style="list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:11px;">
-            <li style="fontSize:13.5px; color:#4A4A57; display:flex; gap:9px;"><span style="color:#7C5CFF;">✓</span>Community-grade data</li>
-            <li style="fontSize:13.5px; color:#4A4A57; display:flex; gap:9px;"><span style="color:#7C5CFF;">✓</span>Test + live keys</li>
-            <li style="fontSize:13.5px; color:#4A4A57; display:flex; gap:9px;"><span style="color:#7C5CFF;">✓</span>No credit card</li>
-          </ul>
-        </div>
-        <div style="background:#fff; border:1px solid #E6E6EF; border-radius:18px; padding:30px; display:flex; flex-direction:column;">
-          <div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:19px;">Pay-as-you-go</div>
-          <div style="fontSize:13.5px; color:#6E6E80; margin:5px 0 20px;">Variable or unpredictable traffic</div>
-          <div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:42px; letterSpacing:-0.03em;">€0.004</div>
-          <div style="fontSize:13px; color:#8A8A9A; margin:2px 0 22px;">per lookup · drops with volume</div>
-          <a href="Contact.dc.html?intent=api-key" style="text-decoration:none; text-align:center; fontWeight:600; fontSize:15px; color:#0B0B12; background:#F0F0F6; border:1px solid #E6E6EF; padding:13px; border-radius:11px; margin-bottom:22px;">Get your API key</a>
-          <ul style="list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:11px;">
-            <li style="fontSize:13.5px; color:#4A4A57; display:flex; gap:9px;"><span style="color:#7C5CFF;">✓</span>Full 8-digit data</li>
-            <li style="fontSize:13.5px; color:#4A4A57; display:flex; gap:9px;"><span style="color:#7C5CFF;">✓</span>Per-field confidence</li>
-            <li style="fontSize:13.5px; color:#4A4A57; display:flex; gap:9px;"><span style="color:#7C5CFF;">✓</span>Volume discounts</li>
+            <li style="fontSize:13.5px; color:#4A4A57; display:flex; gap:9px;"><span style="color:#7C5CFF;">✓</span>Self-hosted in your cloud</li>
+            <li style="fontSize:13.5px; color:#4A4A57; display:flex; gap:9px;"><span style="color:#7C5CFF;">✓</span>Core engine + base connectors</li>
+            <li style="fontSize:13.5px; color:#4A4A57; display:flex; gap:9px;"><span style="color:#7C5CFF;">✓</span>Bundled seed data</li>
+            <li style="fontSize:13.5px; color:#4A4A57; display:flex; gap:9px;"><span style="color:#7C5CFF;">✓</span>Community support</li>
           </ul>
         </div>
         <div style="background:#0B0B12; color:#fff; border-radius:18px; padding:30px; display:flex; flex-direction:column; position:relative; box-shadow:0 30px 70px -28px rgba(124,92,255,0.7);">
           <div style="position:absolute; top:-12px; left:50%; transform:translateX(-50%); background:#C4F542; color:#0B0B12; fontSize:11.5px; fontWeight:700; letterSpacing:0.04em; padding:5px 13px; border-radius:999px; whiteSpace:nowrap;">MOST POPULAR</div>
-          <div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:19px;">Growth / Scale</div>
-          <div style="fontSize:13.5px; color:#9A9AAE; margin:5px 0 20px;">Production volume with SLAs</div>
-          <div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:42px; letterSpacing:-0.03em;">€{{ growthPrice }}<span style="fontSize:15px; color:#9A9AAE; fontWeight:600;">{{ growthSub }}</span></div>
-          <div style="fontSize:13px; color:#7A7A8C; margin:2px 0 22px;">250,000 lookups included + overage</div>
-          <a href="Contact.dc.html?intent=api-key" style="text-decoration:none; text-align:center; fontWeight:600; fontSize:15px; color:#0B0B12; background:#C4F542; padding:13px; border-radius:11px; margin-bottom:22px;">Start free trial</a>
+          <div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:19px;">Growth</div>
+          <div style="fontSize:13.5px; color:#9A9AAE; margin:5px 0 20px;">HA, with an SLA</div>
+          <div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:34px; letterSpacing:-0.02em;">Let’s talk</div>
+          <div style="fontSize:13px; color:#7A7A8C; margin:6px 0 22px;">Scoped to your volume &amp; SLA</div>
+          <a href="Contact.dc.html?intent=sales" style="text-decoration:none; text-align:center; fontWeight:600; fontSize:15px; color:#0B0B12; background:#C4F542; padding:13px; border-radius:11px; margin-bottom:22px;">Request pricing</a>
           <ul style="list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:11px;">
+            <li style="fontSize:13.5px; color:#C7C7D6; display:flex; gap:9px;"><span style="color:#22D3EE;">✓</span>Managed-in-your-cloud option</li>
+            <li style="fontSize:13.5px; color:#C7C7D6; display:flex; gap:9px;"><span style="color:#22D3EE;">✓</span>High availability + more connectors</li>
             <li style="fontSize:13.5px; color:#C7C7D6; display:flex; gap:9px;"><span style="color:#22D3EE;">✓</span>99.9% uptime SLA</li>
-            <li style="fontSize:13.5px; color:#C7C7D6; display:flex; gap:9px;"><span style="color:#22D3EE;">✓</span>EU-residency guarantee</li>
-            <li style="fontSize:13.5px; color:#C7C7D6; display:flex; gap:9px;"><span style="color:#22D3EE;">✓</span>DCC module</li>
-            <li style="fontSize:13.5px; color:#C7C7D6; display:flex; gap:9px;"><span style="color:#22D3EE;">✓</span>Priority support</li>
+            <li style="fontSize:13.5px; color:#C7C7D6; display:flex; gap:9px;"><span style="color:#22D3EE;">✓</span>DCC module + standard support</li>
           </ul>
         </div>
         <div style="background:#fff; border:1px solid #E6E6EF; border-radius:18px; padding:30px; display:flex; flex-direction:column;">
-          <div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:19px;">Enterprise / On-prem</div>
-          <div style="fontSize:13.5px; color:#6E6E80; margin:5px 0 20px;">High volume &amp; custom deployment</div>
-          <div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:42px; letterSpacing:-0.03em;">Custom</div>
-          <div style="fontSize:13px; color:#8A8A9A; margin:2px 0 22px;">volume discounts &amp; SLAs</div>
+          <div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:19px;">Enterprise</div>
+          <div style="fontSize:13.5px; color:#6E6E80; margin:5px 0 20px;">Multi-environment &amp; managed</div>
+          <div style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:34px; letterSpacing:-0.02em;">Custom</div>
+          <div style="fontSize:13px; color:#8A8A9A; margin:6px 0 22px;">Tailored to your estate</div>
           <a href="Contact.dc.html?intent=sales" style="text-decoration:none; text-align:center; fontWeight:600; fontSize:15px; color:#fff; background:#0B0B12; padding:13px; border-radius:11px; margin-bottom:22px;">Talk to sales</a>
           <ul style="list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:11px;">
-            <li style="fontSize:13.5px; color:#4A4A57; display:flex; gap:9px;"><span style="color:#7C5CFF;">✓</span>Dataset export</li>
-            <li style="fontSize:13.5px; color:#4A4A57; display:flex; gap:9px;"><span style="color:#7C5CFF;">✓</span>Private / on-prem deploy</li>
-            <li style="fontSize:13.5px; color:#4A4A57; display:flex; gap:9px;"><span style="color:#7C5CFF;">✓</span>Dedicated support</li>
+            <li style="fontSize:13.5px; color:#4A4A57; display:flex; gap:9px;"><span style="color:#7C5CFF;">✓</span>Multi-environment + fully-managed</li>
+            <li style="fontSize:13.5px; color:#4A4A57; display:flex; gap:9px;"><span style="color:#7C5CFF;">✓</span>Premium connectors + custom data</li>
+            <li style="fontSize:13.5px; color:#4A4A57; display:flex; gap:9px;"><span style="color:#7C5CFF;">✓</span>Custom SLAs + dedicated support</li>
+            <li style="fontSize:13.5px; color:#4A4A57; display:flex; gap:9px;"><span style="color:#7C5CFF;">✓</span>Dataset export, air-gapped on-prem</li>
           </ul>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- POC CALLOUT -->
+  <section style="background:#F6F6FB; color:#0B0B12;">
+    <div style="max-width:1140px; margin:0 auto; padding:0 24px clamp(56px,7vw,80px);">
+      <div style="background:#fff; border:1px dashed rgba(124,92,255,0.45); border-radius:18px; padding:clamp(24px,3vw,36px); display:flex; flex-wrap:wrap; gap:20px; align-items:center; justify-content:space-between;">
+        <div style="max-width:660px;">
+          <div style="fontFamily:'IBM Plex Mono',monospace; fontSize:12px; letterSpacing:0.06em; textTransform:uppercase; color:#7C5CFF; margin-bottom:8px;">Proof of concept</div>
+          <h3 style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:clamp(20px,2.6vw,28px); letterSpacing:-0.02em; margin:0 0 8px;">Evaluate with a POC in your own cloud.</h3>
+          <p style="fontSize:15.5px; line-height:1.6; color:#5A5A6B; margin:0;">Stand up the engine in your environment with bundled seed data, then connect a source and run it against your own BINs — before you commit.</p>
+        </div>
+        <a href="Contact.dc.html?intent=demo" style="text-decoration:none; fontWeight:600; fontSize:15.5px; color:#0B0B12; background:#C4F542; padding:14px 26px; border-radius:12px; whiteSpace:nowrap; boxShadow:0 12px 36px -12px rgba(196,245,66,0.55);">Book a demo</a>
       </div>
     </div>
   </section>
 
   <!-- COMPARISON TABLE -->
   <section style="background:#FFFFFF; color:#0B0B12;">
-    <div style="max-width:1240px; margin:0 auto; padding:clamp(56px,7vw,96px) 24px;">
+    <div style="max-width:1140px; margin:0 auto; padding:clamp(56px,7vw,96px) 24px;">
       <h2 style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:clamp(28px,3.6vw,42px); letterSpacing:-0.025em; margin:0 0 36px; text-align:center;">Compare every plan</h2>
       <div style="overflow-x:auto; border:1px solid #E6E6EF; border-radius:16px;">
-        <table style="width:100%; min-width:760px; border-collapse:collapse; fontSize:14px;">
+        <table style="width:100%; min-width:680px; border-collapse:collapse; fontSize:14px;">
           <thead>
             <tr style="background:#F6F6FB;">
-              <th style="text-align:left; padding:18px 20px; fontWeight:600; color:#6E6E80; fontSize:13px;">Feature</th>
-              <th style="text-align:center; padding:18px 16px; fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:15px;">Free</th>
-              <th style="text-align:center; padding:18px 16px; fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:15px;">PAYG</th>
+              <th style="text-align:left; padding:18px 20px; fontWeight:600; color:#6E6E80; fontSize:13px;">Capability</th>
+              <th style="text-align:center; padding:18px 16px; fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:15px;">Startup</th>
               <th style="text-align:center; padding:18px 16px; fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:15px; color:#7C5CFF;">Growth</th>
               <th style="text-align:center; padding:18px 16px; fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:15px;">Enterprise</th>
             </tr>
           </thead>
           <tbody>
-            <sc-for list="{{ rows }}" as="row" hint-placeholder-count="15">
+            <sc-for list="{{ rows }}" as="row" hint-placeholder-count="14">
               <tr style="borderTop:1px solid #EEEEF3;">
                 <td style="text-align:left; padding:15px 20px; color:#4A4A57; fontWeight:500;">{{ row.label }}</td>
-                <sc-for list="{{ row.cells }}" as="cell" hint-placeholder-count="4">
+                <sc-for list="{{ row.cells }}" as="cell" hint-placeholder-count="3">
                   <td style="text-align:center; padding:15px 16px;">
                     <sc-if value="{{ cell.isCheck }}" hint-placeholder-val="{{ false }}"><span style="color:#1FA463; fontWeight:700;">✓</span></sc-if>
                     <sc-if value="{{ cell.isDash }}" hint-placeholder-val="{{ false }}"><span style="color:#C5C5D0;">—</span></sc-if>
@@ -132,13 +130,13 @@
     </div>
   </section>
 
-  <!-- VOLUME CALLOUT -->
+  <!-- VOLUME / SCALE CALLOUT -->
   <section style="background:#0B0B12;">
-    <div style="max-width:1240px; margin:0 auto; padding:0 24px clamp(56px,7vw,88px);">
+    <div style="max-width:1140px; margin:0 auto; padding:0 24px clamp(56px,7vw,88px);">
       <div style="position:relative; overflow:hidden; border-radius:20px; background:linear-gradient(120deg,#7C5CFF,#6366F1 50%,#3B82F6); padding:clamp(32px,5vw,56px); display:flex; flex-wrap:wrap; gap:24px; align-items:center; justify-content:space-between;">
-        <div style="max-width:560px;">
-          <h2 style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:clamp(24px,3.4vw,38px); letterSpacing:-0.02em; margin:0 0 10px; color:#fff;">Doing millions of lookups a month?</h2>
-          <p style="fontSize:16.5px; line-height:1.55; color:rgba(255,255,255,0.85); margin:0;">We'll build a plan around your volume, SLA, and data-residency needs.</p>
+        <div style="max-width:600px;">
+          <h2 style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:clamp(24px,3.4vw,38px); letterSpacing:-0.02em; margin:0 0 10px; color:#fff;">Multiple environments, regions, or a managed rollout?</h2>
+          <p style="fontSize:16.5px; line-height:1.55; color:rgba(255,255,255,0.85); margin:0;">We’ll build a plan around your deployment topology, volume, SLA, and data-residency needs.</p>
         </div>
         <a href="Contact.dc.html?intent=sales" style="text-decoration:none; fontWeight:600; fontSize:16px; color:#0B0B12; background:#fff; padding:15px 28px; border-radius:12px; whiteSpace:nowrap;">Talk to sales</a>
       </div>
@@ -148,7 +146,7 @@
   <!-- FAQ -->
   <section style="background:#F6F6FB; color:#0B0B12;">
     <div style="max-width:820px; margin:0 auto; padding:clamp(56px,7vw,96px) 24px;">
-      <h2 style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:clamp(28px,3.6vw,42px); letterSpacing:-0.025em; margin:0 0 36px; text-align:center;">Pricing questions</h2>
+      <h2 style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:clamp(28px,3.6vw,42px); letterSpacing:-0.025em; margin:0 0 36px; text-align:center;">Pricing &amp; deployment questions</h2>
       <div style="display:flex; flex-direction:column; gap:12px;">
         <sc-for list="{{ faqs }}" as="f" hint-placeholder-count="8">
           <div style="background:#fff; border:1px solid #E6E6EF; border-radius:14px; overflow:hidden;">
@@ -170,11 +168,11 @@
     <div style="position:absolute; top:-100px; left:35%; width:480px; height:480px; border-radius:50%; background:radial-gradient(circle,rgba(124,92,255,0.5),transparent 65%); filter:blur(30px); pointer-events:none;"></div>
     <div style="max-width:820px; margin:0 auto; padding:clamp(64px,9vw,112px) 24px; position:relative; text-align:center;">
       <div style="display:flex; flex-wrap:wrap; gap:8px 20px; justify-content:center; margin-bottom:28px; fontSize:13.5px; color:rgba(255,255,255,0.8); fontWeight:500;">
-        <span>EU-hosted</span><span>·</span><span>GDPR-clean</span><span>·</span><span>No PCI scope</span><span>·</span><span>DPA available</span>
+        <span>Runs in your cloud</span><span>·</span><span>Your data never leaves</span><span>·</span><span>Out of PCI scope</span><span>·</span><span>DPA available</span>
       </div>
-      <h2 style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:clamp(32px,5vw,56px); lineHeight:1.04; letterSpacing:-0.03em; margin:0 0 30px; color:#fff;">Get your free API key today.</h2>
+      <h2 style="fontFamily:'Space Grotesk',sans-serif; fontWeight:700; fontSize:clamp(32px,5vw,56px); lineHeight:1.04; letterSpacing:-0.03em; margin:0 0 30px; color:#fff;">Book a demo today.</h2>
       <div style="display:flex; flex-wrap:wrap; gap:14px; justify-content:center;">
-        <a href="Contact.dc.html?intent=api-key" style="text-decoration:none; fontWeight:600; fontSize:16px; color:#0B0B12; background:#C4F542; padding:16px 30px; border-radius:12px; boxShadow:0 14px 40px -10px rgba(196,245,66,0.6);">Get your free API key</a>
+        <a href="Contact.dc.html?intent=demo" style="text-decoration:none; fontWeight:600; fontSize:16px; color:#0B0B12; background:#C4F542; padding:16px 30px; border-radius:12px; boxShadow:0 14px 40px -10px rgba(196,245,66,0.6);">Book a demo</a>
         <a href="Contact.dc.html?intent=sales" style="text-decoration:none; fontWeight:600; fontSize:16px; color:#fff; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); padding:16px 30px; border-radius:12px;">Talk to sales</a>
       </div>
     </div>
@@ -185,45 +183,39 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:900}}">
 class Component extends DCLogic {
-  state = { billing:'annual', faq:0 };
+  state = { faq:0 };
 
   ROWS = [
-    { label:'Monthly lookups included', cells:['5,000','Metered','250,000','Custom'] },
-    { label:'Overage rate', cells:['—','€0.004','€0.003','Volume'] },
-    { label:'8-digit range data', cells:['✓','✓','✓','✓'] },
-    { label:'Per-field confidence', cells:['✓','✓','✓','✓'] },
-    { label:'Multi-source corrections', cells:['—','✓','✓','✓'] },
-    { label:'DCC module', cells:['—','—','✓','✓'] },
-    { label:'Surcharging & interchange intelligence', cells:['—','✓','✓','✓'] },
-    { label:'Network-token indicators', cells:['—','—','✓','✓'] },
-    { label:'EU data-residency guarantee', cells:['—','—','✓','✓'] },
-    { label:'Uptime SLA', cells:['—','—','99.9%','Custom'] },
-    { label:'Support level', cells:['Community','Email','Priority','Dedicated'] },
-    { label:'Dataset export', cells:['—','—','—','✓'] },
-    { label:'On-prem / private deployment', cells:['—','—','—','✓'] },
-    { label:'DPA', cells:['—','✓','✓','✓'] },
-    { label:'SOC 2', cells:['—','Roadmap','Roadmap','✓'] },
+    { label:'Self-hosted / BYOC', cells:['✓','✓','✓'] },
+    { label:'Managed in your cloud', cells:['—','✓','✓'] },
+    { label:'Fully-managed (BYOL)', cells:['—','—','✓'] },
+    { label:'Included connectors', cells:['Base','Extended','Premium'] },
+    { label:'Bundled seed data', cells:['✓','✓','✓'] },
+    { label:'8-digit range data + confidence', cells:['✓','✓','✓'] },
+    { label:'DCC module', cells:['—','✓','✓'] },
+    { label:'Surcharging & interchange intelligence', cells:['—','✓','✓'] },
+    { label:'Network-token indicators', cells:['—','✓','✓'] },
+    { label:'Data stays in your environment', cells:['✓','✓','✓'] },
+    { label:'Uptime SLA', cells:['—','99.9%','Custom'] },
+    { label:'Managed operations', cells:['—','Optional','✓'] },
+    { label:'Support level', cells:['Community','Standard','Dedicated'] },
+    { label:'Dataset export', cells:['—','—','✓'] },
+    { label:'DPA', cells:['✓','✓','✓'] },
+    { label:'SOC 2', cells:['Roadmap','Roadmap','✓'] },
   ];
 
   FAQS = [
-    { q:'What counts as a lookup?', a:'A single API call to the BIN lookup or DCC endpoint that returns card intelligence. Cached repeat lookups within a session are not double-counted.' },
-    { q:'Is the free tier really free — no card required?', a:'Yes. The Free plan needs no credit card and includes 5,000 lookups per month with test and live keys, indefinitely.' },
-    { q:'Do you offer annual billing?', a:'Yes. Annual billing on Growth saves 20% versus monthly. Toggle above to see annual pricing.' },
-    { q:'How does overage work?', a:'Once you exceed your included monthly volume, additional lookups are billed automatically at your plan’s overage rate. No throttling, no surprises.' },
-    { q:'Where is my data hosted?', a:'Entirely within the EU. Growth and Enterprise plans include a contractual EU data-residency guarantee.' },
-    { q:'Do you ever store full card numbers?', a:'Never. FindThisBIN only ever receives the 6–8 digit BIN — we are entirely out of PCI scope and never ingest a full PAN.' },
-    { q:'Can I self-host or go on-prem?', a:'Yes, on the Enterprise plan. We offer private and on-prem deployment plus dataset export for air-gapped environments.' },
-    { q:'How do I cancel?', a:'Cancel anytime from your dashboard. Pay-as-you-go simply stops billing; subscriptions run to the end of the current period.' },
+    { q:'What deployment options are there?', a:'Three, all running the same engine: self-hosted in your own cloud / VPC / on-prem, managed by us inside your cloud, or fully managed where we host an isolated tenant for you.' },
+    { q:'Where does my data live?', a:'In your environment. For self-hosted and managed-in-your-cloud, nothing leaves your VPC. The fully-managed option keeps your data isolated per tenant, with an EU-hosting option.' },
+    { q:'Do you ever see my card data?', a:'No. The engine only ever works with the 6–8 digit BIN — we are out of PCI scope and out of the card/data path entirely.' },
+    { q:'Can you host it for us?', a:'Yes. Choose managed-in-your-cloud (we operate it inside your account) or fully-managed (we host an isolated tenant). Either way you keep ownership of your data.' },
+    { q:'What licenses do I need to bring?', a:'Connect what you license — Visa VBASS, the Mastercard BIN table, commercial providers, or your own CSV. It works on day one with bundled open seed data, and we’ll help you connect to providers if you don’t have a license yet.' },
+    { q:'How do I evaluate it?', a:'With a proof-of-concept deployed in your own cloud using bundled seed data — connect a source and run it against your real BINs before committing.' },
+    { q:'How is it priced?', a:'By deployment model, volume, connectors, and SLA rather than per-lookup. Tell us your setup and we’ll scope a plan.' },
+    { q:'Can I run it air-gapped / on-prem?', a:'Yes — the self-hosted model is air-gappable, and Enterprise adds dataset export for fully isolated environments.' },
   ];
 
   renderVals(){
-    const isAnnual = this.state.billing === 'annual';
-    const seg = (on) => ({
-      fontFamily:"'IBM Plex Sans',sans-serif", fontSize:'14.5px', fontWeight:600, cursor:'pointer',
-      padding:'9px 18px', borderRadius:'9px', border:'0',
-      background: on ? '#fff' : 'transparent', color: on ? '#0B0B12' : '#C7C7D6', transition:'all .15s ease',
-      display:'inline-flex', alignItems:'center', gap:'6px',
-    });
     const rows = this.ROWS.map(r => ({
       label: r.label,
       cells: r.cells.map(c => {
@@ -236,16 +228,7 @@ class Component extends DCLogic {
       sign: this.state.faq === i ? '–' : '+',
       onClick: () => this.setState(s => ({ faq: s.faq === i ? null : i })),
     }));
-    return {
-      isAnnual,
-      growthPrice: isAnnual ? '399' : '499',
-      growthSub: isAnnual ? '/mo · billed annually' : '/mo · billed monthly',
-      setMonthly: () => this.setState({ billing:'monthly' }),
-      setAnnual: () => this.setState({ billing:'annual' }),
-      monthlyStyle: seg(!isAnnual),
-      annualStyle: seg(isAnnual),
-      rows, faqs,
-    };
+    return { rows, faqs };
   }
 }
 </script>

@@ -41,9 +41,9 @@
           <p style="fontSize:clamp(16px,1.7vw,18px); lineHeight:1.6; color:#A9A9BC; margin:0 0 32px; max-width:440px;">{{ subhead }}</p>
 
           <div style="display:flex; flex-direction:column; gap:16px; margin-bottom:34px;">
-            <div style="display:flex; gap:13px; align-items:flex-start;"><span style="flex:none; margin-top:1px; color:#C4F542;">✓</span><span style="fontSize:15px; color:#C7C7D6; line-height:1.5;">Signup to first BIN lookup in under 5 minutes</span></div>
-            <div style="display:flex; gap:13px; align-items:flex-start;"><span style="flex:none; margin-top:1px; color:#C4F542;">✓</span><span style="fontSize:15px; color:#C7C7D6; line-height:1.5;">EU-hosted · GDPR-clean · out of PCI scope</span></div>
-            <div style="display:flex; gap:13px; align-items:flex-start;"><span style="flex:none; margin-top:1px; color:#C4F542;">✓</span><span style="fontSize:15px; color:#C7C7D6; line-height:1.5;">Sub-10ms p99 · 99.9% uptime · DPA available</span></div>
+            <div style="display:flex; gap:13px; align-items:flex-start;"><span style="flex:none; margin-top:1px; color:#C4F542;">✓</span><span style="fontSize:15px; color:#C7C7D6; line-height:1.5;">Deployed in your cloud in days, not months</span></div>
+            <div style="display:flex; gap:13px; align-items:flex-start;"><span style="flex:none; margin-top:1px; color:#C4F542;">✓</span><span style="fontSize:15px; color:#C7C7D6; line-height:1.5;">Your data never leaves your environment</span></div>
+            <div style="display:flex; gap:13px; align-items:flex-start;"><span style="flex:none; margin-top:1px; color:#C4F542;">✓</span><span style="fontSize:15px; color:#C7C7D6; line-height:1.5;">Out of PCI scope · DPA · EU-hosting option</span></div>
           </div>
 
           <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:20px;">
@@ -104,13 +104,12 @@
                 </sc-if>
 
                 <div>
-                  <label for="ftb-volume" style="display:block; fontSize:13px; fontWeight:500; color:#C7C7D6; margin-bottom:7px;">Expected monthly lookups</label>
+                  <label for="ftb-volume" style="display:block; fontSize:13px; fontWeight:500; color:#C7C7D6; margin-bottom:7px;">Deployment preference</label>
                   <select id="ftb-volume" class="ftb-field" value="{{ volume }}" onChange="{{ onVolume }}" style="width:100%; background:#10101C; border:1px solid rgba(255,255,255,0.12); border-radius:10px; padding:12px 14px; color:#fff; fontSize:15px; fontFamily:'IBM Plex Sans',sans-serif; outline:none; appearance:none; cursor:pointer; transition:border-color .15s, box-shadow .15s;">
-                    <option style="background:#10101C;">Just exploring</option>
-                    <option style="background:#10101C;">Under 100k / mo</option>
-                    <option style="background:#10101C;">100k – 1M / mo</option>
-                    <option style="background:#10101C;">1M – 10M / mo</option>
-                    <option style="background:#10101C;">10M+ / mo</option>
+                    <option style="background:#10101C;">Not sure yet</option>
+                    <option style="background:#10101C;">Self-hosted / BYOC</option>
+                    <option style="background:#10101C;">Managed in our cloud</option>
+                    <option style="background:#10101C;">Fully managed (BYOL)</option>
                   </select>
                 </div>
 
@@ -142,15 +141,15 @@
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180,&quot;height&quot;:820}}">
 class Component extends DCLogic {
   state = {
-    intent: 'api-key',
-    name: '', email: '', company: '', role: '', volume: 'Just exploring', message: '',
+    intent: 'demo',
+    name: '', email: '', company: '', role: '', volume: 'Not sure yet', message: '',
     errors: {}, status: 'idle', refId: '',
   };
 
   componentDidMount(){
     try {
       const p = new URLSearchParams(window.location.search).get('intent');
-      if (p === 'sales' || p === 'api-key') this.setState({ intent: p });
+      if (p === 'sales' || p === 'demo') this.setState({ intent: p });
     } catch (e) {}
   }
 
@@ -158,7 +157,7 @@ class Component extends DCLogic {
   // which forwards it to the Slack Incoming Webhook (URL kept in a server env var).
   buildSlackPayload(){
     const s = this.state;
-    const label = s.intent === 'sales' ? 'Talk to sales' : 'Free API key';
+    const label = s.intent === 'sales' ? 'Talk to sales' : 'Book a demo';
     return {
       text: 'New ' + label + ' request — FindThisBIN',
       blocks: [
@@ -168,7 +167,7 @@ class Component extends DCLogic {
           { type: 'mrkdwn', text: '*Work email:*\n' + (s.email || '—') },
           { type: 'mrkdwn', text: '*Company:*\n' + (s.company || '—') },
           { type: 'mrkdwn', text: '*Role:*\n' + (s.role || '—') },
-          { type: 'mrkdwn', text: '*Monthly lookups:*\n' + s.volume },
+          { type: 'mrkdwn', text: '*Deployment preference:*\n' + s.volume },
           { type: 'mrkdwn', text: '*Intent:*\n' + s.intent },
         ] },
         { type: 'section', text: { type: 'mrkdwn', text: '*Message:*\n' + (s.message || '—') } },
@@ -203,7 +202,7 @@ class Component extends DCLogic {
   };
 
   switchIntent = () => {
-    const next = this.state.intent === 'sales' ? 'api-key' : 'sales';
+    const next = this.state.intent === 'sales' ? 'demo' : 'sales';
     this.setState({ intent: next, errors: {} });
     try { window.history.replaceState(null, '', 'Contact.dc.html?intent=' + next); } catch (e) {}
   };
@@ -217,15 +216,15 @@ class Component extends DCLogic {
     const submitting = s.status === 'submitting';
     return {
       intent: s.intent,
-      eyebrow: sales ? 'Talk to sales' : 'Free API key',
-      heading: sales ? 'Let’s talk volume.' : 'Get your free API key.',
+      eyebrow: sales ? 'Talk to sales' : 'Book a demo',
+      heading: sales ? 'Let’s talk deployment.' : 'See the engine in your stack.',
       subhead: sales
-        ? 'Tell us about your platform and we’ll build a plan around your volume, SLAs, and EU data-residency needs.'
-        : 'Create an account and make your first BIN lookup in under five minutes. Test and live keys, no credit card.',
+        ? 'Tell us about your platform and we’ll scope the right deployment model, connectors, SLA, and data-residency setup for you.'
+        : 'Book a walkthrough with a solutions engineer. We’ll show the engine running in a cloud like yours, with licensed sources plugged in — and scope a proof-of-concept.',
       nextStep: sales
-        ? 'A payments specialist reviews your note and replies within one business day to set up a call and a tailored plan.'
-        : 'We’ll send your test and live API keys to your inbox so you can start integrating right away.',
-      emailLink: sales ? 'sales@findthisbin.com' : 'support@findthisbin.com',
+        ? 'A solutions engineer reviews your note and replies within one business day to scope deployment and pricing.'
+        : 'A solutions engineer reaches out within one business day to schedule your walkthrough and a proof-of-concept deployed in your cloud.',
+      emailLink: sales ? 'sales@findthisbin.com' : 'demo@findthisbin.com',
 
       name: s.name, email: s.email, company: s.company, role: s.role, volume: s.volume, message: s.message,
       onName: (e) => this.setState({ name: e.target.value }),
@@ -240,13 +239,13 @@ class Component extends DCLogic {
       borderEmail: err.email ? errBorder : baseBorder,
       borderCompany: err.company ? errBorder : baseBorder,
 
-      showRole: sales,
-      messageLabel: sales ? 'Anything we should know?' : 'What are you building?',
-      messagePlaceholder: sales ? 'Volumes, regions, timelines, current provider…' : 'Routing, surcharging, DCC, checkout UX…',
+      showRole: true,
+      messageLabel: sales ? 'Anything we should know?' : 'What would you like to see?',
+      messagePlaceholder: sales ? 'Volumes, regions, timelines, current provider…' : 'Your stack, data licenses, deployment target, timelines…',
 
       submit: this.submit,
       submitting,
-      submitLabel: submitting ? 'Sending…' : (sales ? 'Request a call' : 'Get my API key'),
+      submitLabel: submitting ? 'Sending…' : (sales ? 'Request pricing' : 'Book a demo'),
       submitStyle: {
         width: '100%', border: '0', cursor: submitting ? 'default' : 'pointer',
         fontFamily: "'IBM Plex Sans',sans-serif", fontWeight: 600, fontSize: '16px',
@@ -256,14 +255,14 @@ class Component extends DCLogic {
       },
 
       switchIntent: this.switchIntent,
-      switchLabel: sales ? 'Just want to start building? Get your free API key →' : 'Evaluating for a platform? Talk to sales →',
+      switchLabel: sales ? 'Want to see it live first? Book a demo →' : 'Ready to talk pricing &amp; deployment? Talk to sales →',
 
       isForm: s.status !== 'success',
       isSuccess: s.status === 'success',
-      successTitle: sales ? 'Request received.' : 'You’re all set.',
+      successTitle: 'Request received.',
       successBody: sales
-        ? 'Thanks — a payments specialist will reach out within one business day.'
-        : 'Check your inbox: your test and live API keys are on the way.',
+        ? 'Thanks — a solutions engineer will reach out within one business day to scope deployment and pricing.'
+        : 'Thanks — a solutions engineer will reach out within one business day to schedule your walkthrough.',
       refId: s.refId,
     };
   }
