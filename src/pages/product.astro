@@ -5,16 +5,16 @@ import Button from "../components/Button.astro";
 import CodeTabs from "../components/CodeTabs.astro";
 import type { CodeTab } from "../components/CodeTabs.astro";
 import {
-  GET_API_KEY_LABEL,
-  GET_API_KEY_URL,
+  BOOK_DEMO_LABEL,
+  BOOK_DEMO_URL,
   TALK_TO_SALES_LABEL,
   TALK_TO_SALES_URL,
-  PRICING_PATH,
   DOCS_PATH,
+  ENGINE_BASE_URL,
 } from "../lib/site";
 
 const PRODUCT_DESCRIPTION =
-  "One fast API call turns any 6–8 digit BIN into a complete, typed, scored card record — scheme, type, issuer, country, currency, DCC eligibility, and fraud signals. EU-hosted, GDPR-clean, sub-10ms p99.";
+  "Deploy the BIN intelligence engine in your own cloud, plug in your data licenses, and turn any 6–8 digit BIN into a complete, typed, scored card record — scheme, type, issuer, country, currency, DCC eligibility, and confidence. EU-hosted option, out of PCI scope, sub-10ms p99.";
 
 const lookupFields = [
   { k: "Identity", d: "scheme, type, category, product / card level." },
@@ -77,7 +77,7 @@ const useCases = [
 ---
 
 <Layout
-  title="Product — FindThisBIN card-intelligence API"
+  title="Product — FindThisBIN BIN intelligence engine"
   description={PRODUCT_DESCRIPTION}
   active="product"
 >
@@ -93,11 +93,12 @@ const useCases = [
         The card-intelligence layer for <span class="grad-text">payment platforms.</span>
       </h1>
       <p class="lead hero-lead">
-        One fast API call turns any 6–8 digit BIN into a complete, typed, scored card record —
-        so your platform can route, price, comply, and protect with confidence.
+        Deploy the engine in your own cloud, plug in your data licenses, and turn any 6–8 digit BIN
+        into a complete, typed, scored card record — so your platform can route, price, comply, and
+        protect with confidence.
       </p>
       <div class="cta-row hero-cta">
-        <Button href={GET_API_KEY_URL} label={GET_API_KEY_LABEL} variant="primary" size="lg" />
+        <Button href={BOOK_DEMO_URL} label={BOOK_DEMO_LABEL} variant="primary" size="lg" />
         <Button href={TALK_TO_SALES_URL} label={TALK_TO_SALES_LABEL} variant="ghost-dark" size="lg" />
       </div>
     </div>
@@ -111,8 +112,9 @@ const useCases = [
           <Eyebrow label="Anatomy of a lookup" tone="violet" />
           <h2 class="h2">One request in. A complete card record out.</h2>
           <p class="lead">
-            Send a BIN, get back every attribute your stack needs — each one typed, versioned,
-            and carrying its own confidence score. No stitching together raw network files.
+            Send a BIN to the engine running in your environment, get back every attribute your
+            stack needs — each one typed, versioned, and carrying its own confidence score. No
+            stitching together raw network files.
           </p>
           <div class="anatomy">
             {
@@ -131,9 +133,9 @@ const useCases = [
           <CodeTabs
             id="anatomy"
             tabs={responseTab}
-            headLabel="findthisbin · live"
+            headLabel="findthisbin-engine · your-cloud"
             method="GET"
-            url="https://api.findthisbin.com/v1/bins/53847012"
+            url={`${ENGINE_BASE_URL}/v1/bins/53847012`}
             footer="→ 200 OK"
           />
         </div>
@@ -152,9 +154,9 @@ const useCases = [
         <article class="pillar dark">
           <div class="pillar-glow glow-violet" aria-hidden="true"></div>
           <div class="pillar-body">
-            <div class="pillar-eyebrow lime">01 · DEVELOPER EXPERIENCE</div>
-            <h3 class="h3">A REST API engineers actually enjoy.</h3>
-            <p class="pillar-text">Predictable JSON, idiomatic SDKs in 5 languages, test &amp; live keys, and a generous free tier. First lookup in under 5 minutes.</p>
+            <div class="pillar-eyebrow lime">01 · DEPLOY IN YOUR CLOUD</div>
+            <h3 class="h3">Run it where your data lives.</h3>
+            <p class="pillar-text">Self-host in your cloud, VPC, or on-prem — or have us operate it for you. Your engineers then integrate a clean REST API with idiomatic SDKs in 5 languages.</p>
             <pre class="mini-code mono"><code><span class="kw">await</span> ftb<span class="pn">.</span><span class="fn">bins</span><span class="pn">.</span><span class="fn">get</span><span class="pn">(</span><span class="st">'53847012'</span><span class="pn">)</span></code></pre>
           </div>
         </article>
@@ -247,10 +249,10 @@ const useCases = [
     <div class="final-blob" aria-hidden="true"></div>
     <div class="wrap wrap-tight final-wrap">
       <h2 class="h1-page final-h2" data-reveal>See it on your own BINs.</h2>
-      <p class="final-lead" data-reveal>From signup to your first lookup in under five minutes. No credit card required.</p>
+      <p class="final-lead" data-reveal>Book a walkthrough and we’ll scope a proof-of-concept deployed in your environment — live in days, not quarters.</p>
       <div class="cta-row center final-cta" data-reveal>
-        <Button href={GET_API_KEY_URL} label={GET_API_KEY_LABEL} variant="primary" size="lg" />
-        <Button href={PRICING_PATH} label="See pricing" variant="ghost-dark" size="lg" />
+        <Button href={BOOK_DEMO_URL} label={BOOK_DEMO_LABEL} variant="primary" size="lg" />
+        <Button href={TALK_TO_SALES_URL} label={TALK_TO_SALES_LABEL} variant="ghost-dark" size="lg" />
       </div>
     </div>
   </section>
