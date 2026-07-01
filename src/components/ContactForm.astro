@@ -1,5 +1,5 @@
 ---
-import { CONTACT_PATH, DOCS_PATH, HOME_PATH } from "../lib/site";
+import { CONTACT_PATH, HOME_PATH, PRIVACY_PATH } from "../lib/site";
 
 /**
  * Contact form card. Intent-driven (demo | sales) + progressive enhancement:
@@ -89,7 +89,7 @@ const successBody = sales
         <button type="submit" class="submit" data-submit>{submitLabel}</button>
 
         <p class="privacy">
-          By submitting you agree to our <a href={`${HOME_PATH}#`}>Privacy Policy</a>. We never store full card numbers.
+          By submitting you agree to our <a href={PRIVACY_PATH}>Privacy Policy</a>. We never store full card numbers.
         </p>
 
         <div class="switch-row">
@@ -106,8 +106,7 @@ const successBody = sales
         <span class="ref-key">ref</span><span class="ref-colon">:</span><span class="ref-val">{refId}</span>
       </div>
       <div class="success-cta-row">
-        <a href={DOCS_PATH} class="cta-lime">Read the docs</a>
-        <a href={HOME_PATH} class="cta-ghost">Back to home</a>
+        <a href={HOME_PATH} class="cta-lime">Back to home</a>
       </div>
     </div>
   </div>

@@ -2,23 +2,20 @@
 import Wordmark from "./Wordmark.astro";
 import {
   PRODUCT_PATH,
-  PRICING_PATH,
-  DOCS_PATH,
+  FEATURES_PATH,
   COMPANY_PATH,
-  SIGN_IN_URL,
   BOOK_DEMO_LABEL,
   BOOK_DEMO_URL,
 } from "../lib/site";
 
 interface Props {
-  active?: "home" | "product" | "pricing" | "docs" | "company";
+  active?: "home" | "product" | "features" | "company";
 }
 const { active } = Astro.props;
 
 const links = [
   { href: PRODUCT_PATH, label: "Product", key: "product" },
-  { href: PRICING_PATH, label: "Pricing", key: "pricing" },
-  { href: DOCS_PATH, label: "Docs", key: "docs" },
+  { href: FEATURES_PATH, label: "Features", key: "features" },
   { href: COMPANY_PATH, label: "Company", key: "company" },
 ];
 ---
@@ -42,7 +39,6 @@ const links = [
         }
       </div>
       <div class="nav-cta">
-        <a href={SIGN_IN_URL} class="signin">Sign in</a>
         <a href={BOOK_DEMO_URL} class="apikey">{BOOK_DEMO_LABEL}</a>
       </div>
     </div>
@@ -104,18 +100,7 @@ const links = [
   .nav-cta {
     display: flex;
     align-items: center;
-    gap: 18px;
     flex: none;
-  }
-  .signin {
-    text-decoration: none;
-    font-size: 15px;
-    font-weight: 500;
-    color: #c7c7d6;
-    transition: color 0.2s ease;
-  }
-  .signin:hover {
-    color: #ffffff;
   }
   .apikey {
     display: inline-flex;

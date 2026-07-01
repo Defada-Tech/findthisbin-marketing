@@ -16,10 +16,13 @@ export const ENGINE_BASE_URL = "https://bins.internal";
 /* Internal routes */
 export const HOME_PATH = "/";
 export const PRODUCT_PATH = "/product";
-export const PRICING_PATH = "/pricing";
-export const DOCS_PATH = "/docs";
+export const FEATURES_PATH = "/features";
 export const COMPANY_PATH = "/company";
 export const CONTACT_PATH = "/contact";
+export const PRIVACY_PATH = "/privacy";
+export const TERMS_PATH = "/terms";
+export const DPA_PATH = "/dpa";
+export const GDPR_PATH = "/gdpr";
 
 /* Primary CTAs — keep labels identical everywhere they appear. All route
    through the on-site contact form, switched by the `intent` query param.
@@ -31,18 +34,6 @@ export const TALK_TO_SALES_URL = "/contact?intent=sales";
 /* Home secondary CTA → the deployment-models section anchor. */
 export const SEE_DEPLOYMENT_LABEL = "See deployment options";
 export const SEE_DEPLOYMENT_URL = "/#deployment";
-
-/* External app / developer surfaces (placeholders for the live dashboard). */
-export const SIGN_IN_URL = "https://app.findthisbin.com/login";
-export const API_REFERENCE_URL = "https://app.findthisbin.com/reference";
-export const OPENAPI_SPEC_URL = "https://app.findthisbin.com/openapi.yaml";
-export const POSTMAN_URL = "https://www.postman.com/findthisbin";
-export const STATUS_URL = "https://status.findthisbin.com";
-
-/* Social */
-export const GITHUB_URL = "https://github.com/findthisbin";
-export const X_URL = "https://x.com/findthisbin";
-export const LINKEDIN_URL = "https://www.linkedin.com/company/findthisbin";
 
 /* Trust strip — reused on hero + pricing close. */
 export const TRUST_POINTS = [

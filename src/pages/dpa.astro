@@ -1,0 +1,66 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const lastUpdated = "2026-07-01";
+---
+
+<Layout title="Data Processing Agreement — FindThisBIN" description="FindThisBIN Data Processing Agreement (DPA) — governing the processing of personal data.">
+  <section class="page">
+    <div class="bg" aria-hidden="true"></div>
+    <div class="wrap wrap-tight">
+      <h1 class="h1-page">Data Processing Agreement</h1>
+      <p class="date">Last updated: {lastUpdated}</p>
+
+      <h2>1. Scope & Applicability</h2>
+      <p>This Data Processing Agreement ("DPA") forms part of the agreement between FindThisBIN ("Processor") and the customer ("Controller") for the provision of the FindThisBIN BIN intelligence engine. It applies where the Processor handles personal data on behalf of the Controller under applicable data protection law, including the GDPR.</p>
+
+      <h2>2. Nature & Purpose of Processing</h2>
+      <p>The FindThisBIN engine operates exclusively on BIN prefixes (first 6–8 digits of a payment card number). Personal data processing is minimal and limited to the BIN itself. The engine does not ingest, store, or process full primary account numbers (PANs), cardholder names, or transaction data.</p>
+
+      <h2>3. Duration</h2>
+      <p>Processing occurs for the duration of the service agreement. Upon termination, no Controller data is retained by the Processor unless the Controller operates the fully-managed option, in which case data is deleted or returned per the agreement.</p>
+
+      <h2>4. Sub-processors</h2>
+      <p>FindThisBIN may engage sub-processors for infrastructure and operations. A current list is available upon request. The Processor ensures sub-processors are bound by data protection obligations equivalent to this DPA.</p>
+
+      <h2>5. Security Measures</h2>
+      <p>The Processor implements appropriate technical and organizational measures including encryption in transit, access controls, logging, and regular security reviews. Detailed security documentation is available under NDA.</p>
+
+      <h2>6. Data Subject Rights</h2>
+      <p>The Processor shall assist the Controller in responding to data subject requests to the extent the Processor has access to relevant data. Given the BIN-only nature of processing, such requests are expected to be rare.</p>
+
+      <h2>7. Breach Notification</h2>
+      <p>The Processor shall notify the Controller without undue delay upon becoming aware of a personal data breach affecting Controller data.</p>
+
+      <h2>8. Contact</h2>
+      <p>For DPA-related inquiries or to request an executed copy, contact <a href="mailto:dpa@findthisbin.com">dpa@findthisbin.com</a>.</p>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .page {
+    position: relative;
+    background: var(--ink);
+    overflow: hidden;
+    padding: clamp(56px, 8vw, 96px) 0 clamp(64px, 8vw, 96px);
+  }
+  .bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(100% 80% at 50% -10%, rgba(124, 92, 255, 0.22), transparent 55%);
+  }
+  .wrap-tight {
+    max-width: 720px;
+    position: relative;
+    z-index: 1;
+  }
+  .h1-page { margin-bottom: 8px; }
+  .date { font-size: 14px; color: var(--text-dark-muted); margin: 0 0 36px; }
+  h2 { font-family: var(--font-display); font-weight: 700; font-size: 22px; color: #fff; margin: 36px 0 12px; }
+  p, li { font-size: 15px; line-height: 1.7; color: var(--text-dark-body); margin: 0 0 14px; }
+  ul { padding-left: 20px; margin: 0 0 14px; }
+  a { color: var(--cyan); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+</style>

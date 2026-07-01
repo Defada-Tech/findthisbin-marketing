@@ -3,38 +3,24 @@ import Wordmark from "./Wordmark.astro";
 import {
   HOME_PATH,
   PRODUCT_PATH,
-  PRICING_PATH,
-  DOCS_PATH,
-  COMPANY_PATH,
-  API_REFERENCE_URL,
-  STATUS_URL,
-  GITHUB_URL,
-  X_URL,
-  LINKEDIN_URL,
+  FEATURES_PATH,
+  PRIVACY_PATH,
+  TERMS_PATH,
+  DPA_PATH,
+  GDPR_PATH,
 } from "../lib/site";
 
 const productLinks = [
   { href: PRODUCT_PATH, label: "Overview" },
   { href: `${HOME_PATH}#try`, label: "Try it live" },
-  { href: PRICING_PATH, label: "Pricing" },
-  { href: `${HOME_PATH}#psp`, label: "For platforms" },
-];
-const devLinks = [
-  { href: DOCS_PATH, label: "Docs" },
-  { href: API_REFERENCE_URL, label: "API Reference" },
-  { href: `${DOCS_PATH}#sdks`, label: "SDKs" },
-  { href: STATUS_URL, label: "Status" },
-];
-const companyLinks = [
-  { href: COMPANY_PATH, label: "About" },
-  { href: "/#", label: "Blog" },
-  { href: `${COMPANY_PATH}#careers`, label: "Careers" },
+  { href: FEATURES_PATH, label: "Features" },
+  { href: `${HOME_PATH}#deployment`, label: "Deployment models" },
 ];
 const legalLinks = [
-  { href: "/#", label: "Privacy" },
-  { href: "/#", label: "Terms" },
-  { href: "/#", label: "DPA" },
-  { href: "/#", label: "GDPR" },
+  { href: PRIVACY_PATH, label: "Privacy" },
+  { href: TERMS_PATH, label: "Terms" },
+  { href: DPA_PATH, label: "DPA" },
+  { href: GDPR_PATH, label: "GDPR" },
 ];
 ---
 
@@ -57,14 +43,6 @@ const legalLinks = [
         <ul>{productLinks.map((l) => <li><a href={l.href}>{l.label}</a></li>)}</ul>
       </div>
       <div class="col">
-        <h2>Developers</h2>
-        <ul>{devLinks.map((l) => <li><a href={l.href}>{l.label}</a></li>)}</ul>
-      </div>
-      <div class="col" id="company">
-        <h2>Company</h2>
-        <ul>{companyLinks.map((l) => <li><a href={l.href}>{l.label}</a></li>)}</ul>
-      </div>
-      <div class="col">
         <h2>Legal</h2>
         <ul>{legalLinks.map((l) => <li><a href={l.href}>{l.label}</a></li>)}</ul>
       </div>
@@ -72,17 +50,6 @@ const legalLinks = [
 
     <div class="footer-bottom">
       <span class="copyright">© 2026 FindThisBIN. All rights reserved.</span>
-      <div class="social">
-        <a href={GITHUB_URL} aria-label="GitHub" rel="noopener" target="_blank">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.5v-2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.5 11.5 0 016 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.3c0 .3.2.6.8.5 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"></path></svg>
-        </a>
-        <a href={X_URL} aria-label="X" rel="noopener" target="_blank">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24h-6.66l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg>
-        </a>
-        <a href={LINKEDIN_URL} aria-label="LinkedIn" rel="noopener" target="_blank">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46zM5.34 7.43a2.06 2.06 0 110-4.13 2.06 2.06 0 010 4.13zM7.12 20.45H3.55V9h3.57z"></path></svg>
-        </a>
-      </div>
     </div>
   </div>
 </footer>
@@ -100,7 +67,7 @@ const legalLinks = [
   }
   .footer-grid {
     display: grid;
-    grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1.6fr 1fr 1fr;
     gap: 40px 32px;
   }
   .brand { min-width: 200px; }
@@ -163,36 +130,10 @@ const legalLinks = [
     margin-top: 52px;
     padding-top: 26px;
     border-top: 1px solid rgba(255, 255, 255, 0.07);
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-    align-items: center;
-    justify-content: space-between;
   }
   .copyright {
     font-size: 13px;
     color: var(--text-dark-faint);
-  }
-  .social {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-  }
-  .social a {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 34px;
-    height: 34px;
-    border-radius: 9px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: var(--text-dark-muted);
-    text-decoration: none;
-    transition: color 0.2s ease, border-color 0.2s ease;
-  }
-  .social a:hover {
-    color: #fff;
-    border-color: rgba(255, 255, 255, 0.25);
   }
 
   @media (max-width: 900px) {

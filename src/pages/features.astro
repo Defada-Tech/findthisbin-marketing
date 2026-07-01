@@ -8,37 +8,34 @@ import {
   TALK_TO_SALES_URL,
 } from "../lib/site";
 
-interface Tier {
-  name: string;
-  aud: string;
-  price: string;
-  priceSub: string;
-  cta: string;
-  features: string[];
-  popular?: boolean;
-  dark?: boolean;
-  ctaStyle: "soft" | "lime" | "ink";
-}
-
-const tiers: Tier[] = [
+const deployModels = [
   {
-    name: "Startup", aud: "A single deployment", price: "Let’s talk", priceSub: "Scoped to your volume",
-    cta: "Request pricing", ctaStyle: "soft",
-    features: ["Self-hosted in your cloud", "Core engine + base connectors", "Bundled seed data", "Community support"],
+    name: "Self-hosted / BYOC",
+    chip: "self-hosted",
+    text: "Run it in your own cloud, VPC, or on-prem — air-gappable. Your infrastructure, your data, your control.",
+    checks: ["Deploy via Helm / container", "Nothing leaves your network", "You operate the ops"],
+    tone: "lime",
+    highlight: false,
   },
   {
-    name: "Growth", aud: "HA, with an SLA", price: "Let’s talk", priceSub: "Scoped to your volume & SLA",
-    cta: "Request pricing", ctaStyle: "lime", popular: true, dark: true,
-    features: ["Managed-in-your-cloud option", "High availability + more connectors", "99.9% uptime SLA", "DCC module + standard support"],
+    name: "Managed in your cloud",
+    chip: "most popular",
+    text: "We deploy and operate the engine inside your environment. You keep the data; we keep it running.",
+    checks: ["Runs in your VPC / account", "We handle upgrades & ops", "Data residency stays yours"],
+    tone: "cyan",
+    highlight: true,
   },
   {
-    name: "Enterprise", aud: "Multi-environment & managed", price: "Custom", priceSub: "Tailored to your estate",
-    cta: "Talk to sales", ctaStyle: "ink",
-    features: ["Multi-environment + fully-managed", "Premium connectors + custom data", "Custom SLAs + dedicated support", "Dataset export, air-gapped on-prem"],
+    name: "Fully managed (BYOL)",
+    chip: "fully managed",
+    text: "We host and operate it; you onboard as an isolated tenant and bring your licenses. Zero infra, zero ops — your data stays isolated and yours.",
+    checks: ["Isolated per-tenant data", "Bring your own licenses", "No infrastructure to manage"],
+    tone: "lime",
+    highlight: false,
   },
 ];
 
-const cols = ["Startup", "Growth", "Enterprise"];
+const cols = ["Self-hosted", "Managed in your cloud", "Fully managed"];
 const rows: { label: string; cells: string[] }[] = [
   { label: "Self-hosted / BYOC", cells: ["✓", "✓", "✓"] },
   { label: "Managed in your cloud", cells: ["—", "✓", "✓"] },
@@ -63,9 +60,9 @@ const faqs = [
   { q: "Where does my data live?", a: "In your environment. For self-hosted and managed-in-your-cloud, nothing leaves your VPC. The fully-managed option keeps your data isolated per tenant, with an EU-hosting option." },
   { q: "Do you ever see my card data?", a: "No. The engine only ever works with the 6–8 digit BIN — we are out of PCI scope and out of the card/data path entirely." },
   { q: "Can you host it for us?", a: "Yes. Choose managed-in-your-cloud (we operate it inside your account) or fully-managed (we host an isolated tenant). Either way you keep ownership of your data." },
-  { q: "What licenses do I need to bring?", a: "Connect what you license — Visa VBASS, the Mastercard BIN table, commercial providers, or your own CSV. It works on day one with bundled open seed data, and we’ll help you connect to providers if you don’t have a license yet." },
+  { q: "What licenses do I need to bring?", a: "Connect what you license — Visa VBASS, the Mastercard BIN table, commercial providers, or your own CSV. It works on day one with bundled open seed data, and we'll help you connect to providers if you don't have a license yet." },
   { q: "How do I evaluate it?", a: "With a proof-of-concept deployed in your own cloud using bundled seed data — connect a source and run it against your real BINs before committing." },
-  { q: "How is it priced?", a: "By deployment model, volume, connectors, and SLA rather than per-lookup. Tell us your setup and we’ll scope a plan." },
+  { q: "How is it priced?", a: "By deployment model, volume, connectors, and SLA rather than per-lookup. Tell us your setup and we'll scope a plan." },
   { q: "Can I run it air-gapped / on-prem?", a: "Yes — the self-hosted model is air-gappable, and Enterprise adds dataset export for fully isolated environments." },
 ];
 
@@ -73,9 +70,9 @@ const cellKind = (c: string) => (c === "✓" ? "check" : c === "—" ? "dash" : 
 ---
 
 <Layout
-  title="Pricing — FindThisBIN"
-  description="Deployment-based pricing for the FindThisBIN engine. Plans scale from a single deployment to multi-environment and fully-managed — scoped around your volume, connectors, SLAs, and data residency. Evaluate with a POC in your own cloud."
-  active="pricing"
+  title="Features — FindThisBIN"
+  description="Explore deployment models and features for the FindThisBIN engine. From self-hosted to fully managed, one engine with the capabilities your platform needs — compare plans and book a demo."
+  active="features"
 >
   <!-- ============ HEADER ============ -->
   <section class="header">
@@ -83,38 +80,38 @@ const cellKind = (c: string) => (c === "✓" ? "check" : c === "—" ? "dash" : 
     <div class="wrap wrap-narrow header-wrap">
       <span class="hero-pill">
         <span class="dot" aria-hidden="true"></span>
-        Deployment-based pricing · Runs in your cloud
+        Deployment models & features · One engine
       </span>
-      <h1 class="h1-page">Pricing that fits your deployment.</h1>
+      <h1 class="h1-page">One engine. Every deployment model.</h1>
       <p class="header-lead">
-        Plans scale from a single deployment to multi-environment and fully-managed. We scope a
-        plan around your volume, connectors, SLAs, and data-residency needs — then prove it with a
-        POC in your cloud.
+        Choose how you run it — self-hosted in your cloud, managed by us inside your environment,
+        or fully managed as an isolated tenant. Every model runs the exact same engine with the same
+        capabilities. Compare features below or book a demo to see it in action.
       </p>
     </div>
   </section>
 
-  <!-- ============ TIERS ============ -->
+  <!-- ============ DEPLOYMENT MODELS ============ -->
   <section id="tiers" class="band band-off tiers-band">
     <div class="wrap">
-      <div class="tiers">
+      <div class="deploy-cards">
         {
-          tiers.map((t) => (
-            <div class:list={["tier", t.dark && "dark"]}>
-              {t.popular && <span class="popular-badge">MOST POPULAR</span>}
-              <div class="tier-name">{t.name}</div>
-              <div class="tier-aud">{t.aud}</div>
-              <div class="tier-price">{t.price}</div>
-              <div class="tier-price-sub">{t.priceSub}</div>
-              <a href={TALK_TO_SALES_URL} class:list={["tier-cta", t.ctaStyle]}>{t.cta}</a>
-              <ul class="tier-features">
-                {t.features.map((f) => (
-                  <li><span class:list={["tick", t.dark ? "cyan" : "violet"]} aria-hidden="true">✓</span>{f}</li>
+          deployModels.map((m) => (
+            <article class:list={["deploy-card", m.highlight && "highlight"]}>
+              <span class="deploy-chip">{m.chip}</span>
+              <h3 class="h3">{m.name}</h3>
+              <p class="deploy-text">{m.text}</p>
+              <ul class="deploy-checks">
+                {m.checks.map((c) => (
+                  <li><span class:list={["check", m.tone]} aria-hidden="true">✓</span>{c}</li>
                 ))}
               </ul>
-            </div>
+            </article>
           ))
         }
+      </div>
+      <div class="cta-row center deploy-cta" data-reveal>
+        <Button href={BOOK_DEMO_URL} label={BOOK_DEMO_LABEL} variant="primary" />
       </div>
     </div>
   </section>
@@ -145,7 +142,7 @@ const cellKind = (c: string) => (c === "✓" ? "check" : c === "—" ? "dash" : 
           <thead>
             <tr>
               <th class="feature-col">Capability</th>
-              {cols.map((c) => <th class:list={[c === "Growth" && "growth-col"]}>{c}</th>)}
+              {cols.map((c) => <th class:list={[c === "Managed in your cloud" && "growth-col"]}>{c}</th>)}
             </tr>
           </thead>
           <tbody>
@@ -257,67 +254,58 @@ const cellKind = (c: string) => (c === "✓" ? "check" : c === "—" ? "dash" : 
     max-width: 640px;
   }
 
-  /* ── Tiers ────────────────────────────────────────────────────────── */
+  /* ── Deployment models ─────────────────────────────────────────────── */
   .tiers-band {
     padding-top: clamp(40px, 5vw, 64px);
     padding-bottom: clamp(56px, 7vw, 88px);
   }
-  .tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; align-items: stretch; }
-  .tier {
+  .deploy-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; align-items: stretch; }
+  .deploy-card {
     background: #fff;
     border: 1px solid var(--border-light);
-    border-radius: 18px;
-    padding: 30px;
+    border-radius: 16px;
+    padding: 28px;
     display: flex;
     flex-direction: column;
     position: relative;
   }
-  .tier.dark {
+  .deploy-card.highlight {
     background: var(--ink);
     color: #fff;
-    border-color: transparent;
+    border-color: rgba(124, 92, 255, 0.6);
     box-shadow: var(--shadow-popular);
   }
-  .popular-badge {
-    position: absolute;
-    top: -12px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--lime);
-    color: var(--ink);
+  .deploy-card h3 { margin: 4px 0 0; }
+  .deploy-card.highlight h3 { color: #fff; }
+  .deploy-chip {
+    align-self: flex-start;
+    font-family: var(--font-mono);
     font-size: 11.5px;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    padding: 5px 13px;
+    font-weight: 500;
+    color: var(--text-light-muted);
+    background: var(--surface-light);
+    border: 1px solid var(--border-light);
+    padding: 4px 10px;
     border-radius: 999px;
-    white-space: nowrap;
+    margin-bottom: 16px;
+    letter-spacing: 0.02em;
   }
-  .tier-name { font-family: var(--font-display); font-weight: 700; font-size: 19px; }
-  .tier-aud { font-size: 13.5px; color: var(--text-light-muted); margin: 5px 0 20px; }
-  .tier.dark .tier-aud { color: var(--text-dark-muted); }
-  .tier-price { font-family: var(--font-display); font-weight: 700; font-size: 30px; letter-spacing: -0.03em; }
-  .tier-price-sub { font-size: 13px; color: var(--text-light-faint); margin: 4px 0 22px; }
-  .tier.dark .tier-price-sub { color: var(--text-dark-muted-2); }
-  .tier-cta {
-    text-decoration: none;
-    text-align: center;
-    font-weight: 600;
-    font-size: 15px;
-    padding: 13px;
-    border-radius: 11px;
-    margin-bottom: 22px;
-    transition: transform 0.15s ease, filter 0.15s ease;
+  .deploy-card.highlight .deploy-chip {
+    color: var(--ink);
+    background: var(--lime);
+    border-color: var(--lime);
+    font-weight: 700;
   }
-  .tier-cta:hover { transform: translateY(-1px); }
-  .tier-cta.soft { color: var(--ink); background: var(--surface-light); border: 1px solid var(--border-light); }
-  .tier-cta.lime { color: var(--ink); background: var(--lime); }
-  .tier-cta.ink { color: #fff; background: var(--ink); }
-  .tier-features { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 11px; }
-  .tier-features li { font-size: 13.5px; color: var(--text-light-body-strong); display: flex; gap: 9px; }
-  .tier.dark .tier-features li { color: #c7c7d6; }
-  .tick.violet { color: var(--violet); }
-  .tick.cyan { color: var(--cyan); }
-  @media (max-width: 920px) { .tiers { grid-template-columns: 1fr; max-width: 460px; margin: 0 auto; } }
+  .deploy-text { font-size: 14.5px; line-height: 1.55; color: var(--text-light-body); margin: 12px 0 0; }
+  .deploy-card.highlight .deploy-text { color: var(--text-dark-muted); }
+  .deploy-checks { list-style: none; margin: 18px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+  .deploy-checks li { display: flex; gap: 10px; font-size: 14px; color: var(--text-light-body-strong); }
+  .deploy-card.highlight .deploy-checks li { color: var(--text-dark-body); }
+  .check { flex: none; font-weight: 700; }
+  .check.lime { color: #4ac71a; }
+  .check.cyan { color: var(--cyan); }
+  .deploy-cta { justify-content: center; margin-top: 34px; }
+  @media (max-width: 920px) { .deploy-cards { grid-template-columns: 1fr; max-width: 460px; margin: 0 auto; } }
 
   /* ── POC callout ──────────────────────────────────────────────────── */
   .poc-band { padding-top: 0; }
