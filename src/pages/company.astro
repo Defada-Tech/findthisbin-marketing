@@ -3,17 +3,23 @@ import Layout from "../layouts/Layout.astro";
 import Eyebrow from "../components/Eyebrow.astro";
 import Button from "../components/Button.astro";
 import {
-  GET_API_KEY_LABEL,
-  GET_API_KEY_URL,
+  BOOK_DEMO_LABEL,
+  BOOK_DEMO_URL,
   TALK_TO_SALES_LABEL,
   TALK_TO_SALES_URL,
 } from "../lib/site";
 
 const principles = [
   { n: "01", t: "Precision over guesswork", d: "If we’re not sure, we say so — with a confidence score on every field." },
-  { n: "02", t: "Developer-first", d: "Great docs, clean SDKs, and a free tier. The integration should be the easy part." },
-  { n: "03", t: "EU-resident by default", d: "Data hosted and processed in the EU — residency isn’t an upsell." },
+  { n: "02", t: "Developer-first", d: "Great docs, clean SDKs, and a clean REST API. The integration should be the easy part." },
+  { n: "03", t: "Runs in your environment", d: "Deploy it in your own cloud; your data never leaves. EU-hosting option — residency isn’t an upsell." },
   { n: "04", t: "Out of PCI scope", d: "We only ever touch the BIN — never a full card number, by design." },
+];
+
+const roles = [
+  "Senior Data Engineer — BIN Pipeline",
+  "Backend Engineer — Low-latency API",
+  "Developer Advocate — Payments",
 ];
 ---
 
@@ -57,8 +63,8 @@ const principles = [
           </p>
           <p>
             We started FindThisBIN to fix that from first principles: true 8-digit precision,
-            multi-source corrections, per-field confidence, and a sub-10ms API hosted entirely
-            in the EU — built by people who have shipped payments infrastructure and know what a
+            multi-source corrections, per-field confidence, and a sub-10ms engine you run in your
+            own cloud — built by people who have shipped payments infrastructure and know what a
             checkout hot path demands.
           </p>
           <p>
@@ -91,13 +97,41 @@ const principles = [
     </div>
   </section>
 
+  <!-- ============ CAREERS ============ -->
+  <section id="careers" class="band band-ink careers">
+    <div class="careers-bg" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <Eyebrow label="Careers" tone="cyan" />
+        <h2 class="h2 on-dark">Come build payments infrastructure.</h2>
+        <p class="lead on-dark">We’re a small, senior team based in the EU, working on data and APIs that thousands of transactions depend on every minute.</p>
+      </div>
+      <div class="roles" data-reveal>
+        {
+          roles.map((r) => (
+            <a href="#" class="role">
+              <div class="role-main">
+                <div class="role-t">{r}</div>
+                <div class="role-meta">Remote (EU) · Full-time</div>
+              </div>
+              <span class="role-link">View role →</span>
+            </a>
+          ))
+        }
+      </div>
+      <div class="cta-row careers-cta" data-reveal>
+        <Button href={TALK_TO_SALES_URL} label="Get in touch" variant="primary" />
+      </div>
+    </div>
+  </section>
+
   <!-- ============ FINAL CTA ============ -->
   <section class="final">
     <div class="final-blob" aria-hidden="true"></div>
     <div class="wrap wrap-tight final-wrap">
       <h2 class="h1-page final-h2" data-reveal>Build on card intelligence you can trust.</h2>
       <div class="cta-row center final-cta" data-reveal>
-        <Button href={GET_API_KEY_URL} label={GET_API_KEY_LABEL} variant="primary" size="lg" />
+        <Button href={BOOK_DEMO_URL} label={BOOK_DEMO_LABEL} variant="primary" size="lg" />
         <Button href={TALK_TO_SALES_URL} label={TALK_TO_SALES_LABEL} variant="ghost-dark" size="lg" />
       </div>
     </div>
@@ -192,6 +226,34 @@ const principles = [
   @media (max-width: 520px) {
     .principles { grid-template-columns: 1fr; }
   }
+
+  /* ── Careers ──────────────────────────────────────────────────────── */
+  .careers { position: relative; }
+  .careers-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(80% 70% at 12% 0%, rgba(34, 211, 238, 0.14), transparent 55%);
+  }
+  .careers .wrap { z-index: 1; }
+  .roles { display: flex; flex-direction: column; gap: 12px; }
+  .role {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 22px 24px;
+    text-decoration: none;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+  }
+  .role:hover { border-color: rgba(34, 211, 238, 0.5); transform: translateY(-2px); }
+  .role-t { font-family: var(--font-display); font-weight: 700; font-size: 18px; color: #fff; }
+  .role-meta { font-size: 13.5px; color: var(--text-dark-muted); margin-top: 4px; }
+  .role-link { flex: none; font-size: 14.5px; font-weight: 600; color: var(--cyan); }
+  .careers-cta { margin-top: 28px; }
 
   /* ── Final CTA ────────────────────────────────────────────────────── */
   .final {

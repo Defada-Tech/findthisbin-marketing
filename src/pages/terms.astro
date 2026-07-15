@@ -1,0 +1,66 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const lastUpdated = "2026-07-01";
+---
+
+<Layout title="Terms of Service — FindThisBIN" description="FindThisBIN Terms of Service — governing the use of our website and services.">
+  <section class="page">
+    <div class="bg" aria-hidden="true"></div>
+    <div class="wrap wrap-tight">
+      <h1 class="h1-page">Terms of Service</h1>
+      <p class="date">Last updated: {lastUpdated}</p>
+
+      <h2>1. Agreement</h2>
+      <p>By accessing findthisbin.com ("the site") or engaging with FindThisBIN's services, you agree to these Terms of Service. If you do not agree, do not use the site or services.</p>
+
+      <h2>2. Service Description</h2>
+      <p>FindThisBIN provides a deployable BIN (Bank Identification Number) intelligence engine for payment platforms. The engine is deployed in the customer's own cloud environment or managed on behalf of the customer. Detailed service descriptions, SLAs, and deployment terms are set forth in separately executed agreements.</p>
+
+      <h2>3. Deployment & Data Ownership</h2>
+      <p>The FindThisBIN engine runs in your environment. You retain full ownership of and responsibility for any data you connect to or process through the engine. FindThisBIN does not access, store, or process your card data — the engine operates on BIN prefixes only and is out of PCI scope.</p>
+
+      <h2>4. Intellectual Property</h2>
+      <p>The FindThisBIN engine, website content, brand, and documentation are the intellectual property of FindThisBIN. Customers receive a license to use the engine under the terms of their agreement. The site and its contents may not be reproduced or redistributed without permission.</p>
+
+      <h2>5. Limitation of Liability</h2>
+      <p>To the fullest extent permitted by law, FindThisBIN shall not be liable for any indirect, incidental, or consequential damages arising from the use of the site or services. The engine is provided with the warranties set forth in the applicable agreement.</p>
+
+      <h2>6. Governing Law</h2>
+      <p>These terms are governed by the laws of the Republic of Estonia. Any disputes shall be resolved in the courts of Tallinn, Estonia.</p>
+
+      <h2>7. Changes</h2>
+      <p>We reserve the right to update these terms. Material changes will be communicated via the site or email.</p>
+
+      <h2>8. Contact</h2>
+      <p>Questions about these terms? Contact us at <a href="mailto:legal@findthisbin.com">legal@findthisbin.com</a>.</p>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .page {
+    position: relative;
+    background: var(--ink);
+    overflow: hidden;
+    padding: clamp(56px, 8vw, 96px) 0 clamp(64px, 8vw, 96px);
+  }
+  .bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(100% 80% at 50% -10%, rgba(124, 92, 255, 0.22), transparent 55%);
+  }
+  .wrap-tight {
+    max-width: 720px;
+    position: relative;
+    z-index: 1;
+  }
+  .h1-page { margin-bottom: 8px; }
+  .date { font-size: 14px; color: var(--text-dark-muted); margin: 0 0 36px; }
+  h2 { font-family: var(--font-display); font-weight: 700; font-size: 22px; color: #fff; margin: 36px 0 12px; }
+  p, li { font-size: 15px; line-height: 1.7; color: var(--text-dark-body); margin: 0 0 14px; }
+  ul { padding-left: 20px; margin: 0 0 14px; }
+  a { color: var(--cyan); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+</style>

@@ -1,0 +1,457 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Button from "../components/Button.astro";
+import {
+  BOOK_DEMO_LABEL,
+  BOOK_DEMO_URL,
+  TALK_TO_SALES_LABEL,
+  TALK_TO_SALES_URL,
+} from "../lib/site";
+
+const deployModels = [
+  {
+    name: "Self-hosted / BYOC",
+    chip: "self-hosted",
+    text: "Run it in your own cloud, VPC, or on-prem — air-gappable. Your infrastructure, your data, your control.",
+    checks: ["Deploy via Helm / container", "Nothing leaves your network", "You operate the ops"],
+    tone: "lime",
+    highlight: false,
+  },
+  {
+    name: "Managed in your cloud",
+    chip: "most popular",
+    text: "We deploy and operate the engine inside your environment. You keep the data; we keep it running.",
+    checks: ["Runs in your VPC / account", "We handle upgrades & ops", "Data residency stays yours"],
+    tone: "cyan",
+    highlight: true,
+  },
+  {
+    name: "Fully managed (BYOL)",
+    chip: "fully managed",
+    text: "We host and operate it; you onboard as an isolated tenant and bring your licenses. Zero infra, zero ops — your data stays isolated and yours.",
+    checks: ["Isolated per-tenant data", "Bring your own licenses", "No infrastructure to manage"],
+    tone: "lime",
+    highlight: false,
+  },
+];
+
+const cols = ["Self-hosted", "Managed in your cloud", "Fully managed"];
+const rows: { label: string; cells: string[] }[] = [
+  { label: "Self-hosted / BYOC", cells: ["✓", "✓", "✓"] },
+  { label: "Managed in your cloud", cells: ["—", "✓", "✓"] },
+  { label: "Fully-managed (BYOL)", cells: ["—", "—", "✓"] },
+  { label: "Included connectors", cells: ["Base", "Extended", "Premium"] },
+  { label: "Bundled seed data", cells: ["✓", "✓", "✓"] },
+  { label: "8-digit range data + confidence", cells: ["✓", "✓", "✓"] },
+  { label: "DCC module", cells: ["—", "✓", "✓"] },
+  { label: "Surcharging & interchange intelligence", cells: ["—", "✓", "✓"] },
+  { label: "Network-token indicators", cells: ["—", "✓", "✓"] },
+  { label: "Data stays in your environment", cells: ["✓", "✓", "✓"] },
+  { label: "Uptime SLA", cells: ["—", "99.9%", "Custom"] },
+  { label: "Managed operations", cells: ["—", "Optional", "✓"] },
+  { label: "Support level", cells: ["Community", "Standard", "Dedicated"] },
+  { label: "Dataset export", cells: ["—", "—", "✓"] },
+  { label: "DPA", cells: ["✓", "✓", "✓"] },
+  { label: "SOC 2", cells: ["Roadmap", "Roadmap", "✓"] },
+];
+
+const faqs = [
+  { q: "What deployment options are there?", a: "Three, all running the same engine: self-hosted in your own cloud / VPC / on-prem, managed by us inside your cloud, or fully managed where we host an isolated tenant for you." },
+  { q: "Where does my data live?", a: "In your environment. For self-hosted and managed-in-your-cloud, nothing leaves your VPC. The fully-managed option keeps your data isolated per tenant, with an EU-hosting option." },
+  { q: "Do you ever see my card data?", a: "No. The engine only ever works with the 6–8 digit BIN — we are out of PCI scope and out of the card/data path entirely." },
+  { q: "Can you host it for us?", a: "Yes. Choose managed-in-your-cloud (we operate it inside your account) or fully-managed (we host an isolated tenant). Either way you keep ownership of your data." },
+  { q: "What licenses do I need to bring?", a: "Connect what you license — Visa VBASS, the Mastercard BIN table, commercial providers, or your own CSV. It works on day one with bundled open seed data, and we'll help you connect to providers if you don't have a license yet." },
+  { q: "How do I evaluate it?", a: "With a proof-of-concept deployed in your own cloud using bundled seed data — connect a source and run it against your real BINs before committing." },
+  { q: "How is it priced?", a: "By deployment model, volume, connectors, and SLA rather than per-lookup. Tell us your setup and we'll scope a plan." },
+  { q: "Can I run it air-gapped / on-prem?", a: "Yes — the self-hosted model is air-gappable, and Enterprise adds dataset export for fully isolated environments." },
+];
+
+const cellKind = (c: string) => (c === "✓" ? "check" : c === "—" ? "dash" : "text");
+---
+
+<Layout
+  title="Features — FindThisBIN"
+  description="Explore deployment models and features for the FindThisBIN engine. From self-hosted to fully managed, one engine with the capabilities your platform needs — compare plans and book a demo."
+  active="features"
+>
+  <!-- ============ HEADER ============ -->
+  <section class="header">
+    <div class="header-bg" aria-hidden="true"></div>
+    <div class="wrap wrap-narrow header-wrap">
+      <span class="hero-pill">
+        <span class="dot" aria-hidden="true"></span>
+        Deployment models & features · One engine
+      </span>
+      <h1 class="h1-page">One engine. Every deployment model.</h1>
+      <p class="header-lead">
+        Choose how you run it — self-hosted in your cloud, managed by us inside your environment,
+        or fully managed as an isolated tenant. Every model runs the exact same engine with the same
+        capabilities. Compare features below or book a demo to see it in action.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ DEPLOYMENT MODELS ============ -->
+  <section id="tiers" class="band band-off tiers-band">
+    <div class="wrap">
+      <div class="deploy-cards">
+        {
+          deployModels.map((m) => (
+            <article class:list={["deploy-card", m.highlight && "highlight"]}>
+              <span class="deploy-chip">{m.chip}</span>
+              <h3 class="h3">{m.name}</h3>
+              <p class="deploy-text">{m.text}</p>
+              <ul class="deploy-checks">
+                {m.checks.map((c) => (
+                  <li><span class:list={["check", m.tone]} aria-hidden="true">✓</span>{c}</li>
+                ))}
+              </ul>
+            </article>
+          ))
+        }
+      </div>
+      <div class="cta-row center deploy-cta" data-reveal>
+        <Button href={BOOK_DEMO_URL} label={BOOK_DEMO_LABEL} variant="primary" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ POC CALLOUT ============ -->
+  <section class="band band-white poc-band">
+    <div class="wrap wrap-narrow">
+      <div class="poc" data-reveal>
+        <div class="poc-eyebrow mono">Proof of concept</div>
+        <h2 class="h2 poc-h2">Evaluate with a POC in your own cloud.</h2>
+        <p class="poc-p">
+          Stand up the engine in your environment with bundled seed data, then connect a source and
+          run it against your own BINs — before you commit.
+        </p>
+        <div class="cta-row poc-cta">
+          <Button href={BOOK_DEMO_URL} label={BOOK_DEMO_LABEL} variant="primary" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ COMPARISON TABLE ============ -->
+  <section class="band band-off">
+    <div class="wrap">
+      <h2 class="h2 center-h2" data-reveal>Compare every plan</h2>
+      <div class="cmp" data-reveal>
+        <table>
+          <thead>
+            <tr>
+              <th class="feature-col">Capability</th>
+              {cols.map((c) => <th class:list={[c === "Managed in your cloud" && "growth-col"]}>{c}</th>)}
+            </tr>
+          </thead>
+          <tbody>
+            {
+              rows.map((row) => (
+                <tr>
+                  <td class="feature-cell">{row.label}</td>
+                  {
+                    row.cells.map((c) => (
+                      <td class="c">
+                        {cellKind(c) === "check" && <span class="ck">✓</span>}
+                        {cellKind(c) === "dash" && <span class="dash">—</span>}
+                        {cellKind(c) === "text" && <span class="txt">{c}</span>}
+                      </td>
+                    ))
+                  }
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VOLUME CALLOUT ============ -->
+  <section class="band band-ink volume-band">
+    <div class="wrap">
+      <div class="volume-panel signature-gradient" data-anim data-reveal>
+        <div class="volume-copy">
+          <h2 class="h2 on-dark volume-h2">Multiple environments, regions, or a managed rollout?</h2>
+          <p class="volume-p">We’ll build a plan around your deployment topology, volume, SLA, and data-residency needs.</p>
+        </div>
+        <Button href={TALK_TO_SALES_URL} label={TALK_TO_SALES_LABEL} variant="white" size="lg" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section class="band band-off">
+    <div class="wrap wrap-tight">
+      <h2 class="h2 center-h2" data-reveal>Pricing & deployment questions</h2>
+      <div class="faq" data-reveal>
+        {
+          faqs.map((f, i) => (
+            <div class:list={["faq-item", i === 0 && "open"]}>
+              <button class="faq-q" type="button" aria-expanded={i === 0 ? "true" : "false"}>
+                <span>{f.q}</span>
+                <span class="faq-sign" aria-hidden="true">{i === 0 ? "–" : "+"}</span>
+              </button>
+              <div class="faq-a"><p>{f.a}</p></div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CLOSE ============ -->
+  <section class="close">
+    <div class="close-blob" aria-hidden="true"></div>
+    <div class="wrap wrap-tight close-wrap">
+      <div class="close-trust" data-reveal>
+        <span>Runs in your cloud</span><span>·</span><span>Your data never leaves</span><span>·</span><span>Out of PCI scope</span><span>·</span><span>DPA available</span>
+      </div>
+      <h2 class="h1-page close-h2" data-reveal>Book a demo today.</h2>
+      <div class="cta-row center close-cta" data-reveal>
+        <Button href={BOOK_DEMO_URL} label={BOOK_DEMO_LABEL} variant="primary" size="lg" />
+        <Button href={TALK_TO_SALES_URL} label={TALK_TO_SALES_LABEL} variant="ghost-dark" size="lg" />
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  /* ── Header ───────────────────────────────────────────────────────── */
+  .header { position: relative; background: var(--ink); overflow: hidden; }
+  .header-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(100% 80% at 50% -10%, rgba(124, 92, 255, 0.28), transparent 55%);
+  }
+  .header-wrap {
+    padding-top: clamp(56px, 8vw, 96px);
+    padding-bottom: clamp(40px, 5vw, 56px);
+    text-align: center;
+    z-index: 1;
+  }
+  .hero-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 7px 14px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    margin-bottom: 24px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #d7d7e2;
+  }
+  .hero-pill .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--lime); box-shadow: 0 0 10px var(--lime); }
+  .header-lead {
+    font-size: clamp(16px, 1.8vw, 19px);
+    line-height: 1.6;
+    color: var(--text-dark-body);
+    margin: 18px auto 0;
+    max-width: 640px;
+  }
+
+  /* ── Deployment models ─────────────────────────────────────────────── */
+  .tiers-band {
+    padding-top: clamp(40px, 5vw, 64px);
+    padding-bottom: clamp(56px, 7vw, 88px);
+  }
+  .deploy-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; align-items: stretch; }
+  .deploy-card {
+    background: #fff;
+    border: 1px solid var(--border-light);
+    border-radius: 16px;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  .deploy-card.highlight {
+    background: var(--ink);
+    color: #fff;
+    border-color: rgba(124, 92, 255, 0.6);
+    box-shadow: var(--shadow-popular);
+  }
+  .deploy-card h3 { margin: 4px 0 0; }
+  .deploy-card.highlight h3 { color: #fff; }
+  .deploy-chip {
+    align-self: flex-start;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    font-weight: 500;
+    color: var(--text-light-muted);
+    background: var(--surface-light);
+    border: 1px solid var(--border-light);
+    padding: 4px 10px;
+    border-radius: 999px;
+    margin-bottom: 16px;
+    letter-spacing: 0.02em;
+  }
+  .deploy-card.highlight .deploy-chip {
+    color: var(--ink);
+    background: var(--lime);
+    border-color: var(--lime);
+    font-weight: 700;
+  }
+  .deploy-text { font-size: 14.5px; line-height: 1.55; color: var(--text-light-body); margin: 12px 0 0; }
+  .deploy-card.highlight .deploy-text { color: var(--text-dark-muted); }
+  .deploy-checks { list-style: none; margin: 18px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+  .deploy-checks li { display: flex; gap: 10px; font-size: 14px; color: var(--text-light-body-strong); }
+  .deploy-card.highlight .deploy-checks li { color: var(--text-dark-body); }
+  .check { flex: none; font-weight: 700; }
+  .check.lime { color: #4ac71a; }
+  .check.cyan { color: var(--cyan); }
+  .deploy-cta { justify-content: center; margin-top: 34px; }
+  @media (max-width: 920px) { .deploy-cards { grid-template-columns: 1fr; max-width: 460px; margin: 0 auto; } }
+
+  /* ── POC callout ──────────────────────────────────────────────────── */
+  .poc-band { padding-top: 0; }
+  .poc {
+    border: 1px dashed rgba(124, 92, 255, 0.45);
+    background: rgba(124, 92, 255, 0.04);
+    border-radius: 20px;
+    padding: clamp(28px, 4vw, 44px);
+    text-align: center;
+  }
+  .poc-eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--violet);
+    margin-bottom: 12px;
+  }
+  .poc-h2 { margin: 0 0 12px; font-size: clamp(24px, 3.4vw, 34px); }
+  .poc-p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--text-light-body);
+    margin: 0 auto 24px;
+    max-width: 560px;
+  }
+  .poc-cta { justify-content: center; }
+
+  /* ── Comparison table ─────────────────────────────────────────────── */
+  .center-h2 { text-align: center; margin-bottom: 36px; }
+  .cmp { overflow-x: auto; border: 1px solid var(--border-light); border-radius: 16px; background: #fff; }
+  .cmp table { width: 100%; min-width: 720px; border-collapse: collapse; font-size: 14px; }
+  .cmp thead tr { background: var(--off-white); }
+  .cmp th {
+    text-align: center;
+    padding: 18px 16px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--ink);
+  }
+  .cmp th.feature-col { text-align: left; font-family: var(--font-sans); font-weight: 600; color: var(--text-light-muted); font-size: 13px; }
+  .cmp th.growth-col { color: var(--violet); }
+  .cmp td { padding: 15px 16px; border-top: 1px solid var(--border-light-2); }
+  .cmp td.feature-cell { text-align: left; color: var(--text-light-body-strong); font-weight: 500; }
+  .cmp td.c { text-align: center; }
+  .cmp .ck { color: var(--check-green); font-weight: 700; }
+  .cmp .dash { color: #c5c5d0; }
+  .cmp .txt { color: var(--ink); font-weight: 600; font-size: 13.5px; }
+
+  /* ── Volume callout ───────────────────────────────────────────────── */
+  .volume-panel {
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    padding: clamp(32px, 5vw, 56px);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .volume-copy { max-width: 620px; }
+  .volume-h2 { margin: 0 0 10px; font-size: clamp(24px, 3.4vw, 36px); letter-spacing: -0.02em; }
+  .volume-p { font-size: 16.5px; line-height: 1.55; color: rgba(255, 255, 255, 0.85); margin: 0; }
+
+  /* ── FAQ ──────────────────────────────────────────────────────────── */
+  .faq { display: flex; flex-direction: column; gap: 12px; }
+  .faq-item { background: #fff; border: 1px solid var(--border-light); border-radius: 14px; overflow: hidden; }
+  .faq-q {
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    padding: 20px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--ink);
+  }
+  .faq-sign { flex: none; font-family: var(--font-display); font-weight: 700; font-size: 22px; color: var(--violet); line-height: 1; }
+  .faq-a { padding: 0 22px 22px; }
+  .faq-a p { margin: 0; font-size: 15px; line-height: 1.6; color: var(--text-light-body); }
+  /* No-JS: all answers visible. JS on: only .open items show their answer. */
+  .faq[data-js="on"] .faq-item:not(.open) .faq-a { display: none; }
+
+  /* ── Close ────────────────────────────────────────────────────────── */
+  .close {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(125deg, #0b0b12 0%, #241a52 50%, #3b82f6 135%);
+  }
+  .close-blob {
+    position: absolute;
+    top: -100px;
+    left: 35%;
+    width: 480px;
+    height: 480px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(124, 92, 255, 0.5), transparent 65%);
+    filter: blur(30px);
+    pointer-events: none;
+  }
+  .close-wrap {
+    padding-top: clamp(64px, 9vw, 112px);
+    padding-bottom: clamp(64px, 9vw, 112px);
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+  .close-trust {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    justify-content: center;
+    margin-bottom: 28px;
+    font-size: 13.5px;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 500;
+  }
+  .close-h2 { color: #fff; margin-bottom: 30px; }
+  .close-cta { justify-content: center; }
+</style>
+
+<script>
+  // FAQ accordion — single-open, first open by default. (No-JS: all answers show.)
+  const faq = document.querySelector<HTMLElement>(".faq");
+  if (faq) {
+    faq.dataset.js = "on";
+    const items = Array.from(faq.querySelectorAll<HTMLElement>(".faq-item"));
+    items.forEach((item) => {
+      const btn = item.querySelector<HTMLButtonElement>(".faq-q");
+      btn?.addEventListener("click", () => {
+        const willOpen = !item.classList.contains("open");
+        items.forEach((other) => {
+          const isThis = other === item && willOpen;
+          other.classList.toggle("open", isThis);
+          other.querySelector(".faq-q")?.setAttribute("aria-expanded", String(isThis));
+          const s = other.querySelector<HTMLElement>(".faq-sign");
+          if (s) s.textContent = isThis ? "–" : "+";
+        });
+      });
+    });
+  }
+</script>

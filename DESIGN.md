@@ -1,65 +1,28 @@
-# Handoff: FindThisBIN Marketing Site → Static Astro Build
+# FindThisBIN Marketing Site — Design Spec (v3, enterprise infrastructure)
+
+> **Positioning (v3).** FindThisBIN is a **deployable BIN intelligence engine** that payment platforms (PSPs) run in their **own cloud** — self-hosted / BYOC, managed-in-your-cloud, or fully-managed (BYOL). Customers **bring their own data licenses** (Visa VBASS, Mastercard BIN table, commercial feeds, CSV); we provide the engine, the 8-digit logic, the multi-source merge, the sub-10ms hot path, and the ops. This is **not** a self-serve hosted API — there is no signup, no API-key flow, and no per-lookup pricing. The bold fintech identity (palette, typography, gradient/glow motif, code panels, motion, font stack) is **unchanged** from the original brief; what changed is messaging, page structure, and CTAs. This document is the authoritative spec; the refreshed `design_files/*.dc.html` prototypes are the visual reference, and `design_files/findthisbin-design-addendum.md` records the repositioning deltas.
 
 ## Overview
-A bold, modern, conversion-focused **multi-page marketing site** for **FindThisBIN** (findthisbin.com) — a developer-first BIN (Bank Identification Number) intelligence API for payment platforms. Three pages share one identity, navigation, and footer:
+A bold, modern, **multi-page marketing site** for **FindThisBIN** (findthisbin.com) aimed at **infrastructure buyers** — both the platform decision-maker (compliance, data residency, build-vs-buy, time-to-value) and their engineers (clean API, deploy in your stack). Six pages share one identity, navigation, and footer:
 
-1. **Home / landing** (`Home.dc.html`)
-2. **Pricing** (`Pricing.dc.html`)
-3. **Docs landing** (`Docs.dc.html`)
+1. **Home / landing** (`/`)
+2. **Product** (`/product`) — product/feature deep-dive
+3. **Pricing** (`/pricing`) — contact-driven enterprise tiers
+4. **Docs landing** (`/docs`)
+5. **Company** (`/company`) — about + careers (`#careers`)
+6. **Contact / Book-a-demo** (`/contact`) — the form behind both primary CTAs; posts a Slack message via webhook (`/api/contact`)
 
-Plus three supporting pages that share the same nav, footer, and identity:
+**Messaging priority (new order):** (1) deploy in your cloud / we handle the ops, (2) compliance & data residency (your data never leaves; out of PCI scope and the card/data path), (3) build-vs-buy / time-to-value, (4) correctness & performance (8-digit, multi-source, sub-10ms), with developer experience reframed as "your team integrates a clean API." Fraud stays a minor supporting use case.
 
-4. **Product** (`Product.dc.html`) — product/feature deep-dive
-5. **Company** (`Company.dc.html`) — about
-6. **Contact / Book-a-demo** (`Contact.dc.html`) — the form behind both primary CTAs; submits a Slack message via webhook (see its section below)
+**Honesty constraints (do not violate).** No fabricated social proof: **no partner/customer wordmarks** and **no invented scale metrics** (e.g. "6.2M BINs", "242 countries", "184M lookups/day"). The prototypes reintroduce these as illustrative placeholders — they are intentionally **not shipped** (no social-proof strip, no animated counters, no fabricated stat bands on Home / Product / Company). Only defensible, repeatable claims appear inline: `sub-10ms p99`, `99.9% uptime`, `8-digit` precision, EU residency. SOC 2 is "in progress / roadmap" (never "certified"); GDPR-clean + DPA available; PCI **out of scope** (no PCI DSS certification claim). Card-scheme names render as plain text / generic motifs — never trademarked logos.
 
-The audience is PSPs/payment platforms whose engineers run the technical evaluation. Message priority: (1) developer experience & speed, (2) EU residency & compliance, (3) data accuracy & coverage, (4) fraud-prevention signals.
+## Stack & build
+Built as a static, prerendered **Astro 6** site (`output: "static"`) on the `@astrojs/cloudflare` adapter, Tailwind v4 (config-in-CSS), self-hosted fonts via the Astro Fonts API. Every page prerenders except the on-demand `/contact` (reads query params) and **`/api/contact`** (`prerender = false`, the Slack-webhook endpoint). See `README.md` / `CLAUDE.md` for commands, the two-wrangler-config setup, and the deploy runbook (`DEPLOYMENT.md`).
 
-## Target: Static Astro site
-**Build this as a static, server-rendered Astro site** (`output: 'static'` — the default). Recommended structure:
-
-```
-src/
-  layouts/BaseLayout.astro      ← <html>, <head> (fonts, meta), global CSS, <Nav/> + <slot/> + <Footer/>
-  components/
-    Nav.astro                   ← sticky nav, `active` prop ("home"|"product"|"pricing"|"docs"|"company")
-    Footer.astro
-    CodeBlock.astro             ← reusable syntax-highlighted code panel
-    PricingCard.astro
-    BinPlayground.astro         ← interactive island (see "Islands" below)
-    ContactForm.astro           ← interactive island: book-a-demo / get-API-key form
-  pages/
-    index.astro                 ← Home
-    product.astro
-    pricing.astro
-    docs.astro
-    company.astro
-    contact.astro               ← reads ?intent=api-key|sales
-    api/contact.ts              ← SSR endpoint → Slack webhook (prerender=false)
-  styles/tokens.css             ← CSS custom properties (the design tokens below)
-```
-
-**Routing:** the design files cross-link as `*.dc.html`; in Astro these become routes — `Home`→`/`, `Product`→`/product`, `Pricing`→`/pricing`, `Docs`→`/docs`, `Company`→`/company`, `Contact`→`/contact`. Replace every `*.dc.html` href accordingly (e.g. `Contact.dc.html?intent=sales` → `/contact?intent=sales`). Preserve in-page anchors as section `id`s: `#try`, `#psp`, `#tiers`, `#reference`, `#sdks`, `#footer`. Note `#product` / `#company` are now **real pages** (`/product`, `/company`), not Home anchors.
-
-**Interactivity → Astro Islands.** Most of the site is static markup. Only a few things need client JS. Implement each as a framework island (React/Preact/Svelte/Vue — your choice; `client:visible` or `client:load`) or a small inline `<script>`:
-- Nav scroll-translucency + mobile menu toggle
-- Hero JSON staggered reveal animation (pure CSS — see below; no JS needed)
-- Live BIN playground (Home)
-- Code-language tab switcher (Home "How it works", Docs quickstart)
-- Pricing monthly/annual toggle + FAQ accordion
-- Contact form: field validation, intent switch, submit → POST `/api/contact` (Slack)
-
-Keep islands small and scoped; the rest of every page should ship as zero-JS static HTML.
+**Routing & anchors:** `Home`→`/`, `Product`→`/product`, `Pricing`→`/pricing`, `Docs`→`/docs`, `Company`→`/company`, `Contact`→`/contact` (+ `/api/contact`). In-page anchors preserved as section `id`s: `#deployment` (new — Home deployment models), `#try`, `#psp` (Home), `#tiers` (Pricing), `#reference`, `#sdks` (Docs), `#careers` (Company), `#footer`.
 
 ## About the Design Files
-The files in `design_files/` are **design references created in HTML** — prototypes showing the intended look and behavior, **not production code to copy verbatim**. They are authored in a streaming "Design Component" format (`*.dc.html` + `support.js` runtime) and use **inline-style objects** (camelCased React-style: `fontFamily`, `borderTop`, etc.) instead of CSS files. Do **not** port the inline styles or the `.dc.html`/`support.js` runtime into Astro.
-
-Your task: **recreate these designs in idiomatic Astro** — extract the values below into a real CSS token sheet (`:root { --* }`) + component-scoped `<style>` blocks (or Tailwind, if you prefer; tokens map cleanly to a Tailwind theme), and rebuild each section as clean semantic Astro markup. Use the screenshots/this README as the source of truth for exact values.
-
-To preview a reference file locally, open the `.dc.html` in a browser (it self-bootstraps via `support.js`). Treat rendering quirks as artifacts of the prototype runtime, not design intent.
-
-## Fidelity
-**High-fidelity (hifi).** Final colors, typography, spacing, copy, and interactions are all specified. Recreate pixel-faithfully using the tokens and per-section specs below. Where the prototype used `clamp()` for fluid type/spacing, keep the `clamp()` (values given).
+`design_files/*.dc.html` are **design references** authored in a streaming "Design Component" format (`*.dc.html` + the gitignored `support.js` runtime) using inline-style objects. They are visual + behavioral references only — **do not port** the inline styles or the `.dc.html`/`support.js` runtime into Astro. The shipped Astro site is the source of truth; where a prototype reintroduces a fabricated stat or partner name, the site (and the honesty constraints above) win.
 
 ---
 
@@ -90,50 +53,32 @@ To preview a reference file locally, open the `.dc.html` in a browser (it self-b
 | `--text-dark-muted` | `#9A9AAE` / `#7A7A8C` | Muted text on dark |
 | `--text-dark-faint` | `#5C5C6E` | Eyebrow/uppercase labels on dark |
 | `--border-dark` | `rgba(255,255,255,0.08)` | Borders on dark surfaces |
-| `--check-green` | `#1FA463` / `#1FA463` | Table checkmarks |
-| `--status-green` | `#1FA463` | Status dot |
+| `--check-green` | `#1FA463` | Table checkmarks; status dot |
 
-**Signature gradient** (hero CTAs, performance band, confidence bar):
+**Signature gradient** (CTA fills, volume callout, confidence bar):
 `linear-gradient(115deg, #7C5CFF, #6366F1 45%, #3B82F6)` — animated via `background-size:200% 200%` + `ftbGrad` keyframe (14s ease infinite).
 
 **Glow blobs:** `radial-gradient(circle, rgba(124,92,255,0.45), transparent 70%)` with `filter:blur(14–30px)`, absolutely positioned behind hero/CTA sections.
 
 ### Typography
-Load via Astro's font system (the project's exact config below), or Google Fonts otherwise:
+Self-hosted via the Astro Fonts API (`fontProviders.google()` in `astro.config.mjs`), **not** `<link>` to Google Fonts. Families exposed as CSS vars: `--ff-display` (**Space Grotesk**, 500/600/700, headings), `--ff-body` (**IBM Plex Sans**, 400/500/600/700, body/UI), `--ff-mono` (**IBM Plex Mono**, 400/500, code/eyebrows).
 
-```js
-// astro.config.mjs — import { fontProviders } from 'astro/config'; experimental: { fonts: [...] }
-fonts: [
-  { provider: fontProviders.google(), name: "Space Grotesk", cssVariable: "--ff-display", weights: [500,600,700], subsets: ["latin"], fallbacks: ["system-ui","sans-serif"] },
-  { provider: fontProviders.google(), name: "IBM Plex Sans",  cssVariable: "--ff-body",    weights: [400,500],     subsets: ["latin"], fallbacks: ["system-ui","sans-serif"] },
-  { provider: fontProviders.google(), name: "IBM Plex Mono",  cssVariable: "--ff-mono",    weights: [500],         subsets: ["latin"], fallbacks: ["ui-monospace","monospace"] },
-],
-```
-
-Map to CSS vars: `--ff-display` (Space Grotesk, headings), `--ff-body` (IBM Plex Sans, body/UI), `--ff-mono` (IBM Plex Mono, code). **⚠ Weight note:** the design uses IBM Plex Sans **600 & 700** for buttons, eyebrows, footer headers and labels, and IBM Plex Mono **400** in some code — the provided `weights` arrays omit these, so either add `600,700` to IBM Plex Sans and `400` to IBM Plex Mono, or those weights will synthesize (faux-bold). Quick reference:
-```
-Space Grotesk: 500,600,700   (display / headings)
-IBM Plex Sans: 400,500 (+600,700 used)        (body / UI)
-IBM Plex Mono: 400,500   (code, eyebrows, mono tokens)
-```
 | Role | Family | Weight | Size | Tracking | Line-height |
 |---|---|---|---|---|---|
 | Hero H1 | Space Grotesk | 700 | `clamp(40px,6vw,72px)` | `-0.03em` | 1.02 |
-| Page H1 (Pricing/Docs) | Space Grotesk | 700 | `clamp(36px,5.5vw,64px)` | `-0.03em` | 1.03 |
+| Page H1 (Pricing/Docs/Company) | Space Grotesk | 700 | `clamp(36px,5.5vw,64px)` | `-0.03em` | 1.03 |
 | Section H2 | Space Grotesk | 700 | `clamp(30px,4.2vw,48px)` | `-0.025em` | 1.05 |
 | Card title H3 | Space Grotesk | 700 | 26px | `-0.02em` | 1.1 |
 | Eyebrow label | IBM Plex Sans (or IBM Plex Mono on Docs) | 700 | 13px | `0.08em` | uppercase |
 | Body | IBM Plex Sans | 400 | `clamp(16px,1.7vw,19px)` | normal | 1.6 |
 | Small / meta | IBM Plex Sans | 500 | 13–14px | normal | 1.5 |
 | Code | IBM Plex Mono | 400–500 | 12.5–13px | normal | 1.7–1.8 |
-| Big stat | Space Grotesk | 700 | `clamp(34px,5vw,56px)` | `-0.03em` | 1 |
 
 ### Spacing & shape
 - Section vertical padding: `clamp(56px,7vw,96px)` to `clamp(64px,8vw,112px)`.
 - Content max-width: `1240px` (marketing), `1100px` (Docs body), `820–920px` (centered headers/FAQ). Side padding `24px`.
 - Border radius: pills `999px`; buttons `10–12px`; cards `14–18px`; large callouts `20px`; code panels `16px`; inner code lines `9px`.
-- Card gaps: `14–24px`.
-- Shadows: button glow `0 12px 36px -10px rgba(196,245,66,0.6)`; popular pricing card `0 30px 70px -28px rgba(124,92,255,0.7)`; demo panel `0 30px 80px -30px rgba(0,0,0,0.8)`.
+- Shadows: button glow `0 12px 36px -10px rgba(196,245,66,0.6)`; popular/highlighted card `0 30px 70px -28px rgba(124,92,255,0.7)`; demo panel `0 30px 80px -30px rgba(0,0,0,0.8)`.
 
 ### Keyframes
 ```css
@@ -160,155 +105,131 @@ IBM Plex Mono: 400,500   (code, eyebrows, mono tokens)
 
 ## Shared components
 
-### Nav (`Nav.astro`, prop `active`)
+### Nav (`SiteNav.astro`, prop `active`)
 - Sticky, `top:0`, `z-index:1000`, `height:68px`, `backdrop-filter:blur(14px)`.
-- Background **changes on scroll**: `rgba(11,11,18,0.32)` at top → `rgba(11,11,18,0.85)` once `window.scrollY > 12`, with a bottom border fading in (`rgba(255,255,255,0.08)`). 0.3s transition. *(island / inline script)*
-- Left: wordmark **FindThis**(white)**BIN**(cyan `#22D3EE`), Space Grotesk 700, 21px, `-0.02em`. Links to `/`.
-- Center links: Product (`/product`), Pricing (`/pricing`), Docs (`/docs`), Company (`/company`). Inactive `#9A9AAE`, active `#FFFFFF`, hover `#FFFFFF`. Active link determined by `active` prop.
-- Right: "Sign in" (text, `#C7C7D6`, placeholder `#`) + **"Get your free API key"** button → `/contact?intent=api-key` — lime `#C4F542` fill, `#0B0B12` text, `radius:10px`, glow shadow, `translateY(-1px)` on hover.
-- **Mobile (≤860px):** hide center links + Sign in, show hamburger button (40×40, `radius:10px`, translucent border). Toggling opens a full-width panel (`rgba(11,11,18,0.97)`) with stacked links. *(island)*
+- Background changes on scroll: `rgba(11,11,18,0.32)` → `rgba(11,11,18,0.85)` once `window.scrollY > 12`, bottom border fading in. *(inline script)*
+- Left: wordmark **FindThis**(white)**BIN**(cyan). Center links: Product / Pricing / Docs / Company (active via `active` prop).
+- Right: **"Sign in"** (low-key text, placeholder) + primary **"Book a demo"** button → `/contact?intent=demo` (lime fill, glow).
+- **Mobile (≤860px):** hamburger toggles a full-width panel with stacked links. *(inline script)*
 
-### Footer (`Footer.astro`)
-- Background `#08080E`, top border `rgba(255,255,255,0.07)`, `padding:64px 24px 40px`, max-width 1240.
-- Grid `1.6fr 1fr 1fr 1fr 1fr` → `1fr 1fr` at ≤900px.
-- Col 1: wordmark, tagline ("The card-intelligence layer for payment platforms…"), and an **"EU-hosted · GDPR-clean"** pill (cyan dot + cyan text, `rgba(34,211,238,0.08)` bg).
-- Columns: **Product** (Overview → `/product`, Try it live → `/#try`, Pricing, For platforms → `/#psp`) · **Developers** (Docs, API Reference, SDKs, Status) · **Company** (About → `/company`, Blog) · **Legal** (Privacy, Terms, DPA, GDPR).
-- Bottom bar: "© 2026 FindThisBIN…" + GitHub / X / LinkedIn icon links (inline SVGs in the reference, monochrome `#9A9AAE` → `#fff` hover). `id="footer"` on the `<footer>`.
-- Link colors `#9A9AAE` → `#fff` hover; uppercase column headers `#5C5C6E`, 12px, `0.08em`.
+### Footer (`SiteFooter.astro`)
+- Background `#08080E`, 5-col grid (`1.6fr 1fr 1fr 1fr 1fr` → `1fr 1fr` ≤900px), `id="footer"`.
+- Col 1: wordmark, tagline **"The BIN intelligence engine for payment platforms. Deploy it in your own cloud; your data never leaves."**, and a cyan **"Runs in your cloud · EU option"** pill.
+- Columns: **Product** (Overview → `/product`, Try it live → `/#try`, Pricing, For platforms → `/#psp`) · **Developers** (Docs, API Reference, SDKs → `/docs#sdks`, Status) · **Company** (About → `/company`, Blog, Careers → `/company#careers`) · **Legal** (Privacy, Terms, DPA, GDPR).
+- Bottom bar: "© 2026 FindThisBIN…" + GitHub / X / LinkedIn icon links.
 
 ---
 
 ## Page 1 — Home (`index.astro`)
-Sections, in order (alternating dark / light for rhythm):
+Sections, in order (alternating dark / light; social-proof + stat-band sections intentionally omitted):
 
-1. **Hero** (dark). Eyebrow pill ("BIN intelligence API · EU-hosted", lime dot). H1 **"Every card, decoded in one API call."** — "one API call." uses gradient text `linear-gradient(100deg,#A98BFF,#22D3EE)` clipped to text. Subhead (the long product paragraph). Dual CTA: **Get your free API key** (lime) + **Talk to sales** (translucent). Trust strip: EU-hosted · GDPR-clean · PCI-out-of-scope · sub-10ms p99 · 99.9% uptime (each with a cyan `●`). Two-column grid (`1.05fr 1fr`, stacks ≤980px); right column is the **demo panel**:
-   - Card with gradient glow border, traffic-light dots, "findthisbin · live" mono label.
-   - Request line: lime `GET` badge + `https://api.findthisbin.com/v1/bins/53847012` (BIN in cyan).
-   - JSON body (exact response below) where **each line fades up staggered** via `animation:ftbUp .4s ease both` + increasing `animation-delay` (0.05s → 0.72s); a blinking lime caret on the closing brace (`ftbBlink`).
-   - Bottom scheme strip: "Coverage across every major scheme" + VISA / Mastercard (two-circle motif) / AMEX / Discover / JCB / UnionPay, greyscale `opacity:0.62`. **Render scheme names as plain text/generic motifs — do not use official trademarked scheme logos.**
-2. **Value pillars** (`id="product"`, white). H2 "Engineered for the teams that move money." 2×2 grid (`1fr 1fr`, stacks ≤820px), emphasis order:
-   - **01 · Developer experience** (dark card, violet glow, lime eyebrow) "Ships in minutes, not sprints." + mini Node code snippet.
-   - **02 · EU & compliance** (light card) "EU-resident, compliance-ready." + chips: EU-hosted, GDPR-clean, PCI out-of-scope, DCC module.
-   - **03 · Accuracy** (light card) "Accuracy you can underwrite." + big "8-digit" stat.
-   - **04 · Performance** (dark card, cyan glow) "Built for the checkout hot path." + stats `<10ms` p99, `99.9%` uptime.
-3. **Try it live** (`id="try"`, dark). H2 "Look up any BIN, right now." Interactive playground — see "BIN playground" below.
-4. **What you get** (`#F6F6FB`). H2 "Every field your stack needs." Grid of field chips `repeat(auto-fill, minmax(180px,1fr))`: scheme, type, category, product/level, issuer name, issuer country, issuer currency, prepaid flag, commercial flag, regulated debit, dcc_eligible, confidence, dataset_version (dcc_eligible & confidence highlighted in violet).
-5. **PSP section** (`id="psp"`, dark, violet glow). H2 "Embed card intelligence across your entire stack." 2-col: copy + CTAs (Talk to sales / See platform pricing) | 4 mini-cards (Smarter routing, Surcharging & interchange, DCC eligibility for EU flows, Richer checkout UX & risk).
-6. **Use cases** (white). H2 "One dataset, six revenue levers." `auto-fill minmax(300px,1fr)` grid of 6 cards (Least-cost & debit routing · Surcharging & interchange · DCC eligibility (EU) · Checkout UX & card art · Fraud & risk signals · Batch data enrichment), violet border on hover.
-7. **How it works** (dark). H2 "Three steps to rich card data." 2-col: 3 numbered steps | **code panel with language tabs** (cURL, Node, Python, Go, PHP) — see "Code tabs".
-8. **Pricing preview** (`#F6F6FB`). H2 "Start free. Scale on usage." 4 cards (Free €0 / Pay-as-you-go €0.004 / **Growth €499** highlighted dark with "MOST POPULAR" lime badge / Enterprise Custom). Link "Compare all plans & features →" to `/pricing`.
-9. **Compliance callout** (white). `F6F6FB` rounded panel, `auto-fit minmax(190px,1fr)`: EU residency · GDPR-clean · Out of PCI scope · DPA available (each violet title + one line).
-10. **Dev/docs CTA** (dark, faint grid background `linear-gradient` 32px grid). H2 "Everything you need to integrate in minutes." 2-col: copy + CTAs (Read the docs / API reference) | 2×2 link cards (Docs, API Reference, SDKs, Postman) with mono accents, cyan border on hover.
-11. **Final CTA** (`linear-gradient(125deg,#0B0B12,#241a52 45%,#3B82F6 130%)` + violet glow blob). H2 **"Start building with FindThisBIN today."** + Get your free API key / Talk to sales.
-12. **Footer.**
+1. **Hero** (dark). Eyebrow pill ("BIN intelligence engine · Runs in your cloud", lime dot). H1 **"The BIN intelligence engine payment platforms run themselves."** — "run themselves." gradient-clipped. Subhead: the deploy-in-your-cloud / BYOL paragraph. Dual CTA: **Book a demo** (lime) + **See deployment options** (ghost → `#deployment`). Trust strip (cyan `●`): **Runs in your cloud · Your data never leaves · Out of PCI scope · EU-hosted option · sub-10ms p99**. Right column is the **deployment-motif demo panel** (`DemoPanel.astro`):
+   - Window chrome `findthisbin-engine · your-cloud`; a dashed "your cloud" box headed `your cloud · eu-west-1 · vpc` / `data stays here`.
+   - Deployment flow: licensed sources (`VBASS` · `Mastercard` · `CSV`) → engine (`FindThisBIN engine` / "8-digit · multi-source merge") → output (`your API`, lime).
+   - Request line: lime `GET` badge + `https://bins.internal/v1/bins/53847012` (BIN in cyan).
+   - Canonical JSON body, each line `ftbUp` staggered (0.05s → 0.72s) + blinking lime caret.
+   - Scheme strip: "Coverage across every major scheme" + VISA / Mastercard / AMEX / Discover / JCB / UnionPay as **plain greyscale text**.
+2. **Value pillars** (`id="product"`, white). H2 "Engineered for the teams that move money." 2×2 grid, new order:
+   - **01 · Deploy in your cloud** (dark, lime eyebrow) "Run it where your data lives." + `helm install` mini-snippet.
+   - **02 · Compliance & data residency** (light) "Your data never leaves." + chips: Out of PCI scope, Data stays in your VPC, Per-customer DPA, EU-hosting option.
+   - **03 · Build vs. buy** (light) "Live this week, not in two quarters." + big "days" stat.
+   - **04 · Correctness & performance** (dark, cyan eyebrow) "Correct data, on the hot path." + stats `<10ms` p99 · `8-digit`.
+3. **Deployment models** (`id="deployment"`, dark). Eyebrow "Deployment models" (lime). H2 "One engine. You choose who runs it." 3 cards — **Self-hosted / BYOC** · **Managed in your cloud** *(highlighted, lime "most popular" chip + violet border)* · **Fully managed (BYOL)** — each with a checklist (lime ✓ on cards 1 & 3, cyan ✓ on the highlighted card). Section CTA "Book a demo".
+4. **Bring your own licenses / connectors** (white). Eyebrow "Bring your own licenses". H2 "Plug in your licenses. We did the hard logic." Body + provider-brokerage line. CTA "Talk to sales about connectors" → sales. Connector list: VBASS · Mastercard BIN table · Commercial providers · CSV upload · **Bundled open seed data** (highlighted, lime badge, "works on day one").
+5. **Try it live** (`id="try"`, dark). Eyebrow "Playground" (cyan). H2 "Look up any BIN, right now." Interactive `BinPlayground.astro` (see logic below). CTA "See it on your own BINs — book a demo" → demo.
+6. **What you get** (off-white). H2 "Every field your stack needs." Grid of 13 field chips (`dcc_eligible` & `confidence` highlighted violet).
+7. **Build vs. buy** (white). Eyebrow "Build vs. buy". H2 "Months of specialist work, or a deployment this week." Two columns — **Build it in-house** (✕, muted) vs **Deploy the engine** (✓, lime, dark card), 5 items each.
+8. **For payment platforms** (`id="psp"`, dark, violet glow). Eyebrow "For payment platforms" (cyan). H2 "Embed card intelligence across your entire stack." 2-col: copy + CTAs (Talk to sales / See platform pricing → `/pricing`) | 4 mini-cards (Smarter routing, Surcharging & interchange, DCC eligibility for EU flows, Richer checkout UX & risk).
+9. **Use cases** (white). H2 "One dataset, six revenue levers." 6 cards, violet border on hover.
+10. **How it works** (dark). Eyebrow "How it works" (lime). H2 "Three steps to production." 2-col: 3 numbered steps (**Deploy in your cloud → Connect your licenses → Integrate the API**) | code panel with language tabs (cURL / Node / Python / Go / PHP), all targeting `https://bins.internal`.
+11. **Pricing preview** (off-white). H2 "Pricing that fits your deployment." 3 cards (Startup / **Growth** highlighted dark "MOST POPULAR" / Enterprise), prices "Let's talk" / "Custom", CTAs Request pricing / Talk to sales → `/contact?intent=sales`. Link "Compare all plans & features →" → `/pricing`.
+12. **Compliance & residency callout** (white). Rounded panel, 4 items: Your environment · Out of the data path · Out of PCI scope · DPA & EU option (each violet title + one line).
+13. **Dev/docs CTA** (dark, faint grid background). H2 "Everything you need to integrate in minutes." 2-col: copy + CTAs (Read the docs / API reference) | 2×2 link cards (Docs, API Reference, SDKs, Postman), cyan border on hover.
+14. **Final CTA** (gradient + violet glow). H2 **"Run BIN intelligence in your own cloud."** + Book a demo / Talk to sales.
+15. **Footer.**
 
 ## Page 2 — Pricing (`pricing.astro`)
-1. **Header** (dark, violet glow). Eyebrow pill. H1 "Pricing that scales with your volume." Subhead. **Monthly/Annual segmented toggle** (annual shows "–20%" in lime). *(island)* Default = Annual.
-2. **Tiers** (`id="tiers"`, `#F6F6FB`). 4 cards (`repeat(4,1fr)` → `1fr 1fr` ≤1040px → `1fr` ≤560px), Growth highlighted dark with "MOST POPULAR" badge & shadow. Growth price reacts to toggle: **€399/mo · billed annually** (annual) / **€499/mo · billed monthly** (monthly). Each card: name, audience line, price, included-volume line, CTA, feature `✓` list (violet checks on light, cyan checks on the dark Growth card). Exact tiers/prices/copy in `Pricing.dc.html`.
-3. **Comparison table** (white). H2 "Compare every plan." Horizontally scrollable on mobile (`overflow-x:auto`, table `min-width:760px`), rounded bordered container. Header row `#F6F6FB` with Free / PAYG / **Growth** (violet) / Enterprise. 15 rows — render `✓` as green check `#1FA463`, `—` as muted dash `#C5C5D0`, text values bold. Rows & values (Free | PAYG | Growth | Enterprise):
-   - Monthly lookups included: 5,000 | Metered | 250,000 | Custom
-   - Overage rate: — | €0.004 | €0.003 | Volume
-   - 8-digit range data: ✓ | ✓ | ✓ | ✓
-   - Per-field confidence: ✓ | ✓ | ✓ | ✓
-   - Multi-source corrections: — | ✓ | ✓ | ✓
-   - DCC module: — | — | ✓ | ✓
-   - Surcharging & interchange intelligence: — | ✓ | ✓ | ✓
-   - Network-token indicators: — | — | ✓ | ✓
-   - EU data-residency guarantee: — | — | ✓ | ✓
-   - Uptime SLA: — | — | 99.9% | Custom
-   - Support level: Community | Email | Priority | Dedicated
-   - Dataset export: — | — | — | ✓
-   - On-prem / private deployment: — | — | — | ✓
-   - DPA: — | ✓ | ✓ | ✓
-   - SOC 2: — | Roadmap | Roadmap | ✓
-4. **Volume callout** (signature-gradient rounded panel on dark). "Doing millions of lookups a month?" + "Talk to sales" white button.
-5. **FAQ accordion** (`#F6F6FB`, max-width 820). 8 items, single-open (first open by default), `+`/`–` toggle in violet. Questions & answers verbatim in `Pricing.dc.html` (what counts as a lookup, free tier no card, annual billing, overage, EU hosting, no full PANs, self-host/on-prem, cancel). *(island)*
-6. **Close** (gradient + glow). Trust strip (EU-hosted · GDPR-clean · No PCI scope · DPA available) + H2 "Get your free API key today." + dual CTA.
-7. **Footer.**
+Contact-driven enterprise tiers — **no monthly/annual toggle, no per-lookup prices**.
 
-## Page 3 — Docs (`docs.astro`) — light theme, dark code panels
-1. **Header** (`#F6F6FB`, bottom border). Mono eyebrow `// docs`. H1 "Build with FindThisBIN." Subhead "From your first BIN lookup to production in minutes." **Search bar** (white, magnifier SVG, `⌘K` hint pill) — cosmetic input.
-2. **Quickstart** (white). 2-col (`1fr 1.1fr`, stacks ≤900px): dark gradient card (`linear-gradient(160deg,#0B0B12,#1a1340)`, violet glow) with "5-minute quickstart" pill, "First lookup in three steps", 3 numbered steps, "Start here" lime CTA | **code panel with tabs (cURL / Node / Python)** + a "→ 200 OK" footer line. *(island for tabs)*
-3. **Documentation grid** (`#F6F6FB`). `repeat(3,1fr)` → 2 → 1. 9 cards (mono token icon + title + one line): Quickstart, Authentication, BIN Lookup API, Batch Lookup, DCC endpoint, Webhooks, Errors & rate limits, Data dictionary, Versioning. Violet border + `translateY(-2px)` on hover.
-4. **SDKs & tools** (`id="sdks"`, white). Header + "OpenAPI spec ↓" / "Postman collection →" links. `repeat(3,1fr)` → 2 → 1 grid of dark cards with install snippets: Node `npm i findthisbin`, Python `pip install findthisbin`, Go `go get findthisbin.com/go`, PHP `composer require findthisbin/sdk`, Java `implementation 'com.findthisbin:sdk'`, + a gradient "All SDKs are open source / View on GitHub" card.
-5. **API reference** (`id="reference"`, dark). 2-col (`1fr 1.3fr`): copy + "Open reference" CTA | code panel with `GET /v1/bins/{bin}` (cyan verb badge, `{bin}` in violet), Authorization header, and the JSON response (reuse the hero example, abbreviated).
-6. **Guides** (`#F6F6FB`). H2 "Guides." `auto-fill minmax(280px,1fr)` of 4 link rows: Detecting prepaid & commercial cards · DCC compliance in the EU (ECB rates) · The 8-digit BIN migration · Working with match confidence.
-7. **Docs utility bar** (white, top border). Status (green dot) · Changelog · Support + persistent "Get your free API key" lime CTA.
+1. **Header** (dark, violet glow). Pill "Deployment-based pricing · Runs in your cloud". H1 "Pricing that fits your deployment." Subhead (scope around volume/connectors/SLAs/residency + POC).
+2. **Tiers** (`id="tiers"`, off-white). 3 cards (`repeat(3,1fr)` → `1fr` ≤920px), **Growth** highlighted dark with "MOST POPULAR" badge. Each: name, audience line, price ("Let's talk" / "Custom") + sub-label, CTA (**Request pricing** / **Talk to sales**, all → `/contact?intent=sales`), feature ✓ list. Copy in `Pricing.dc.html`.
+3. **POC callout** (white). Dashed-violet panel, mono eyebrow "Proof of concept", H2 "Evaluate with a POC in your own cloud.", copy, CTA **Book a demo** → demo.
+4. **Comparison table** (off-white). H2 "Compare every plan." Horizontally scrollable (`min-width:720px`), columns Startup / **Growth** (violet) / Enterprise. 16 **infrastructure rows** — render `✓` green, `—` muted dash, text values bold:
+   - Self-hosted / BYOC: ✓ | ✓ | ✓
+   - Managed in your cloud: — | ✓ | ✓
+   - Fully-managed (BYOL): — | — | ✓
+   - Included connectors: Base | Extended | Premium
+   - Bundled seed data: ✓ | ✓ | ✓
+   - 8-digit range data + confidence: ✓ | ✓ | ✓
+   - DCC module: — | ✓ | ✓
+   - Surcharging & interchange intelligence: — | ✓ | ✓
+   - Network-token indicators: — | ✓ | ✓
+   - Data stays in your environment: ✓ | ✓ | ✓
+   - Uptime SLA: — | 99.9% | Custom
+   - Managed operations: — | Optional | ✓
+   - Support level: Community | Standard | Dedicated
+   - Dataset export: — | — | ✓
+   - DPA: ✓ | ✓ | ✓
+   - SOC 2: Roadmap | Roadmap | ✓
+5. **Volume callout** (signature-gradient panel on dark). H2 "Multiple environments, regions, or a managed rollout?" + "Talk to sales" white button.
+6. **FAQ accordion** (off-white, max-width 820). 8 items, single-open (first open by default), no-JS shows all. Deployment / data-residency / card-data / hosting / licenses / POC / pricing-model / air-gapped questions — verbatim in `Pricing.dc.html`.
+7. **Close** (gradient + glow). Trust strip (Runs in your cloud · Your data never leaves · Out of PCI scope · DPA available) + H2 "Book a demo today." + Book a demo / Talk to sales.
 8. **Footer.**
 
----
+## Page 3 — Docs (`docs.astro`) — light theme, dark code panels
+1. **Header** (off-white, bottom border). Mono eyebrow `// docs`. H1 "Build with FindThisBIN." Subhead "From deploying the engine in your cloud to your first lookup — in minutes." Cosmetic search bar (`⌘K`).
+2. **Quickstart** (white). 2-col: dark gradient card with "15-minute quickstart" pill, H2 "Deploy in your cloud in 15 minutes.", 3 steps (**Deploy the engine → Connect a data source → Make your first lookup**), "Start here" CTA → demo | code panel with tabs (cURL / Node / Python) targeting `https://bins.internal`, "→ 200 OK …" footer.
+3. **Documentation grid** (off-white). `repeat(3,1fr)` → 2 → 1. 15 cards (mono token + title + one line): Quickstart, **Deployment**, **Connecting data sources**, **License configuration**, **Tenant setup**, **Upgrades & operations**, **Observability**, Authentication, BIN Lookup API (→ `#reference`), Batch Lookup, DCC endpoint, Webhooks, Errors & rate limits, Data dictionary, Versioning.
+4. **SDKs & tools** (`id="sdks"`, white). "OpenAPI spec ↓" / "Postman collection →" links + 5 SDK install cards (Node/Python/Go/PHP/Java) + a gradient "All SDKs are open source / View on GitHub" card.
+5. **API reference** (`id="reference"`, dark). 2-col: copy ("Integrate the engine you've deployed…") + "Open reference" CTA | code panel `GET /v1/bins/{bin}` (cyan verb badge, `{bin}` violet) + abbreviated JSON.
+6. **Guides** (off-white). H2 "Guides." 4 link rows.
+7. **Docs utility bar** (white, top border). Status (green dot) · Changelog · Support + persistent **"Book a demo"** lime CTA.
+8. **Footer.**
 
-## Page 4 — Product (`product.astro`) — dark/light rhythm
-1. **Hero** (dark, centered). Eyebrow "Product". H1 "The card-intelligence layer for **payment platforms.**" (last phrase gradient-clipped). Subhead + dual CTA (api-key / sales).
-2. **Anatomy of a lookup** (white). 2-col: copy + 4 grouped bullets (Identity / Issuer / Flags & DCC / Provenance) | dark code panel showing `GET /v1/bins/{bin}` + the canonical JSON.
-3. **Capabilities** (`#F6F6FB`). H2 "Four things we obsess over." Same 2×2 pillar grid as Home (DX dark / EU light / Accuracy light / Performance dark), copy tightened.
-4. **Endpoints** (dark). H2 "Three endpoints. Everything you need." 3 cards: `GET /v1/bins/{bin}` Single lookup · `POST /v1/bins/batch` Batch (≤10k) · `GET /v1/dcc/{bin}` DCC disclosure. Link → `/docs#reference`.
-5. **Fits your stack** (white). H2 "Plugs into every decision in your flow." 6 cards (same six use cases as Home, one line each).
-6. **CTA** (gradient): "See it on your own BINs." + dual CTA. **Footer.**
+## Page 4 — Product (`product.astro`)
+1. **Hero** (dark, centered). Eyebrow "Product". H1 "The card-intelligence layer for **payment platforms.**" Subhead opens on deploy-in-your-cloud / BYOL. Dual CTA (Book a demo / Talk to sales).
+2. **Anatomy of a lookup** (white). 2-col: copy ("the engine running in your environment") + 4 grouped bullets (Identity / Issuer / Flags & DCC / Provenance) | dark code panel (`findthisbin-engine · your-cloud`, `GET https://bins.internal/v1/bins/53847012`) + canonical JSON.
+3. **Capabilities** (off-white). H2 "Four things we obsess over." 2×2 pillars — **01 Deploy in your cloud** ("Run it where your data lives.") / 02 EU & compliance / 03 Accuracy / 04 Performance.
+4. **Endpoints** (dark). H2 "Three endpoints. Everything you need." 3 cards: `GET /v1/bins/{bin}` · `POST /v1/bins/batch` (≤10k) · `GET /v1/dcc/{bin}`. Link → `/docs#reference`.
+5. **Fits your stack** (white). H2 "Plugs into every decision in your flow." 6 cards.
+6. **Final CTA** (gradient): "See it on your own BINs." + Book a demo / Talk to sales. **Footer.**
 
 ## Page 5 — Company (`company.astro`)
 1. **Hero** (dark). Eyebrow "Company". H1 "Building the trust layer for **payments.**" + mission subhead.
-2. **Mission / story** (white). 2-col: H2 "BIN data was stuck in the 6-digit era. Payments moved on." | 3 short paragraphs (full copy in `Company.dc.html`).
-3. **Principles** (`#F6F6FB`). H2 "Principles we build on." 4 numbered cards: Precision over guesswork · Developer-first · EU-resident by default · Out of PCI scope.
-4. **Final CTA** (gradient). **Footer.**
+2. **Mission / story** (white). 2-col: H2 "BIN data was stuck in the 6-digit era. Payments moved on." | 3 paragraphs (the middle one references "a sub-10ms engine you run in your own cloud").
+3. **Principles** (off-white). H2 "Principles we build on." 4 numbered cards: Precision over guesswork · Developer-first (no "free tier" claim) · **Runs in your environment** · Out of PCI scope.
+4. **Careers** (`id="careers"`, dark). Eyebrow "Careers". H2 "Come build payments infrastructure." + 3 roles (Senior Data Engineer — BIN Pipeline · Backend Engineer — Low-latency API · Developer Advocate — Payments), each "Remote (EU) · Full-time" + "View role →". CTA "Get in touch" → sales. (Footer Careers link targets `#careers`.)
+5. **Final CTA** (gradient): "Build on card intelligence you can trust." + Book a demo / Talk to sales. **Footer.**
 
 ## Page 6 — Contact / Book-a-demo (`contact.astro`) + Slack webhook
 The single destination for **both** primary CTAs, switched by `?intent=`:
-- `?intent=api-key` (default) — "Get your free API key." Self-serve framing; CTA "Get my API key"; success "You're all set. Check your inbox…".
-- `?intent=sales` — "Let's talk volume." Adds a **Role** field; CTA "Request a call"; success "Request received…".
+- `?intent=demo` (default) — eyebrow "Book a demo", heading "See the engine in your stack."; CTA "Book a demo"; email `demo@findthisbin.com`.
+- `?intent=sales` — eyebrow "Talk to sales", heading "Let's talk deployment."; CTA "Request pricing"; email `sales@findthisbin.com`.
 
-**Layout** (dark, 2-col `0.85fr 1fr`, stacks ≤940px): left = intent-driven heading/subhead + 3 reassurance check-rows + a "What happens next" card with a contact-email link; right = form card with gradient glow border.
+Any non-`sales` intent (including legacy `?intent=api-key`) falls through to `demo`.
 
-**Fields:** Full name\*, Work email\*, Company\* (name+email in a 2-col row), Role (sales only), Expected monthly lookups (`<select>`: Just exploring / Under 100k / 100k–1M / 1M–10M / 10M+), Message (textarea; label switches "What are you building?" ↔ "Anything we should know?"). Validate: name non-empty, email `^[^@\s]+@[^@\s]+\.[^@\s]+$`, company non-empty; inline errors (border `rgba(255,128,149,0.6)`, text `#FF8095`). Inputs: bg `#10101C`, border `rgba(255,255,255,0.12)`, radius 10px, focus → violet border + `0 0 0 3px rgba(124,92,255,0.18)`. Submit = lime, disabled + "Sending…" while submitting. A link below the form toggles intent and updates the `?intent=` query.
+**Layout** (dark, 2-col `0.85fr 1fr`, stacks ≤940px): left = intent-driven heading/subhead + 3 reassurance check-rows (**Deployed in your cloud in days, not months** · **Your data never leaves your environment** · **Out of PCI scope · DPA · EU-hosting option**) + a "What happens next" card with a contact-email link; right = `ContactForm.astro` (gradient glow border).
 
-**On submit → Slack message via webhook.** *Do NOT call the Slack webhook from the browser* — the URL must stay secret and Slack blocks browser CORS. Wire it server-side:
-1. The form POSTs the field values to an Astro endpoint **`src/pages/api/contact.ts`** (`export const prerender = false;`, with an SSR adapter such as `@astrojs/node` / Vercel / Netlify — the marketing pages stay static).
-2. That endpoint reads `SLACK_WEBHOOK_URL` from a server env var and `fetch`es it with a Block Kit payload, then returns `{ ok: true }`.
+**Fields:** Full name\*, Work email\*, Company\* (name+email in a 2-col row), Role (shown for both intents, optional), **Deployment preference** (`<select>`, field name `volume`): *Not sure yet* (default) / *Self-hosted / BYOC* / *Managed in our cloud* / *Fully managed (BYOL)*, Message (textarea; label/placeholder switch by intent), a honeypot `website` field. Validate: name non-empty, email `^[^@\s]+@[^@\s]+\.[^@\s]+$`, company non-empty. The switch link below the form toggles to the **other** intent. Submit = lime, disabled + "Sending…" while submitting.
 
-```ts
-// src/pages/api/contact.ts
-export const prerender = false;
-export async function POST({ request }) {
-  const d = await request.json();
-  const label = d.intent === 'sales' ? 'Talk to sales' : 'Free API key';
-  const payload = {
-    text: `New ${label} request — FindThisBIN`,
-    blocks: [
-      { type: 'header', text: { type: 'plain_text', text: `📥 New ${label} request` } },
-      { type: 'section', fields: [
-        { type: 'mrkdwn', text: `*Name:*\n${d.name}` },
-        { type: 'mrkdwn', text: `*Work email:*\n${d.email}` },
-        { type: 'mrkdwn', text: `*Company:*\n${d.company}` },
-        { type: 'mrkdwn', text: `*Role:*\n${d.role || '—'}` },
-        { type: 'mrkdwn', text: `*Monthly lookups:*\n${d.volume}` },
-        { type: 'mrkdwn', text: `*Intent:*\n${d.intent}` },
-      ] },
-      { type: 'section', text: { type: 'mrkdwn', text: `*Message:*\n${d.message || '—'}` } },
-    ],
-  };
-  const r = await fetch(import.meta.env.SLACK_WEBHOOK_URL, {
-    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
-  });
-  return new Response(JSON.stringify({ ok: r.ok }), { status: r.ok ? 200 : 502 });
-}
-```
+**Progressive enhancement.** The form natively POSTs to `/api/contact` (303-redirects back with `?sent=1`/`?error=1`, works without JS); a small script intercepts submit, fetches with `Accept: application/json`, and swaps to the success pane inline. Success title "Request received." + intent-specific body + a cosmetic `ref:` chip.
 
-Set `SLACK_WEBHOOK_URL` in `.env` and your host's env. Create it in Slack → *Apps → Incoming Webhooks → Add to a channel*. Add a honeypot field + basic rate limiting before launch. The reference `Contact.dc.html` builds this exact payload in `buildSlackPayload()` and simulates the round-trip (it `console.log`s the payload and shows the success state) — swap the simulation for a real `fetch('/api/contact', …)`.
+**`/api/contact` (`prerender=false`).** Reads `SLACK_WEBHOOK_URL` via `import { env } from "cloudflare:workers"`, validates, honeypot-guards, and posts a Slack Block Kit message. `label = intent === "sales" ? "Talk to sales" : "Book a demo"`. Section fields: Name · Work email · Company · Role · **Deployment preference** (`lead.volume`) · Intent, then a Message section. Missing webhook → 500 (logged); Slack non-2xx/throw → 502; honeypot non-empty → fake success, deliver nothing. Set `SLACK_WEBHOOK_URL` via `wrangler secret put` / `.dev.vars` (never in Terraform state).
 
 ## CTA wiring (global)
-Every primary CTA points to the contact page, by intent:
-- **"Get your free API key"** (nav button, hero, the pricing tiers' Start free / Get your API key / Start free trial, all closers, docs utility bar) → **`/contact?intent=api-key`**.
-- **"Talk to sales"** (hero, PSP, enterprise tier, volume callout, all closers, company "Get in touch") → **`/contact?intent=sales`**.
-- **"Sign in"** (nav only) stays a placeholder (`#`).
+Every primary CTA routes through the contact form, by intent (centralized in `src/lib/site.ts`):
+- **"Book a demo"** (nav button, hero, deployment-models CTA, try-it-live, docs quickstart "Start here", docs utility bar, POC callout, all closers) → **`/contact?intent=demo`**.
+- **"Talk to sales"** / **"Request pricing"** (hero secondary on inner pages, PSP, connectors, all pricing tier CTAs, volume callout, company "Get in touch", all closers) → **`/contact?intent=sales`**.
+- **"See deployment options"** (Home hero secondary) → **`/#deployment`**.
+- **"Sign in"** (nav only) stays a placeholder. There is **no** "Get your free API key" CTA anywhere.
 
 ---
 
 ## Canonical API example (use everywhere code appears)
-Request line:
+The displayed host is **`https://bins.internal`** (the `ENGINE_BASE_URL` constant), signalling the engine runs in *your* environment rather than a hosted API.
 ```
-GET https://api.findthisbin.com/v1/bins/53847012
+GET https://bins.internal/v1/bins/53847012
 ```
-Response JSON:
 ```json
 {
   "bin": "53847012",
@@ -323,64 +244,41 @@ Response JSON:
   "dataset_version": "2026-06-12"
 }
 ```
-cURL:
-```bash
-curl https://api.findthisbin.com/v1/bins/53847012 \
-  -H "Authorization: Bearer sk_live_..."
-```
+SDK snippets configure the base URL (`baseUrl` / `base_url` / `WithBaseURL`) to the same host, reinforcing self-hosting.
 
 ---
 
-## Interactions & Behavior (islands)
+## Interactions & Behavior (near-zero client JS)
+Each interaction is a small scoped inline `<script>` (vanilla TS); the rest ships as static HTML. Respect `prefers-reduced-motion`; JS-gated content has no-JS fallbacks.
 
 ### Nav scroll + mobile menu
-- Scroll listener (passive): toggle `scrolled` state at `scrollY > 12` → swap bg/border. Cleanup on unmount.
-- Mobile: `menuOpen` boolean toggled by hamburger; panel shown below the bar.
+Passive scroll listener toggles `scrolled` at `scrollY > 12`; hamburger toggles `open` on mobile.
 
-### BIN playground (Home "Try it live")
-- Controlled text input (`maxlength=8`, numeric) bound to `bin` state; quick-pick chips set the value: `53847012`, `45717360`, `37828224`, `40128210`.
-- Lookup logic: strip non-digits, take first 8. If the BIN matches a known sample, return that record; otherwise **synthesize a deterministic best-guess** (lower confidence) from the digits.
-- **Known samples** (port this map):
+### BIN playground (Home "Try it live") — `src/lib/bin.ts`
+- Numeric input (first 8 digits) + quick-pick chips: `53847012`, `45717360`, `37828224`, `40128210`. SSR-renders the `53847012` card by default; the client island re-renders on input.
+- Exact `SAMPLES` match → that record (`bestGuess:false`); otherwise a deterministic synthesis from the digit-sum:
+
   | bin | scheme | type | category | product | issuer | country | currency | prepaid | commercial | regulated_debit | dcc | confidence |
   |---|---|---|---|---|---|---|---|---|---|---|---|---|
   | 53847012 | Mastercard | Credit | Consumer | World Elite Mastercard | Revolut Ltd | GB | GBP | false | false | false | true | 0.98 |
   | 45717360 | Visa | Debit | Consumer | Visa Classic Debit | BNP Paribas | FR | EUR | false | false | true | true | 0.97 |
   | 37828224 | Amex | Charge | Commercial | Business Platinum Card | American Express | US | USD | false | true | false | false | 0.95 |
   | 40128210 | Visa | Prepaid | Consumer | Visa Prepaid Reloadable | Wise Payments | BE | EUR | true | false | false | true | 0.93 |
-- **Synthesis rules** (deterministic from digits, for any other input): scheme by first digit (4=Visa, 2/5=Mastercard, 3=Amex, 6=Discover, else Unknown); let `sum` = sum of digits; `type = ['Credit','Debit','Prepaid','Charge'][sum%4]`; `commercial = sum%5===0`; country = `['DE','FR','ES','NL','IT','US','GB','PL','IE','SE'][sum%10]` with matching currency (EUR/USD/GBP/PLN/SEK); issuer = `['Deutsche Bank','Santander','ING Group','UniCredit','Barclays','Citi','Nordea','Raiffeisen'][sum%8]`; prepaid = type==='Prepaid'; regulated_debit = type==='Debit' && sum%2===0; dcc = scheme!=='Amex'; confidence = `0.84 + (sum%9)/100`; mark `bestGuess:true`.
-- Result card renders: Scheme, Type, Issuer (+ product line), Country, Currency, DCC (cyan "Eligible" / muted "Not eligible"), Flags (Prepaid / Commercial / Regulated debit — `✓` lime chip when true, muted `✕` when false), and a **Confidence bar** (gradient fill, width = confidence %) with a hint line: "Exact 8-digit range match" vs "Best-guess match · lower confidence", plus "Dataset version 2026-06-12".
 
-### Code language tabs (Home "How it works"; Docs quickstart)
-- Active-tab state; clicking a tab swaps the visible highlighted code block. Active tab style: lime text `#C4F542`, `rgba(196,245,66,0.12)` bg, lime border; inactive muted with faint border. Home has cURL/Node/Python/Go/PHP; Docs has cURL/Node/Python. Snippet contents are in the reference files.
+  Synthesis (deterministic): scheme by first digit (4=Visa, 2/5=Mastercard, 3=Amex, 6=Discover, else Unknown); `sum` = digit sum; `type = ['Credit','Debit','Prepaid','Charge'][sum%4]`; country `['DE','FR','ES','NL','IT','US','GB','PL','IE','SE'][sum%10]` (matching currency); issuer `['Deutsche Bank','Santander','ING Group','UniCredit','Barclays','Citi','Nordea','Raiffeisen'][sum%8]`; `commercial = sum%5===0`; `regulated_debit = type==='Debit' && sum%2===0`; `dcc = scheme!=='Amex'`; `confidence = 0.84 + (sum%9)/100`; `bestGuess:true`.
+- Result card: Scheme, Type, Issuer (+ product), Country, Currency, DCC, Flags (lime ✓ / muted ✕), and a Confidence bar (gradient fill) with a hint: "Exact 8-digit range match" vs "Best-guess match · lower confidence" + "Dataset version 2026-06-12".
 
-### Pricing toggle + FAQ
-- Monthly/Annual toggle swaps Growth price/sub-label (see Page 2). Active segment = white pill on translucent track.
-- FAQ: single-open accordion, item 0 open by default; `+`↔`–`.
+### Code language tabs (Home "How it works"; Docs quickstart) — `CodeTabs.astro`
+Active-tab swaps the visible Shiki-highlighted block (build-time, no client highlighting). Active tab = lime text/border on a faint lime bg.
 
-### Hover/transitions
-- Buttons: `translateY(-1px/-2px)` + intensified shadow, ~0.15s.
-- Cards: border → `#7C5CFF` (light) or `rgba(34,211,238,0.5)` (dark), some `translateY(-2px)`.
-- All color transitions ~0.15–0.3s ease.
+### Pricing FAQ
+Single-open accordion, item 0 open by default; `+`↔`–`. No-JS shows all answers. **There is no pricing toggle** (per-lookup/annual pricing was removed).
 
-## Responsive behavior
-Mobile-first. Breakpoints used in the prototype: **860px** (nav collapses), **980px** (hero stacks), **900px** (2-col sections + footer + docs 2-col stack), **820px** (pillars stack), **1040px / 560px** (pricing 4→2→1), **600px** (stat trio stacks). Fluid type/spacing via `clamp()` (values above) reduces the number of hard breakpoints needed. Comparison table scrolls horizontally under 760px. **Accessibility:** maintain WCAG AA contrast on dark sections (the muted greys above are chosen for this), semantic landmarks (`<header><nav><main><section><footer>`), keyboard-operable toggles/accordions/tabs (real `<button>`s, `aria-expanded`), and visible focus states.
+## Responsive & accessibility
+Mobile-first; key breakpoints **860px** (nav), **980px** (hero), **900px** (2-col + footer + deployment cards + docs), **820px** (pillars), **920px** (pricing tiers stack). Fluid `clamp()` type/spacing. Comparison table scrolls horizontally under ~720px. Maintain WCAG AA contrast on dark sections; semantic landmarks; keyboard-operable accordions/tabs (real `<button>`s, `aria-expanded`); visible focus states.
 
 ## Assets
-- **Fonts:** Space Grotesk, IBM Plex Sans, IBM Plex Mono (Google Fonts / Astro fonts) — no local files. See the Typography section for the exact `fonts` config and the weight note.
-- **Icons:** inline SVGs only (search magnifier, footer GitHub/X/LinkedIn). No icon library required; copy the SVG paths from the reference files or use your preferred set.
-- **Logos:** FindThisBIN is a **text wordmark** (no image). No partner/customer logos are used. Card-scheme names are rendered as plain text / generic motifs; **do not introduce official trademarked scheme logo files.**
-- **No raster images** are used anywhere — all visuals are CSS gradients, glows, and type.
-
-## Files in this bundle
-`design_files/` contains the HTML design references (open in a browser to preview):
-- `Home.dc.html` — landing page (all 14 sections + interactions/logic)
-- `Product.dc.html` — product/feature deep-dive
-- `Pricing.dc.html` — pricing page (toggle, table, FAQ)
-- `Docs.dc.html` — docs landing
-- `Company.dc.html` — about + careers (`#careers`)
-- `Contact.dc.html` — book-a-demo / get-API-key form (intent switch, validation, Slack payload in `buildSlackPayload()`)
-- `Nav.dc.html` — shared nav (scroll/mobile logic, active states for all 5 nav targets)
-- `Footer.dc.html` — shared footer
-- `support.js` — prototype runtime (reference only; **do not port to Astro**)
-
-The exact copy, snippet contents, FAQ text, and inline values not transcribed above are all present in these files — treat them as the source of truth alongside this README.
+- **Fonts:** Space Grotesk, IBM Plex Sans, IBM Plex Mono — self-hosted via the Astro Fonts API.
+- **Icons:** inline SVGs only (search magnifier, footer GitHub/X/LinkedIn).
+- **Logos:** FindThisBIN is a text wordmark. **No partner/customer logos.** Card-scheme names are plain text / generic motifs — never trademarked logo files.
+- **No raster images** — all visuals are CSS gradients, glows, and type.

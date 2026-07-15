@@ -1,12 +1,16 @@
 # FindThisBIN — marketing site
 
-Marketing site for **FindThisBIN** (findthisbin.com), a developer-first BIN
-(Bank Identification Number) intelligence API for payment platforms. Six pages
-— Home (`/`), Product (`/product`), Pricing (`/pricing`), Docs (`/docs`),
-Company (`/company`), and a Contact form (`/contact`) — built as a near-zero-JS
-site on **Astro 6** and deployed to **Cloudflare Workers (Static Assets)**.
-Every page prerenders except the contact form's `/api/contact` endpoint, the one
-on-demand route (it posts submissions to Slack).
+Marketing site for **FindThisBIN** (findthisbin.com), a **deployable BIN**
+(Bank Identification Number) **intelligence engine** that payment platforms (PSPs)
+run in their **own cloud** — self-hosted / BYOC, managed-in-your-cloud, or
+fully-managed (BYOL), plugging in their own data licenses. It is sold as
+enterprise infrastructure, not a self-serve hosted API: the primary action
+everywhere is **"Book a demo"** (there is no signup or per-lookup pricing). Six
+pages — Home (`/`), Product (`/product`), Pricing (`/pricing`), Docs (`/docs`),
+Company (`/company`), and a Contact / book-a-demo form (`/contact`) — built as a
+near-zero-JS site on **Astro 6** and deployed to **Cloudflare Workers (Static
+Assets)**. Every page prerenders except the contact form's `/api/contact`
+endpoint, the one on-demand route (it posts submissions to Slack).
 
 ## Stack
 
@@ -16,7 +20,7 @@ on-demand route (it posts submissions to Slack).
 - **@astrojs/sitemap**, **TypeScript** (strict), **Wrangler** for deploy, **Terraform** for edge config
 
 No UI framework runtime: the interactions (nav scroll/menu, BIN playground,
-code-language tabs, pricing toggle, FAQ accordion, and the
+code-language tabs, pricing FAQ accordion, and the
 progressively-enhanced contact form) are small scoped vanilla scripts. Code
 highlighting is build-time via Astro's Shiki with a custom theme
 (`src/lib/codeTheme.ts`). The contact form works without JS (native POST →
@@ -80,7 +84,7 @@ See **`DEPLOYMENT.md`** for the full runbook (prerequisites, ordering, token sco
 
 ## Design source of truth
 
-- **`DESIGN.md`** — the full design spec: tokens, per-section page specs, copy, and the BIN-playground logic.
-- **`design_files/*.dc.html`** — the original HTML design references (prototypes; not shipped). `design_files/support.js` is the prototype runtime and is gitignored.
+- **`DESIGN.md`** — the full v3 design spec: positioning, tokens, per-section page specs, copy, CTA wiring, and the BIN-playground logic. Records the honesty constraints (no fabricated partner logos or scale metrics; SOC 2 "in progress").
+- **`design_files/*.dc.html`** — the HTML design references (prototypes; not shipped) + `findthisbin-design-addendum.md` (the v3 repositioning deltas). `design_files/support.js` is the prototype runtime and is gitignored.
 
 See **`CLAUDE.md`** for architecture notes and conventions.
