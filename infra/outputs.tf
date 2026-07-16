@@ -13,6 +13,12 @@ output "www_hostname" {
   value       = var.manage_www ? "www.${var.domain}" : null
 }
 
+output "cf_analytics_token" {
+  description = "Cloudflare Web Analytics beacon token (set as CF_ANALYTICS_TOKEN env var at build time)."
+  value       = cloudflare_web_analytics_site.findthisbin.site_token
+  sensitive   = false
+}
+
 output "worker_service" {
   description = "Worker service the custom domains route to."
   value       = var.worker_name

@@ -16,21 +16,25 @@ export const ENGINE_BASE_URL = "https://bins.internal";
 /**
  * Cloudflare Web Analytics beacon token (§11). Cookieless, so no consent banner.
  *
- * EMPTY = ANALYTICS IS OFF, and that is the honest default: the token can only be
- * minted in the Cloudflare dashboard (Web Analytics → Add a site → copy the
- * token), so it cannot be committed here by anyone who hasn't done that.
+ * Injected at build time by Vite `define` in astro.config.mjs, which reads
+ * `.dev.vars` first and falls back to `process.env.CF_ANALYTICS_TOKEN`. The
+ * infrastructure module manages the Web Analytics site via Terraform and exports
+ * its token: `cd infra && tofu output cf_analytics_token`. Set it in
+ * `.dev.vars` (gitignored) for local dev, or export it in CI. Leave it unset to
+ * keep analytics off — that is the honest default.
  *
  * Setting it does three things at once, by construction rather than by
  * remembering: the beacon renders (Analytics.astro), the CSP gains the two
  * cloudflareinsights origins (securityHeaders.ts), and privacy.astro's
- * analytics paragraph becomes true. Leave it empty and all three stay off
+ * analytics paragraph becomes true. Leave it unset and all three stay off
  * together — which is why privacy.astro currently says nothing about analytics.
  *
  * After setting it: `npm run headers && npm run conform && npm run build`, then
  * confirm the dashboard receives data. A CSP block is silent — the dashboard is
  * the only proof.
  */
-export const CF_ANALYTICS_TOKEN = "";
+export const CF_ANALYTICS_TOKEN: string =
+  import.meta.env.CF_ANALYTICS_TOKEN ?? "";
 
 /* Internal routes. Every path carries a trailing slash to match
    `trailingSlash: "always"` (§2) — that is the one URL form this site serves,

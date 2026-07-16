@@ -18,14 +18,14 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
+import { getVar } from "./load-dev-vars.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 
 export function renderHeaders() {
   const src = readFileSync(join(root, "src/lib/securityHeaders.ts"), "utf8");
-  const site = readFileSync(join(root, "src/lib/site.ts"), "utf8");
 
-  const token = site.match(/CF_ANALYTICS_TOKEN\s*=\s*"([^"]*)"/)?.[1] ?? "";
+  const token = getVar("CF_ANALYTICS_TOKEN");
   const on = token.length > 0;
 
   // Pull the CSP directive list out of the module's array literal.

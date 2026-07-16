@@ -1,7 +1,16 @@
-# Local development secrets for `wrangler dev` / `astro dev`.
+# Local development environment variables.
 # Copy to `.dev.vars` (gitignored) and fill in real values.
-# In production these are set with `wrangler secret put <NAME>` (NOT committed, NOT in Terraform state).
+# In production, secrets are set with `wrangler secret put <NAME>`; build-time
+# env vars like CF_ANALYTICS_TOKEN are exported in the deploy environment.
 
 # Slack incoming webhook that receives Contact form submissions
 # (Book-a-demo / Talk-to-sales — the two `intent` values the form supports).
 SLACK_WEBHOOK_URL="https://hooks.slack.com/services/T000/B000/XXXXXXXX"
+
+# Cloudflare Web Analytics beacon token. Retrieve with:
+#   cd infra && tofu output cf_analytics_token
+# When set, enables the cookieless analytics beacon, widens the CSP, and makes
+# the privacy policy analytics paragraph truthful. When empty/unset, all three
+# stay off — which is the honest default. Export it before `npm run build`:
+#   export CF_ANALYTICS_TOKEN="$(cd infra && tofu output -raw cf_analytics_token)"
+CF_ANALYTICS_TOKEN=""

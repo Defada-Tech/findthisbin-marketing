@@ -65,7 +65,7 @@ src/
     site.ts                     ← site-wide routes, labels, external URLs
     bin.ts                      ← BIN playground data + lookup/synthesis + card renderer
     codeTheme.ts                ← custom Shiki theme (mirrors the --code-* tokens)
-    Analytics.astro             ← CF Web Analytics beacon; renders only if CF_ANALYTICS_TOKEN is set
+    Analytics.astro             ← CF Web Analytics beacon; renders only if CF_ANALYTICS_TOKEN env var is set at build time
   lib/
     securityHeaders.ts          ← the §10 header set; single source for _headers + middleware
   middleware.ts                 ← applies the §10 headers to SSR responses (_headers misses them)
@@ -89,6 +89,9 @@ The site deploys to Cloudflare Workers Static Assets.
    The contact form needs the `SLACK_WEBHOOK_URL` secret set once via
    `npx wrangler secret put SLACK_WEBHOOK_URL` (locally, copy `.dev.vars.example`
    → `.dev.vars`). Without it the form returns a friendly error and logs the lead.
+
+   For analytics, export `CF_ANALYTICS_TOKEN` before building (`cd infra && tofu
+   output -raw cf_analytics_token`). When unset, analytics stays off.
 2. **Edge config** (custom domains, Always-HTTPS, apex→www redirect): `cd infra
    && tofu init && tofu apply` with a scoped `CLOUDFLARE_API_TOKEN` exported.
    Terraform owns edge config only — never the Worker script.

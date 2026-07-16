@@ -16,8 +16,9 @@
 # AUTH: the provider reads the CLOUDFLARE_API_TOKEN environment variable — do
 #   not put the token in a .tf or .tfvars file. Use a scoped token with, on the
 #   target zone/account: Workers Scripts:Edit, Zone:Read, Zone:DNS:Edit,
-#   Zone Settings:Edit (always_use_https), and Dynamic Redirect:Edit (the
-#   apex→www ruleset).
+#   Zone Settings:Edit (always_use_https), Dynamic Redirect:Edit (the
+#   apex→www ruleset), and Account Settings:Read + Account Settings:Write
+#   (the Web Analytics site).
 #
 # USAGE:
 #   export CLOUDFLARE_API_TOKEN=...      # scoped token, never committed
@@ -71,6 +72,16 @@ resource "cloudflare_zone_setting" "always_use_https" {
 # Apex → www, 301, preserving path + query string. This Single Redirect runs in
 # the request pipeline *before* Workers, so it fires even though the apex is
 # attached as a Worker custom domain above.
+# Cloudflare Web Analytics site for the www canonical host. The beacon is
+# injected manually by the site (Analytics.astro) rather than via Cloudflare's
+# auto_install, so the CSP is widened in the same commit. The site_token is
+# read at build time via the CF_ANALYTICS_TOKEN env var.
+resource "cloudflare_web_analytics_site" "findthisbin" {
+  account_id  = var.cloudflare_account_id
+  zone_tag    = var.cloudflare_zone_id
+  auto_install = false
+}
+
 resource "cloudflare_ruleset" "redirect_apex_to_www" {
   count   = var.redirect_apex_to_www ? 1 : 0
   zone_id = var.cloudflare_zone_id

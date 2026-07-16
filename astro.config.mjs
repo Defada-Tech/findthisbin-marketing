@@ -3,6 +3,12 @@ import { defineConfig, fontProviders } from "astro/config";
 import cloudflare from "@astrojs/cloudflare";
 import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
+import { loadDevVars } from "./scripts/load-dev-vars.mjs";
+
+const devVars = loadDevVars();
+const cfAnalyticsToken = JSON.stringify(
+  devVars.CF_ANALYTICS_TOKEN || process.env.CF_ANALYTICS_TOKEN || "",
+);
 
 // NOTE: www is the canonical host — the infra (infra/main.tf) 301s the apex →
 // www, so canonical + sitemap URLs must use www to match the redirect target.
@@ -56,6 +62,9 @@ export default defineConfig({
   ],
   vite: {
     plugins: [tailwindcss()],
+    define: {
+      "import.meta.env.CF_ANALYTICS_TOKEN": cfAnalyticsToken,
+    },
     build: {
       // LOAD-BEARING FOR THE CSP (§10). Do not raise this.
       //
