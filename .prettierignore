@@ -1,0 +1,35 @@
+# Build output + generated
+dist/
+.astro/
+.wrangler/
+node_modules/
+worker-configuration.d.ts
+package-lock.json
+
+# Design prototypes — reference only, never shipped (see CLAUDE.md).
+# Formatting them would imply we maintain them.
+design_files/
+
+# Terraform state + provider cache
+infra/.terraform/
+
+# ── Two deliberate exclusions. Reasons recorded per §12. ──────────────────────
+
+# Prose docs. Prettier's markdown printer reflows hand-tuned tables and lists —
+# churn with no consistency win. §12's argument for Prettier is about
+# agent-authored *code* drift, not prose.
+*.md
+
+# Markup. prettier-plugin-astro CHANGES RENDERED OUTPUT and cannot be made not
+# to: it reformats inside Astro expressions, where htmlWhitespaceSensitivity
+# does not reach, turning `<span class="dot">●</span>{t}` into
+# `<span class="dot">\n●\n</span>\n{t}`. Whitespace around inline elements is
+# significant in HTML, so that is a real change, not cosmetic — measured at 8/8
+# pages altered on this repo. Formatting .ts/.css is provably output-neutral
+# (verified: all pages and the emitted CSS byte-identical across the reformat),
+# so the gate keeps its value for the files agents actually edit.
+# Removal trigger: re-enable when the plugin honors whitespace sensitivity
+# inside expressions, AND the reformat is verified to leave built HTML
+# byte-identical. Do not re-enable on the strength of a green `astro check` —
+# it does not compare output.
+*.astro

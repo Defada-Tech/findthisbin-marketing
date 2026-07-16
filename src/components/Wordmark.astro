@@ -2,7 +2,20 @@
 /**
  * Brand lockup: the FindThisBIN icon mark (card + scan brackets, from
  * logo_design_files/) followed by the wordmark — "FindThis" white + "BIN" cyan.
+ *
+ * The mark's colors come from tokens, via CSS classes rather than fill/stroke
+ * attributes. It previously hardcoded #16121F / #7C5CFF / #C4F542 — and the last
+ * two were already --violet and --lime, spelled differently, i.e. two silent
+ * copies of the palette that nothing kept in sync.
+ *
+ * Worth knowing before retuning a token: --mark-plate, --violet, and --lime all
+ * track the brand board in design_files/logo_design_files/. That board is the
+ * source of BOTH the logo and the palette, so they are supposed to move
+ * together — but if you ever want to shift --violet site-wide *without* moving
+ * the mark, give the mark its own token rather than reintroducing a literal.
  */
+import { HOME_PATH } from "../lib/site";
+
 interface Props {
   size?: number;
   class?: string;
@@ -10,7 +23,11 @@ interface Props {
 const { size = 26, class: className } = Astro.props;
 ---
 
-<a href="/" class:list={["wordmark", className]} aria-label="FindThisBIN — home">
+<a
+  href={HOME_PATH}
+  class:list={["wordmark", className]}
+  aria-label="FindThisBIN — home"
+>
   <svg
     class="mark"
     width={size}
@@ -20,9 +37,9 @@ const { size = 26, class: className } = Astro.props;
     xmlns="http://www.w3.org/2000/svg"
     aria-hidden="true"
   >
-    <rect width="48" height="48" rx="11" fill="#16121F"></rect>
-    <rect x="8" y="14" width="32" height="20" rx="5" fill="#7C5CFF"></rect>
-    <g stroke="#C4F542" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <rect class="plate" width="48" height="48" rx="11"></rect>
+    <rect class="card" x="8" y="14" width="32" height="20" rx="5"></rect>
+    <g class="scan" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none">
       <path d="M11 24 V20 H15"></path>
       <path d="M33 20 H37 V24"></path>
       <path d="M11 28 V32 H15"></path>
@@ -48,6 +65,9 @@ const { size = 26, class: className } = Astro.props;
     flex: none;
     border-radius: 7px;
   }
-  .find { color: #ffffff; }
+  .mark .plate { fill: var(--mark-plate); }
+  .mark .card { fill: var(--violet); }
+  .mark .scan { stroke: var(--lime); }
+  .find { color: var(--white); }
   .bin { color: var(--cyan); }
 </style>

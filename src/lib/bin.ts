@@ -23,21 +23,96 @@ export interface BinRecord {
 
 export const DATASET_VERSION = "2026-06-12";
 
-export const QUICK_PICKS = ["53847012", "45717360", "37828224", "40128210"] as const;
+export const QUICK_PICKS = [
+  "53847012",
+  "45717360",
+  "37828224",
+  "40128210",
+] as const;
 
 /** Exact 8-digit range matches. */
 const SAMPLES: Record<string, Omit<BinRecord, "bin" | "bestGuess">> = {
-  "53847012": { scheme: "Mastercard", type: "Credit", category: "Consumer", product: "World Elite Mastercard", issuer: "Revolut Ltd", country: "GB", currency: "GBP", prepaid: false, commercial: false, regulated_debit: false, dcc: true, confidence: 0.98 },
-  "45717360": { scheme: "Visa", type: "Debit", category: "Consumer", product: "Visa Classic Debit", issuer: "BNP Paribas", country: "FR", currency: "EUR", prepaid: false, commercial: false, regulated_debit: true, dcc: true, confidence: 0.97 },
-  "37828224": { scheme: "Amex", type: "Charge", category: "Commercial", product: "Business Platinum Card", issuer: "American Express", country: "US", currency: "USD", prepaid: false, commercial: true, regulated_debit: false, dcc: false, confidence: 0.95 },
-  "40128210": { scheme: "Visa", type: "Prepaid", category: "Consumer", product: "Visa Prepaid Reloadable", issuer: "Wise Payments", country: "BE", currency: "EUR", prepaid: true, commercial: false, regulated_debit: false, dcc: true, confidence: 0.93 },
+  "53847012": {
+    scheme: "Mastercard",
+    type: "Credit",
+    category: "Consumer",
+    product: "World Elite Mastercard",
+    issuer: "Revolut Ltd",
+    country: "GB",
+    currency: "GBP",
+    prepaid: false,
+    commercial: false,
+    regulated_debit: false,
+    dcc: true,
+    confidence: 0.98,
+  },
+  "45717360": {
+    scheme: "Visa",
+    type: "Debit",
+    category: "Consumer",
+    product: "Visa Classic Debit",
+    issuer: "BNP Paribas",
+    country: "FR",
+    currency: "EUR",
+    prepaid: false,
+    commercial: false,
+    regulated_debit: true,
+    dcc: true,
+    confidence: 0.97,
+  },
+  "37828224": {
+    scheme: "Amex",
+    type: "Charge",
+    category: "Commercial",
+    product: "Business Platinum Card",
+    issuer: "American Express",
+    country: "US",
+    currency: "USD",
+    prepaid: false,
+    commercial: true,
+    regulated_debit: false,
+    dcc: false,
+    confidence: 0.95,
+  },
+  "40128210": {
+    scheme: "Visa",
+    type: "Prepaid",
+    category: "Consumer",
+    product: "Visa Prepaid Reloadable",
+    issuer: "Wise Payments",
+    country: "BE",
+    currency: "EUR",
+    prepaid: true,
+    commercial: false,
+    regulated_debit: false,
+    dcc: true,
+    confidence: 0.93,
+  },
 };
 
 const COUNTRIES = ["DE", "FR", "ES", "NL", "IT", "US", "GB", "PL", "IE", "SE"];
-const ISSUERS = ["Deutsche Bank", "Santander", "ING Group", "UniCredit", "Barclays", "Citi", "Nordea", "Raiffeisen"];
+const ISSUERS = [
+  "Deutsche Bank",
+  "Santander",
+  "ING Group",
+  "UniCredit",
+  "Barclays",
+  "Citi",
+  "Nordea",
+  "Raiffeisen",
+];
 const CURRENCY: Record<string, string> = {
-  DE: "EUR", FR: "EUR", ES: "EUR", NL: "EUR", IT: "EUR", IE: "EUR", BE: "EUR",
-  US: "USD", GB: "GBP", PL: "PLN", SE: "SEK",
+  DE: "EUR",
+  FR: "EUR",
+  ES: "EUR",
+  NL: "EUR",
+  IT: "EUR",
+  IE: "EUR",
+  BE: "EUR",
+  US: "USD",
+  GB: "GBP",
+  PL: "PLN",
+  SE: "SEK",
 };
 
 function schemeFor(firstDigit: string): string {

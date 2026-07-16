@@ -1,4 +1,20 @@
 <svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!--
+    Source for og-default.png (§8). The PNG is the shipped asset — social
+    scrapers do not reliably rasterize SVG. Re-export when the wordmark, palette,
+    or positioning changes: see DEPLOYMENT.md.
+
+    Fonts are the two the site actually ships: Space Grotesk (display) and
+    IBM Plex Sans (body). An earlier revision set the body text in Inter, which
+    this site has never shipped — and because Inter is commonly installed
+    system-wide, a headless rasterize resolved it happily and produced a
+    plausible-looking card in the wrong typeface. Rasterize from the fonts in
+    .astro/fonts with system fonts DISABLED, never against system fonts.
+
+    Copy tracks the v3 repositioning (deployable engine, not a hosted API).
+    The previous revision still read "decoded in one API call" — the pitch the
+    repositioning removed. Keep this in sync with the Home h1 and TRUST_POINTS.
+  -->
   <rect width="1200" height="630" fill="#0B0B12"/>
   <defs>
     <radialGradient id="glow" cx="78%" cy="18%" r="60%">
@@ -18,7 +34,7 @@
   <rect width="1200" height="630" fill="url(#glow2)"/>
 
   <!-- brand lockup -->
-  <g transform="translate(96, 150)">
+  <g transform="translate(96, 104)">
     <rect width="64" height="64" rx="15" fill="#16121F"/>
     <rect x="11" y="19" width="42" height="26" rx="6" fill="#7C5CFF"/>
     <g stroke="#C4F542" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none">
@@ -30,20 +46,20 @@
     </text>
   </g>
 
-  <text x="96" y="340" font-family="'Space Grotesk', system-ui, sans-serif" font-weight="700" font-size="74" letter-spacing="-0.03em" fill="#FFFFFF">Every card,</text>
-  <text x="96" y="426" font-family="'Space Grotesk', system-ui, sans-serif" font-weight="700" font-size="74" letter-spacing="-0.03em">
-    <tspan fill="#FFFFFF">decoded in </tspan><tspan fill="url(#grad)">one API call.</tspan>
-  </text>
+  <!-- headline — tracks the Home h1 -->
+  <text x="96" y="276" font-family="'Space Grotesk', system-ui, sans-serif" font-weight="700" font-size="66" letter-spacing="-0.03em" fill="#FFFFFF">The BIN intelligence engine</text>
+  <text x="96" y="352" font-family="'Space Grotesk', system-ui, sans-serif" font-weight="700" font-size="66" letter-spacing="-0.03em" fill="#FFFFFF">payment platforms</text>
+  <text x="96" y="428" font-family="'Space Grotesk', system-ui, sans-serif" font-weight="700" font-size="66" letter-spacing="-0.03em" fill="url(#grad)">run themselves.</text>
 
-  <text x="96" y="500" font-family="'Inter', system-ui, sans-serif" font-weight="400" font-size="28" fill="#A9A9BC">BIN intelligence API · EU-hosted · sub-10ms p99</text>
+  <text x="96" y="496" font-family="'IBM Plex Sans', system-ui, sans-serif" font-weight="400" font-size="27" fill="#A9A9BC">Deploy it in your own cloud, or let us run it for you.</text>
 
-  <!-- trust dots -->
-  <g transform="translate(96, 540)" font-family="'Inter', system-ui, sans-serif" font-weight="500" font-size="20" fill="#7A7A8C">
+  <!-- trust dots — a subset of TRUST_POINTS in src/lib/site.ts -->
+  <g transform="translate(96, 556)" font-family="'IBM Plex Sans', system-ui, sans-serif" font-weight="500" font-size="20" fill="#7A7A8C">
     <circle cx="6" cy="-6" r="5" fill="#22D3EE"/>
-    <text x="22" y="0">GDPR-clean</text>
-    <circle cx="186" cy="-6" r="5" fill="#22D3EE"/>
-    <text x="202" y="0">PCI out-of-scope</text>
-    <circle cx="416" cy="-6" r="5" fill="#22D3EE"/>
-    <text x="432" y="0">99.9% uptime</text>
+    <text x="22" y="0">Runs in your cloud</text>
+    <circle cx="243" cy="-6" r="5" fill="#22D3EE"/>
+    <text x="259" y="0">Out of PCI scope</text>
+    <circle cx="459" cy="-6" r="5" fill="#22D3EE"/>
+    <text x="475" y="0">sub-10ms p99</text>
   </g>
 </svg>

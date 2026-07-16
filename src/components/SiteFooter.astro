@@ -85,8 +85,8 @@ const legalLinks = [
     gap: 8px;
     padding: 7px 12px;
     border-radius: 999px;
-    background: rgba(34, 211, 238, 0.08);
-    border: 1px solid rgba(34, 211, 238, 0.22);
+    background: color-mix(in srgb, var(--cyan) 8%, transparent);
+    border: 1px solid color-mix(in srgb, var(--cyan) 22%, transparent);
     font-size: 12.5px;
     font-weight: 600;
     color: var(--cyan);
@@ -123,7 +123,7 @@ const legalLinks = [
     transition: color 0.2s ease;
   }
   .col a:hover {
-    color: #fff;
+    color: var(--white);
   }
 
   .footer-bottom {

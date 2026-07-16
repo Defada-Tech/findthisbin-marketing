@@ -1,0 +1,29 @@
+---
+/**
+ * Cloudflare Web Analytics beacon (§11). Cookieless — no consent banner, no
+ * third-party cookies, no session replay.
+ *
+ * Renders nothing at all unless CF_ANALYTICS_TOKEN is set. That coupling is the
+ * point: the same constant also widens the CSP (see securityHeaders.ts), so the
+ * beacon can never ship without the policy that lets it load.
+ *
+ * `is:inline` is required — Astro would otherwise bundle this as a module and
+ * rewrite the src, and the beacon must load from Cloudflare's origin as-is. It
+ * is the one script on the site that legitimately bypasses the §15 scoped-script
+ * convention, and `script-src` permits exactly that origin and no other.
+ */
+import { CF_ANALYTICS_TOKEN } from "../lib/site";
+
+const enabled = CF_ANALYTICS_TOKEN.length > 0;
+---
+
+{
+  enabled && (
+    <script
+      is:inline
+      defer
+      src="https://static.cloudflareinsights.com/beacon.min.js"
+      data-cf-beacon={JSON.stringify({ token: CF_ANALYTICS_TOKEN })}
+    />
+  )
+}

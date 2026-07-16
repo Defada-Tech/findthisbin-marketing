@@ -67,7 +67,7 @@ const initial = renderCardHTML(lookupBin(DEFAULT_BIN));
     flex: 1;
     background: transparent;
     border: none;
-    color: #fff;
+    color: var(--white);
     font-size: 18px;
     letter-spacing: 0.08em;
     padding: 13px 6px;
@@ -90,8 +90,8 @@ const initial = renderCardHTML(lookupBin(DEFAULT_BIN));
     transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
   }
   .bin-playground .bp-pick:hover {
-    color: #fff;
-    border-color: rgba(124, 92, 255, 0.6);
+    color: var(--white);
+    border-color: color-mix(in srgb, var(--violet) 60%, transparent);
   }
 
   /* Result card */
@@ -126,7 +126,7 @@ const initial = renderCardHTML(lookupBin(DEFAULT_BIN));
   .bin-playground .bp-value {
     font-size: 15px;
     font-weight: 600;
-    color: #fff;
+    color: var(--white);
   }
   .bin-playground .bp-sub {
     font-size: 12.5px;
@@ -153,8 +153,8 @@ const initial = renderCardHTML(lookupBin(DEFAULT_BIN));
   .bin-playground .flag .ic { font-size: 11px; }
   .bin-playground .flag.on {
     color: var(--lime);
-    border-color: rgba(196, 245, 66, 0.4);
-    background: rgba(196, 245, 66, 0.08);
+    border-color: color-mix(in srgb, var(--lime) 40%, transparent);
+    background: color-mix(in srgb, var(--lime) 8%, transparent);
   }
   .bin-playground .flag.off {
     color: var(--text-dark-faint);
@@ -170,7 +170,7 @@ const initial = renderCardHTML(lookupBin(DEFAULT_BIN));
     font-family: var(--font-display);
     font-weight: 700;
     font-size: 18px;
-    color: #fff;
+    color: var(--white);
   }
   .bin-playground .bp-bar {
     height: 8px;

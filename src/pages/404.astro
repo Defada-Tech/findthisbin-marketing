@@ -1,0 +1,134 @@
+---
+/**
+ * Branded not-found page (§2). Prerenders like any other page; Workers static
+ * assets serves it with a real HTTP 404 for unmatched URLs.
+ *
+ * No `active` prop and no nav highlight — a 404 is not a section of the site.
+ */
+import Layout from "../layouts/Layout.astro";
+import Button from "../components/Button.astro";
+import {
+  HOME_PATH,
+  PRODUCT_PATH,
+  FEATURES_PATH,
+  CONTACT_PATH,
+  BOOK_DEMO_LABEL,
+  BOOK_DEMO_URL,
+} from "../lib/site";
+
+const links = [
+  { href: PRODUCT_PATH, label: "Product", note: "How the engine deploys" },
+  { href: FEATURES_PATH, label: "Features", note: "What it returns" },
+  { href: CONTACT_PATH, label: "Contact", note: "Talk to a human" },
+];
+---
+
+<Layout
+  title="Page not found — FindThisBIN"
+  description="That page doesn't exist. Find your way back to the FindThisBIN BIN intelligence engine."
+>
+  <section class="nf">
+    <div class="bg" aria-hidden="true"></div>
+    <div class="wrap wrap-tight">
+      <p class="code mono">404</p>
+      <h1 class="h1-page">This page doesn't exist.</h1>
+      <p class="lead">
+        The link may be out of date, or the page may have moved. Nothing is
+        broken on your end.
+      </p>
+
+      <div class="cta-row">
+        <Button href={HOME_PATH} label="Back to home" variant="primary" arrow />
+        <Button href={BOOK_DEMO_URL} label={BOOK_DEMO_LABEL} variant="ghost-dark" />
+      </div>
+
+      <ul class="links">
+        {
+          links.map((l) => (
+            <li>
+              <a href={l.href}>
+                <span class="l-label">{l.label}</span>
+                <span class="l-note">{l.note}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .nf {
+    position: relative;
+    background: var(--ink);
+    color: var(--white);
+    padding: 140px 0 110px;
+    min-height: 72vh;
+  }
+  .bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    /* Matches the legal pages' hero wash. Written with color-mix per §4 rather
+       than the rgba() the older pages still use. */
+    background: radial-gradient(
+      100% 80% at 50% -10%,
+      color-mix(in srgb, var(--violet) 22%, transparent),
+      transparent 55%
+    );
+  }
+  .wrap {
+    position: relative;
+  }
+  .code {
+    color: var(--violet-light);
+    font-size: 13px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin: 0 0 14px;
+  }
+  .lead {
+    color: var(--text-dark-body);
+    font-size: 18px;
+    line-height: 1.65;
+    max-width: 52ch;
+    margin: 14px 0 0;
+  }
+  .cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 30px 0 0;
+  }
+  .links {
+    list-style: none;
+    margin: 46px 0 0;
+    padding: 26px 0 0;
+    border-top: 1px solid var(--border-dark);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 10px;
+  }
+  .links a {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 12px 14px;
+    border: 1px solid var(--border-dark);
+    border-radius: 10px;
+    text-decoration: none;
+    transition: border-color 0.18s ease;
+  }
+  .links a:hover {
+    border-color: var(--violet);
+  }
+  .l-label {
+    font-weight: 600;
+    font-size: 15px;
+  }
+  .l-note {
+    color: var(--text-dark-muted-2);
+    font-size: 13px;
+  }
+</style>

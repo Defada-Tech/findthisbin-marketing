@@ -1,23 +1,59 @@
 # FindThisBIN Marketing Site — Design Spec (v3, enterprise infrastructure)
 
+> ## ⚠ Read this before trusting a page section
+>
+> **This file is authoritative for tokens, the type scale, copy rules, CTA
+> wiring, and the BIN-playground logic. Its per-page sections are STALE.**
+>
+> The v3 repositioning changed the page structure and this spec was never
+> updated, so the two disagree — and MARKETING_TECH_STACK.md §14 declares this
+> file authoritative, which means the stale half gets believed. Concretely:
+>
+> | This spec says | Reality |
+> |---|---|
+> | Page 2 — Pricing (`pricing.astro`) | **Does not exist.** Never built. |
+> | Page 3 — Docs (`docs.astro`) | **Does not exist.** Never built. |
+> | *(not mentioned)* | **`features.astro` ships** and has no spec here. |
+> | *(not mentioned)* | **`privacy` / `terms` / `dpa` / `gdpr` ship.** |
+> | *(not mentioned)* | **`404.astro` ships** (branded not-found). |
+> | Nav has an `active` prop | Nav self-derives from `Astro.url.pathname`. |
+> | Nav links: Product / Pricing / Docs / Company | Product / Features / Company. |
+>
+> **The real page list is in `CLAUDE.md` and `README.md`, and `npm run conform`
+> checks it against the filesystem.** Those are trustworthy; the sections below
+> are not, until someone re-authors them.
+>
+> Writing the Features spec is design work, not a mechanical edit — it needs a
+> human who knows what that page is for. It is deliberately left undone rather
+> than invented here, because a fabricated spec would be worse than an absent
+> one. Delete this banner when the page sections match `src/pages/`.
+
+
 > **Positioning (v3).** FindThisBIN is a **deployable BIN intelligence engine** that payment platforms (PSPs) run in their **own cloud** — self-hosted / BYOC, managed-in-your-cloud, or fully-managed (BYOL). Customers **bring their own data licenses** (Visa VBASS, Mastercard BIN table, commercial feeds, CSV); we provide the engine, the 8-digit logic, the multi-source merge, the sub-10ms hot path, and the ops. This is **not** a self-serve hosted API — there is no signup, no API-key flow, and no per-lookup pricing. The bold fintech identity (palette, typography, gradient/glow motif, code panels, motion, font stack) is **unchanged** from the original brief; what changed is messaging, page structure, and CTAs. This document is the authoritative spec; the refreshed `design_files/*.dc.html` prototypes are the visual reference, and `design_files/findthisbin-design-addendum.md` records the repositioning deltas.
 
 ## Overview
-A bold, modern, **multi-page marketing site** for **FindThisBIN** (findthisbin.com) aimed at **infrastructure buyers** — both the platform decision-maker (compliance, data residency, build-vs-buy, time-to-value) and their engineers (clean API, deploy in your stack). Six pages share one identity, navigation, and footer:
+A bold, modern, **multi-page marketing site** for **FindThisBIN** (findthisbin.com) aimed at **infrastructure buyers** — both the platform decision-maker (compliance, data residency, build-vs-buy, time-to-value) and their engineers (clean API, deploy in your stack).
+
+**The pages that actually ship** (see the banner above — the numbered specs
+further down still describe the pre-repositioning set):
 
 1. **Home / landing** (`/`)
-2. **Product** (`/product`) — product/feature deep-dive
-3. **Pricing** (`/pricing`) — contact-driven enterprise tiers
-4. **Docs landing** (`/docs`)
-5. **Company** (`/company`) — about + careers (`#careers`)
-6. **Contact / Book-a-demo** (`/contact`) — the form behind both primary CTAs; posts a Slack message via webhook (`/api/contact`)
+2. **Product** (`/product/`) — product/feature deep-dive
+3. **Features** (`/features/`) — *ships; no spec in this file yet*
+4. **Company** (`/company/`) — about + careers (`#careers`)
+5. **Contact / Book-a-demo** (`/contact/`) — the form behind both primary CTAs; posts a Slack message via webhook (`/api/contact/`)
+6. **Legal** — `/privacy/`, `/terms/`, `/dpa/`, `/gdpr/`
+7. **404** — branded not-found
+
+There is no Pricing page and no Docs page. `design_files/Pricing.dc.html` and
+`Docs.dc.html` are prototypes for pages that were never built.
 
 **Messaging priority (new order):** (1) deploy in your cloud / we handle the ops, (2) compliance & data residency (your data never leaves; out of PCI scope and the card/data path), (3) build-vs-buy / time-to-value, (4) correctness & performance (8-digit, multi-source, sub-10ms), with developer experience reframed as "your team integrates a clean API." Fraud stays a minor supporting use case.
 
 **Honesty constraints (do not violate).** No fabricated social proof: **no partner/customer wordmarks** and **no invented scale metrics** (e.g. "6.2M BINs", "242 countries", "184M lookups/day"). The prototypes reintroduce these as illustrative placeholders — they are intentionally **not shipped** (no social-proof strip, no animated counters, no fabricated stat bands on Home / Product / Company). Only defensible, repeatable claims appear inline: `sub-10ms p99`, `99.9% uptime`, `8-digit` precision, EU residency. SOC 2 is "in progress / roadmap" (never "certified"); GDPR-clean + DPA available; PCI **out of scope** (no PCI DSS certification claim). Card-scheme names render as plain text / generic motifs — never trademarked logos.
 
 ## Stack & build
-Built as a static, prerendered **Astro 6** site (`output: "static"`) on the `@astrojs/cloudflare` adapter, Tailwind v4 (config-in-CSS), self-hosted fonts via the Astro Fonts API. Every page prerenders except the on-demand `/contact` (reads query params) and **`/api/contact`** (`prerender = false`, the Slack-webhook endpoint). See `README.md` / `CLAUDE.md` for commands, the two-wrangler-config setup, and the deploy runbook (`DEPLOYMENT.md`).
+Built as a static, prerendered **Astro 6** site (`output: "static"`) on the `@astrojs/cloudflare` adapter, Tailwind v4 (config-in-CSS), self-hosted fonts via the Astro Fonts API. Every page prerenders except the on-demand `/contact/` (reads query params) and **`/api/contact/`** (`prerender = false`, the Slack-webhook endpoint) — two on-demand routes. `trailingSlash: "always"`; every path carries the slash. See `README.md` / `CLAUDE.md` for commands, the two-wrangler-config setup, and the deploy runbook (`DEPLOYMENT.md`).
 
 **Routing & anchors:** `Home`→`/`, `Product`→`/product`, `Pricing`→`/pricing`, `Docs`→`/docs`, `Company`→`/company`, `Contact`→`/contact` (+ `/api/contact`). In-page anchors preserved as section `id`s: `#deployment` (new — Home deployment models), `#try`, `#psp` (Home), `#tiers` (Pricing), `#reference`, `#sdks` (Docs), `#careers` (Company), `#footer`.
 
@@ -105,17 +141,17 @@ Self-hosted via the Astro Fonts API (`fontProviders.google()` in `astro.config.m
 
 ## Shared components
 
-### Nav (`SiteNav.astro`, prop `active`)
+### Nav (`SiteNav.astro`)
 - Sticky, `top:0`, `z-index:1000`, `height:68px`, `backdrop-filter:blur(14px)`.
 - Background changes on scroll: `rgba(11,11,18,0.32)` → `rgba(11,11,18,0.85)` once `window.scrollY > 12`, bottom border fading in. *(inline script)*
-- Left: wordmark **FindThis**(white)**BIN**(cyan). Center links: Product / Pricing / Docs / Company (active via `active` prop).
-- Right: **"Sign in"** (low-key text, placeholder) + primary **"Book a demo"** button → `/contact?intent=demo` (lime fill, glow).
+- Left: wordmark **FindThis**(white)**BIN**(cyan). Center links: Product / Features / Company. The active link is **self-derived** from `Astro.url.pathname` (normalized on both sides) and marked with `aria-current="page"` — there is no `active` prop; pages pass nothing.
+- Right: primary **"Book a demo"** button → `/contact/?intent=demo` (lime fill, glow). *(There is no "Sign in" link in the shipped nav.)*
 - **Mobile (≤860px):** hamburger toggles a full-width panel with stacked links. *(inline script)*
 
 ### Footer (`SiteFooter.astro`)
 - Background `#08080E`, 5-col grid (`1.6fr 1fr 1fr 1fr 1fr` → `1fr 1fr` ≤900px), `id="footer"`.
 - Col 1: wordmark, tagline **"The BIN intelligence engine for payment platforms. Deploy it in your own cloud; your data never leaves."**, and a cyan **"Runs in your cloud · EU option"** pill.
-- Columns: **Product** (Overview → `/product`, Try it live → `/#try`, Pricing, For platforms → `/#psp`) · **Developers** (Docs, API Reference, SDKs → `/docs#sdks`, Status) · **Company** (About → `/company`, Blog, Careers → `/company#careers`) · **Legal** (Privacy, Terms, DPA, GDPR).
+- Columns: **Product** · **Developers** · **Company** · **Legal** (Privacy, Terms, DPA, GDPR). ⚠ *This list references Pricing / Docs / SDKs / Blog / Status — verify against `SiteFooter.astro` before trusting it; the pages behind several of those do not exist.*
 - Bottom bar: "© 2026 FindThisBIN…" + GitHub / X / LinkedIn icon links.
 
 ---
@@ -148,7 +184,7 @@ Sections, in order (alternating dark / light; social-proof + stat-band sections 
 14. **Final CTA** (gradient + violet glow). H2 **"Run BIN intelligence in your own cloud."** + Book a demo / Talk to sales.
 15. **Footer.**
 
-## Page 2 — Pricing (`pricing.astro`)
+## ~~Page 2 — Pricing (`pricing.astro`)~~ — ⚠ NOT BUILT. Historical; kept for reference only.
 Contact-driven enterprise tiers — **no monthly/annual toggle, no per-lookup prices**.
 
 1. **Header** (dark, violet glow). Pill "Deployment-based pricing · Runs in your cloud". H1 "Pricing that fits your deployment." Subhead (scope around volume/connectors/SLAs/residency + POC).
@@ -176,7 +212,7 @@ Contact-driven enterprise tiers — **no monthly/annual toggle, no per-lookup pr
 7. **Close** (gradient + glow). Trust strip (Runs in your cloud · Your data never leaves · Out of PCI scope · DPA available) + H2 "Book a demo today." + Book a demo / Talk to sales.
 8. **Footer.**
 
-## Page 3 — Docs (`docs.astro`) — light theme, dark code panels
+## ~~Page 3 — Docs (`docs.astro`)~~ — ⚠ NOT BUILT. Historical; kept for reference only.
 1. **Header** (off-white, bottom border). Mono eyebrow `// docs`. H1 "Build with FindThisBIN." Subhead "From deploying the engine in your cloud to your first lookup — in minutes." Cosmetic search bar (`⌘K`).
 2. **Quickstart** (white). 2-col: dark gradient card with "15-minute quickstart" pill, H2 "Deploy in your cloud in 15 minutes.", 3 steps (**Deploy the engine → Connect a data source → Make your first lookup**), "Start here" CTA → demo | code panel with tabs (cURL / Node / Python) targeting `https://bins.internal`, "→ 200 OK …" footer.
 3. **Documentation grid** (off-white). `repeat(3,1fr)` → 2 → 1. 15 cards (mono token + title + one line): Quickstart, **Deployment**, **Connecting data sources**, **License configuration**, **Tenant setup**, **Upgrades & operations**, **Observability**, Authentication, BIN Lookup API (→ `#reference`), Batch Lookup, DCC endpoint, Webhooks, Errors & rate limits, Data dictionary, Versioning.

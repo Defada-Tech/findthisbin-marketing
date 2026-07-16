@@ -94,8 +94,8 @@ const description = sales
     inset: 0;
     pointer-events: none;
     background:
-      radial-gradient(100% 80% at 78% -10%, rgba(124, 92, 255, 0.28), transparent 55%),
-      radial-gradient(70% 60% at 5% 10%, rgba(34, 211, 238, 0.14), transparent 55%);
+      radial-gradient(100% 80% at 78% -10%, color-mix(in srgb, var(--violet) 28%, transparent), transparent 55%),
+      radial-gradient(70% 60% at 5% 10%, color-mix(in srgb, var(--cyan) 14%, transparent), transparent 55%);
   }
   .contact-grid {
     display: grid;
@@ -119,7 +119,7 @@ const description = sales
     margin-bottom: 22px;
     font-size: 13px;
     font-weight: 600;
-    color: #d7d7e2;
+    color: var(--text-dark-bright);
   }
   .pill .dot {
     width: 7px;
@@ -146,7 +146,7 @@ const description = sales
     align-items: flex-start;
     font-size: 15px;
     line-height: 1.5;
-    color: #c7c7d6;
+    color: var(--text-dark-soft);
   }
   .tick { flex: none; margin-top: 1px; color: var(--lime); }
 

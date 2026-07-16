@@ -32,6 +32,8 @@
   --text-light-body-strong: #4a4a57;
   --text-light-muted: #6e6e80;
   --text-light-faint: #8a8a9a;
+  --text-dark-bright: #d7d7e2; /* highest-contrast body text on dark */
+  --text-dark-soft: #c7c7d6; /* one step down from --text-dark-bright */
   --text-dark-body: #a9a9bc;
   --text-dark-muted: #9a9aae;
   --text-dark-muted-2: #7a7a8c;
@@ -41,6 +43,33 @@
   --border-dark: rgba(255, 255, 255, 0.08);
   --check-green: #1fa463;
   --status-green: #1fa463;
+  --lime-deep: #4ac71a; /* lime dark enough to read as a check on light */
+  --error: #ff8095; /* form validation text, on dark */
+
+  /* window-chrome dots on the code/demo panels */
+  --chrome-close: #ff5f57;
+  --chrome-min: #febc2e;
+  --chrome-max: #28c840;
+
+  --ink-black: #0a0a12; /* deepest well — below --ink */
+  --violet-deep: #241a52; /* mid-stop of the hero gradient */
+  --mark-plate: #16121f; /* wordmark plate; tracks the brand board */
+
+  /* Code syntax-highlight palette (dark panels).
+     DESIGN.md's "Code syntax-highlight palette" table is authoritative for these
+     values; :root is now where they live. They were previously duplicated across
+     lib/codeTheme.ts, DemoPanel, CodeTabs, index, product, and ContactForm —
+     six copies of the same seven colors, which is six places to forget. The
+     Shiki theme in codeTheme.ts must still spell them as literals (it resolves
+     colors at build and cannot read var()), so conform.mjs asserts every hex in
+     that file is one of these. */
+  --code-fg: #e6e6f0;
+  --code-string: #9ee493;
+  --code-number: #c4a5ff;
+  --code-keyword: #ff7b9c;
+  --code-function: #b89cff;
+  --code-key: #7dd3fc;
+  --code-punct: #717184;
 
   /* signature gradient (hero CTAs, performance band, confidence bar) */
   --grad: linear-gradient(115deg, #7c5cff, #6366f1 45%, #3b82f6);
@@ -48,8 +77,10 @@
   --grad-text: linear-gradient(100deg, #a98bff, #22d3ee);
 
   /* shadows */
-  --shadow-lime: 0 12px 36px -10px rgba(196, 245, 66, 0.6);
-  --shadow-popular: 0 30px 70px -28px rgba(124, 92, 255, 0.7);
+  --shadow-lime: 0 12px 36px -10px
+    color-mix(in srgb, var(--lime) 60%, transparent);
+  --shadow-popular: 0 30px 70px -28px
+    color-mix(in srgb, var(--violet) 70%, transparent);
   --shadow-panel: 0 30px 80px -30px rgba(0, 0, 0, 0.8);
 }
 
@@ -103,7 +134,7 @@ body {
   overflow-x: hidden;
 }
 ::selection {
-  background: rgba(124, 92, 255, 0.3);
+  background: color-mix(in srgb, var(--violet) 30%, transparent);
 }
 /* Accessible violet focus ring (README A11y) */
 :focus-visible {
@@ -111,27 +142,73 @@ body {
   outline-offset: 3px;
   border-radius: 6px;
 }
+
+/* Skip link (§6) — first focusable element in the DOM, visually hidden until
+   focused. Parked off-canvas with a transform rather than display:none or
+   width:0 so it keeps its place in the focus order and is announced normally.
+   On --ink rather than --violet deliberately: white on --violet measures 4.35:1,
+   under the 4.5:1 floor §6 sets for body text. White on --ink is 19.6:1. */
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  padding: 10px 16px;
+  border-radius: 0 0 6px 0;
+  background: var(--ink);
+  color: var(--white);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transform: translateY(-100%);
+}
+.skip-link:focus {
+  transform: translateY(0);
+}
 a {
   color: inherit;
 }
 
 /* ── Keyframes — copied verbatim from the .dc.html references ──────────── */
 @keyframes ftbGrad {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 @keyframes ftbUp {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 @keyframes ftbBlink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
 }
 @keyframes ftbFloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-16px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-16px);
+  }
 }
 
 /* ────────────────────────────────────────────────────────────────────────
@@ -143,9 +220,18 @@ a {
   overflow: hidden;
   padding: clamp(64px, 8vw, 112px) 0;
 }
-.band-ink { background: var(--ink); color: var(--white); }
-.band-white { background: var(--white); color: var(--ink); }
-.band-off { background: var(--off-white); color: var(--ink); }
+.band-ink {
+  background: var(--ink);
+  color: var(--white);
+}
+.band-white {
+  background: var(--white);
+  color: var(--ink);
+}
+.band-off {
+  background: var(--off-white);
+  color: var(--ink);
+}
 
 .wrap {
   max-width: 1240px;
@@ -153,16 +239,26 @@ a {
   padding: 0 24px;
   position: relative;
 }
-.wrap-docs { max-width: 1100px; }
-.wrap-narrow { max-width: 920px; }
-.wrap-tight { max-width: 820px; }
+.wrap-docs {
+  max-width: 1100px;
+}
+.wrap-narrow {
+  max-width: 920px;
+}
+.wrap-tight {
+  max-width: 820px;
+}
 
 /* Glow blobs: violet radial behind hero/CTA sections. */
 .glow {
   position: absolute;
   pointer-events: none;
   border-radius: 999px;
-  background: radial-gradient(circle, rgba(124, 92, 255, 0.45), transparent 70%);
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--violet) 45%, transparent),
+    transparent 70%
+  );
   filter: blur(30px);
   z-index: 0;
 }
@@ -176,7 +272,10 @@ a {
 
 /* Headings */
 .eyebrow {
-  font-family: "IBM Plex Sans", var(--font-sans);
+  /* Use the bridge, not the raw family. Naming "IBM Plex Sans" first bypassed
+     --ff-body's size-adjusted fallback — the exact mechanism §5 says keeps CLS
+     near zero — so this element alone reflowed on font swap. */
+  font-family: var(--font-sans);
   font-weight: 700;
   font-size: 13px;
   letter-spacing: 0.08em;
@@ -227,7 +326,9 @@ a {
   line-height: 1.6;
   max-width: 58ch;
 }
-.mono { font-family: var(--font-mono); }
+.mono {
+  font-family: var(--font-mono);
+}
 
 /* Clipped-to-text gradient (hero "one API call.") */
 .grad-text {
@@ -247,7 +348,9 @@ a {
 [data-reveal] {
   opacity: 0;
   transform: translateY(20px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s ease;
 }
 [data-reveal].is-visible {
   opacity: 1;
@@ -256,7 +359,9 @@ a {
 
 /* ── Reduced motion: no animation, render resolved state ──────────────── */
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
+  html {
+    scroll-behavior: auto;
+  }
   [data-anim],
   .signature-gradient {
     animation: none !important;

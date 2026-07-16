@@ -32,7 +32,11 @@ export const codeTheme = {
       settings: { foreground: "#9ee493" },
     },
     {
-      scope: ["constant.numeric", "constant.language.boolean", "constant.language"],
+      scope: [
+        "constant.numeric",
+        "constant.language.boolean",
+        "constant.language",
+      ],
       settings: { foreground: "#c4a5ff" },
     },
     {
