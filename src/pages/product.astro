@@ -5,6 +5,8 @@ import Button from "../components/Button.astro";
 import CodeTabs from "../components/CodeTabs.astro";
 import type { CodeTab } from "../components/CodeTabs.astro";
 import {
+  SITE_NAME,
+  PRODUCT_PATH,
   BOOK_DEMO_LABEL,
   BOOK_DEMO_URL,
   TALK_TO_SALES_LABEL,
@@ -73,13 +75,30 @@ const useCases = [
   { t: "Fraud & risk signals", d: "Flag issuer-country mismatches and prepaid cards." },
   { t: "Batch enrichment", d: "Backfill historical data with versioned BIN records." },
 ];
+/**
+ * SoftwareApplication structured data (§8). Deliberately claims nothing the
+ * pages don't: no rating, no review count, no price. `offers` is omitted rather
+ * than faked — pricing is contact-driven, and an invented price would breach the
+ * honesty constraint above.
+ */
+const productLd = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: SITE_NAME,
+  applicationCategory: "BusinessApplication",
+  description: PRODUCT_DESCRIPTION,
+  operatingSystem: "Self-hosted (Linux container), managed cloud, or BYOL",
+  url: new URL(PRODUCT_PATH, Astro.site).href,
+  publisher: { "@id": new URL("#organization", Astro.site).href },
+};
 ---
 
 <Layout
   title="Product — FindThisBIN BIN intelligence engine"
   description={PRODUCT_DESCRIPTION}
-  active="product"
 >
+  <script type="application/ld+json" set:html={JSON.stringify(productLd)} is:inline />
+
   <!-- ============ HERO ============ -->
   <section class="hero">
     <div class="hero-bg" aria-hidden="true"></div>
@@ -263,8 +282,8 @@ const useCases = [
     inset: 0;
     pointer-events: none;
     background:
-      radial-gradient(110% 80% at 75% -10%, rgba(124, 92, 255, 0.28), rgba(11, 11, 18, 0) 55%),
-      radial-gradient(70% 60% at 6% 8%, rgba(34, 211, 238, 0.14), rgba(11, 11, 18, 0) 52%);
+      radial-gradient(110% 80% at 75% -10%, color-mix(in srgb, var(--violet) 28%, transparent), color-mix(in srgb, var(--ink) 0%, transparent) 55%),
+      radial-gradient(70% 60% at 6% 8%, color-mix(in srgb, var(--cyan) 14%, transparent), color-mix(in srgb, var(--ink) 0%, transparent) 52%);
   }
   .hero-wrap {
     padding-top: clamp(52px, 7vw, 96px);
@@ -285,7 +304,7 @@ const useCases = [
     margin-bottom: 24px;
     font-size: 13px;
     font-weight: 600;
-    color: #d7d7e2;
+    color: var(--text-dark-bright);
   }
   .hero-pill .dot {
     width: 7px;
@@ -301,7 +320,7 @@ const useCases = [
   /* ── Section heads ────────────────────────────────────────────────── */
   .section-head { max-width: 680px; margin-bottom: 44px; }
   .section-head .h2 { margin-top: 14px; }
-  .on-dark { color: #fff; }
+  .on-dark { color: var(--white); }
 
   /* ── Two-column (anatomy) ─────────────────────────────────────────── */
   .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
@@ -316,12 +335,12 @@ const useCases = [
   /* ── Pillars ──────────────────────────────────────────────────────── */
   .pillars { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
   .pillar { border-radius: 18px; padding: 34px; position: relative; overflow: hidden; }
-  .pillar.dark { background: var(--ink); color: #fff; }
-  .pillar.light { background: #fff; border: 1px solid var(--border-light); }
+  .pillar.dark { background: var(--ink); color: var(--white); }
+  .pillar.light { background: var(--white); border: 1px solid var(--border-light); }
   .pillar-body { position: relative; z-index: 1; }
   .pillar-glow { position: absolute; width: 180px; height: 180px; filter: blur(10px); }
-  .glow-violet { top: -40px; right: -40px; background: radial-gradient(circle, rgba(124, 92, 255, 0.4), transparent 70%); }
-  .glow-cyan { background: radial-gradient(circle, rgba(34, 211, 238, 0.35), transparent 70%); }
+  .glow-violet { top: -40px; right: -40px; background: radial-gradient(circle, color-mix(in srgb, var(--violet) 40%, transparent), transparent 70%); }
+  .glow-cyan { background: radial-gradient(circle, color-mix(in srgb, var(--cyan) 35%, transparent), transparent 70%); }
   .glow-bl { bottom: -40px; left: -40px; }
   .pillar-eyebrow { font-size: 13px; font-weight: 700; letter-spacing: 0.05em; margin-bottom: 14px; }
   .pillar-eyebrow.lime { color: var(--lime); }
@@ -331,7 +350,7 @@ const useCases = [
   .pillar-text { font-size: 15.5px; line-height: 1.6; color: var(--text-dark-body); margin: 0 0 22px; }
   .pillar-text.light { color: var(--text-light-body); margin-bottom: 20px; }
   .mini-code {
-    background: #0a0a12;
+    background: var(--ink-black);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 12px;
     padding: 14px;
@@ -341,10 +360,10 @@ const useCases = [
     overflow-x: auto;
     white-space: pre;
   }
-  .mini-code .kw { color: #ff7b9c; }
-  .mini-code .fn { color: #b89cff; }
-  .mini-code .st { color: #9ee493; }
-  .mini-code .pn { color: #717184; }
+  .mini-code .kw { color: var(--code-keyword); }
+  .mini-code .fn { color: var(--code-function); }
+  .mini-code .st { color: var(--code-string); }
+  .mini-code .pn { color: var(--code-punct); }
   .chips { display: flex; flex-wrap: wrap; gap: 8px; }
   .chip {
     font-size: 12.5px;
@@ -369,7 +388,7 @@ const useCases = [
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background: radial-gradient(80% 70% at 88% 12%, rgba(34, 211, 238, 0.16), transparent 55%);
+    background: radial-gradient(80% 70% at 88% 12%, color-mix(in srgb, var(--cyan) 16%, transparent), transparent 55%);
   }
   .endpoints .wrap { position: relative; z-index: 1; }
   .endpoint-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
@@ -390,8 +409,8 @@ const useCases = [
   }
   .endpoint-route .verb.cyan { background: var(--cyan); }
   .endpoint-route .verb.lime { background: var(--lime); }
-  .endpoint-route .path { font-size: 12.5px; color: #c7c7d6; }
-  .endpoint-t { font-family: var(--font-display); font-weight: 700; font-size: 19px; margin: 0 0 8px; color: #fff; }
+  .endpoint-route .path { font-size: 12.5px; color: var(--text-dark-soft); }
+  .endpoint-t { font-family: var(--font-display); font-weight: 700; font-size: 19px; margin: 0 0 8px; color: var(--white); }
   .endpoint-d { font-size: 14px; line-height: 1.55; color: var(--text-dark-muted); margin: 0; }
 
 
@@ -407,7 +426,7 @@ const useCases = [
   .final {
     position: relative;
     overflow: hidden;
-    background: linear-gradient(125deg, #0b0b12 0%, #241a52 45%, #3b82f6 130%);
+    background: linear-gradient(125deg, var(--ink) 0%, var(--violet-deep) 45%, var(--blue) 130%);
   }
   .final-blob {
     position: absolute;
@@ -416,7 +435,7 @@ const useCases = [
     width: 500px;
     height: 500px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(124, 92, 255, 0.5), transparent 65%);
+    background: radial-gradient(circle, color-mix(in srgb, var(--violet) 50%, transparent), transparent 65%);
     filter: blur(30px);
     pointer-events: none;
   }
@@ -427,11 +446,11 @@ const useCases = [
     position: relative;
     z-index: 1;
   }
-  .final-h2 { color: #fff; margin-bottom: 22px; }
+  .final-h2 { color: var(--white); margin-bottom: 22px; }
   .final-lead {
     font-size: 18px;
     line-height: 1.6;
-    color: #c7c7d6;
+    color: var(--text-dark-soft);
     margin: 0 auto 34px;
     max-width: 520px;
   }

@@ -5,7 +5,7 @@
  * social proof — keep copy in sync with the design spec.
  */
 import { Font } from "astro:assets";
-import { SITE_NAME } from "../lib/site";
+import { SITE_NAME, SITE_DESCRIPTION } from "../lib/site";
 
 interface Props {
   title: string;
@@ -14,10 +14,37 @@ interface Props {
   canonical?: string;
 }
 
-const { title, description, image = "/og-default.svg", canonical } = Astro.props;
+const { title, description, image = "/og-default.png", canonical } = Astro.props;
 
 const canonicalURL = new URL(canonical ?? Astro.url.pathname, Astro.site);
 const imageURL = new URL(image, Astro.site);
+
+/**
+ * JSON-LD (§8). Organization + WebSite sitewide. This is a data block, not a
+ * script: `script-src` does not apply to it and Astro does not bundle it, so it
+ * coexists with the strict CSP in §10 — see the note there.
+ */
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": new URL("#organization", Astro.site).href,
+      name: SITE_NAME,
+      url: Astro.site?.href,
+      description: SITE_DESCRIPTION,
+      logo: new URL("/icon-color.svg", Astro.site).href,
+    },
+    {
+      "@type": "WebSite",
+      "@id": new URL("#website", Astro.site).href,
+      name: SITE_NAME,
+      url: Astro.site?.href,
+      description: SITE_DESCRIPTION,
+      publisher: { "@id": new URL("#organization", Astro.site).href },
+    },
+  ],
+};
 ---
 
 <meta charset="utf-8" />
@@ -30,6 +57,9 @@ const imageURL = new URL(image, Astro.site);
 
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <meta name="theme-color" content="#0B0B12" />
+
+<!-- Structured data (§8) -->
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
 
 <!-- OpenGraph -->
 <meta property="og:type" content="website" />

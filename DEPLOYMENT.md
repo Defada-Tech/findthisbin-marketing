@@ -6,6 +6,8 @@ The README has the at-a-glance version; this is the full runbook with prerequisi
 
 This site is **static-first** — all six pages prerender. The one exception is the contact form's **`/api/contact`** endpoint (`prerender = false`), which runs on the Worker and posts submissions to Slack. That means there is exactly **one runtime secret** to set, `SLACK_WEBHOOK_URL` (see §3a).
 
+The Cloudflare Web Analytics beacon token (`CF_ANALYTICS_TOKEN`) is a **build-time** environment variable (see §3b) — not a runtime secret. The Terraform module manages the Web Analytics site and exports its token.
+
 ---
 
 ## 0. Prerequisites (one-time)
@@ -95,6 +97,22 @@ For local dev, copy `.dev.vars.example` → `.dev.vars` (gitignored) and fill in
 
 ---
 
+## 3b. Enable analytics (optional)
+
+The site supports Cloudflare Web Analytics via a cookieless beacon that renders only when the `CF_ANALYTICS_TOKEN` build-time environment variable is set. The Web Analytics site itself is managed by Terraform (§4).
+
+After `tofu apply` (step 4), retrieve the token and export it before building:
+
+```bash
+export CF_ANALYTICS_TOKEN="$(cd infra && tofu output -raw cf_analytics_token)"
+npm run headers    # regenerate public/_headers with the CSP origins
+npm run build
+```
+
+When `CF_ANALYTICS_TOKEN` is unset (the default), the beacon, the CSP allowlist entries, and the privacy page's analytics paragraph all stay off — no dead code, no silent CSP block.
+
+---
+
 ## 4. Custom domain via Terraform / OpenTofu
 
 > Requires step 3 first — Terraform attaches the domain to the **existing** Worker service.
@@ -127,6 +145,7 @@ tofu apply
 - Zone → **DNS: Edit** and **Zone: Read** (for the target zone)
 - Zone → **Zone Settings: Edit** (for the `always_use_https` setting)
 - Zone → **Dynamic Redirect: Edit** (for the apex→www Single Redirect ruleset)
+- Account → **Account Settings: Read** and **Account Settings: Write** (for the Web Analytics site)
 
 Cloudflare auto-provisions the proxied DNS record + edge TLS certificate for the custom domain. Allow a few minutes for the certificate to issue, then:
 

@@ -2,6 +2,7 @@
 import BaseHead from "../components/BaseHead.astro";
 import SiteNav from "../components/SiteNav.astro";
 import SiteFooter from "../components/SiteFooter.astro";
+import Analytics from "../components/Analytics.astro";
 import "../styles/global.css";
 
 interface Props {
@@ -9,16 +10,16 @@ interface Props {
   description: string;
   image?: string;
   canonical?: string;
-  active?: "home" | "product" | "features" | "company";
 }
 
-const { title, description, image, canonical, active } = Astro.props;
+const { title, description, image, canonical } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
     <BaseHead title={title} description={description} image={image} canonical={canonical} />
+    <Analytics />
     <!-- Fail-safe: if JS is disabled/fails, never leave reveal content invisible -->
     <noscript>
       <style>
@@ -30,8 +31,9 @@ const { title, description, image, canonical, active } = Astro.props;
     </noscript>
   </head>
   <body>
-    <SiteNav active={active} />
-    <main>
+    <a class="skip-link" href="#main">Skip to main content</a>
+    <SiteNav />
+    <main id="main">
       <slot />
     </main>
     <SiteFooter />

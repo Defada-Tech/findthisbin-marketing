@@ -56,16 +56,16 @@ const {
   .primary {
     background: var(--lime);
     color: var(--ink);
-    box-shadow: 0 0 0 1px rgba(196, 245, 66, 0.4), 0 12px 36px -10px rgba(196, 245, 66, 0.6);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--lime) 40%, transparent), 0 12px 36px -10px color-mix(in srgb, var(--lime) 60%, transparent);
   }
   .primary:hover {
     transform: translateY(-1px);
-    box-shadow: 0 0 0 1px rgba(196, 245, 66, 0.6), 0 16px 40px -10px rgba(196, 245, 66, 0.7);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--lime) 60%, transparent), 0 16px 40px -10px color-mix(in srgb, var(--lime) 70%, transparent);
   }
 
   .ghost-dark {
     background: rgba(255, 255, 255, 0.04);
-    color: #fff;
+    color: var(--white);
     border-color: rgba(255, 255, 255, 0.18);
   }
   .ghost-dark:hover {
@@ -85,7 +85,7 @@ const {
   }
 
   .white {
-    background: #fff;
+    background: var(--white);
     color: var(--ink);
   }
   .white:hover {

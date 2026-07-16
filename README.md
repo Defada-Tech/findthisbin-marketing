@@ -5,23 +5,30 @@ Marketing site for **FindThisBIN** (findthisbin.com), a **deployable BIN**
 run in their **own cloud** — self-hosted / BYOC, managed-in-your-cloud, or
 fully-managed (BYOL), plugging in their own data licenses. It is sold as
 enterprise infrastructure, not a self-serve hosted API: the primary action
-everywhere is **"Book a demo"** (there is no signup or per-lookup pricing). Six
-pages — Home (`/`), Product (`/product`), Pricing (`/pricing`), Docs (`/docs`),
-Company (`/company`), and a Contact / book-a-demo form (`/contact`) — built as a
-near-zero-JS site on **Astro 6** and deployed to **Cloudflare Workers (Static
-Assets)**. Every page prerenders except the contact form's `/api/contact`
-endpoint, the one on-demand route (it posts submissions to Slack).
+everywhere is **"Book a demo"** (there is no signup or per-lookup pricing).
+
+**Ten pages** — Home (`/`), Product (`/product/`), Features (`/features/`),
+Company (`/company/`), a Contact / book-a-demo form (`/contact/`), four legal
+pages (`/privacy/`, `/terms/`, `/dpa/`, `/gdpr/`), and a branded `404` — built as
+a near-zero-JS site on **Astro 6** and deployed to **Cloudflare Workers (Static
+Assets)**.
+
+**Two routes are on-demand**, not one: `/api/contact` (posts submissions to
+Slack) and `/contact/` itself, which is SSR so it can render the success/error
+pane from query params without JavaScript. `astro.config.mjs` carries a
+`// pages: 10; ssr: 2` marker that `npm run conform` checks against the
+filesystem.
 
 ## Stack
 
-- **Astro 6** — `output: "static"` (all pages prerender; `/api/contact` opts out with `prerender = false`), `@astrojs/cloudflare` adapter
+- **Astro 6** — `output: "static"`, `trailingSlash: "always"`, `@astrojs/cloudflare` adapter
 - **Tailwind CSS v4** via `@tailwindcss/vite` — design tokens live in `src/styles/global.css`
 - **Self-hosted fonts** via the Astro Fonts API (Space Grotesk, IBM Plex Sans, IBM Plex Mono)
 - **@astrojs/sitemap**, **TypeScript** (strict), **Wrangler** for deploy, **Terraform** for edge config
 
 No UI framework runtime: the interactions (nav scroll/menu, BIN playground,
-code-language tabs, pricing FAQ accordion, and the
-progressively-enhanced contact form) are small scoped vanilla scripts. Code
+code-language tabs, and the progressively-enhanced contact form) are small
+scoped vanilla scripts. Code
 highlighting is build-time via Astro's Shiki with a custom theme
 (`src/lib/codeTheme.ts`). The contact form works without JS (native POST →
 `/api/contact` → 303 redirect with a query-param success/error pane).
@@ -31,10 +38,13 @@ highlighting is build-time via Astro's Shiki with a custom theme
 | Command | Does |
 |---|---|
 | `npm install` | Install dependencies |
-| `npm run dev` | Astro dev server at http://localhost:4321 |
+| `npm run dev` | Astro dev server at http://localhost:4321 (pinned; pathproof uses 4322 so a stale tab from one site can't request the other's modules) |
 | `npm run build` | Build to `dist/` — static `dist/client` + Worker `dist/server` (incl. generated `wrangler.json`) |
 | `npm run preview` | Build, then serve the built Worker locally via `wrangler dev` (closest to prod) |
 | `npm run check` | `astro check` — the type gate (no separate test suite) |
+| `npm run conform` | `scripts/conform.mjs` — the conformance gate (MARKETING_TECH_STACK.md §12) |
+| `npm run headers` | Regenerate `public/_headers` from `src/lib/securityHeaders.ts` |
+| `npm run format` | Prettier over `.ts`/`.css` (`.astro` is excluded — see `.prettierignore`) |
 | `npm run types` | `wrangler types` → regenerate `worker-configuration.d.ts` after changing bindings |
 | `npm run deploy` | `astro build && wrangler deploy --config ./dist/server/wrangler.json` |
 
@@ -54,11 +64,18 @@ src/
   lib/
     site.ts                     ← site-wide routes, labels, external URLs
     bin.ts                      ← BIN playground data + lookup/synthesis + card renderer
-    codeTheme.ts                ← custom Shiki theme (README palette)
-  pages/{index,product,pricing,docs,company,contact}.astro
+    codeTheme.ts                ← custom Shiki theme (mirrors the --code-* tokens)
+    Analytics.astro             ← CF Web Analytics beacon; renders only if CF_ANALYTICS_TOKEN env var is set at build time
+  lib/
+    securityHeaders.ts          ← the §10 header set; single source for _headers + middleware
+  middleware.ts                 ← applies the §10 headers to SSR responses (_headers misses them)
+  pages/{index,product,features,company,contact}.astro
+  pages/{privacy,terms,dpa,gdpr}.astro
+  pages/404.astro               ← branded not-found
   pages/api/contact.ts          ← SSR endpoint (prerender=false) → Slack webhook
   styles/global.css             ← design tokens, @theme bridge, keyframes, shared utilities
-public/                         ← brand logos, og-default.svg, robots.txt
+public/                         ← brand logos, og-default.png (+ .svg source), robots.txt, _headers
+scripts/conform.mjs             ← conformance gate; scripts/headers.mjs regenerates _headers
 infra/                          ← Terraform (Cloudflare edge config only)
 ```
 
@@ -72,6 +89,9 @@ The site deploys to Cloudflare Workers Static Assets.
    The contact form needs the `SLACK_WEBHOOK_URL` secret set once via
    `npx wrangler secret put SLACK_WEBHOOK_URL` (locally, copy `.dev.vars.example`
    → `.dev.vars`). Without it the form returns a friendly error and logs the lead.
+
+   For analytics, export `CF_ANALYTICS_TOKEN` before building (`cd infra && tofu
+   output -raw cf_analytics_token`). When unset, analytics stays off.
 2. **Edge config** (custom domains, Always-HTTPS, apex→www redirect): `cd infra
    && tofu init && tofu apply` with a scoped `CLOUDFLARE_API_TOKEN` exported.
    Terraform owns edge config only — never the Worker script.
@@ -84,7 +104,13 @@ See **`DEPLOYMENT.md`** for the full runbook (prerequisites, ordering, token sco
 
 ## Design source of truth
 
-- **`DESIGN.md`** — the full v3 design spec: positioning, tokens, per-section page specs, copy, CTA wiring, and the BIN-playground logic. Records the honesty constraints (no fabricated partner logos or scale metrics; SOC 2 "in progress").
+- **`DESIGN.md`** — the design spec: positioning, tokens, per-section page specs,
+  copy, CTA wiring, and the BIN-playground logic. Records the honesty constraints
+  (no fabricated partner logos or scale metrics; SOC 2 "in progress"). **Its page
+  specs are stale** — they still describe the pre-repositioning structure. See
+  the note at the top of that file.
+- **`../MARKETING_TECH_STACK.md`** — the cross-site stack standard this repo
+  conforms to. `npm run conform` enforces the mechanical parts.
 - **`design_files/*.dc.html`** — the HTML design references (prototypes; not shipped) + `findthisbin-design-addendum.md` (the v3 repositioning deltas). `design_files/support.js` is the prototype runtime and is gitignored.
 
 See **`CLAUDE.md`** for architecture notes and conventions.

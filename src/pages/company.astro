@@ -26,7 +26,6 @@ const roles = [
 <Layout
   title="FindThisBIN — Company"
   description="FindThisBIN exists to give payment platforms card intelligence they can underwrite — accurate, fast, and EU-resident by default."
-  active="company"
 >
   <!-- ============ HERO ============ -->
   <section class="band band-ink page-hero">
@@ -108,14 +107,19 @@ const roles = [
       </div>
       <div class="roles" data-reveal>
         {
+          /* Cards, not links. These were <a href="#"> behind a "View role →"
+             affordance — a link that promised a role page that has never
+             existed, and a keyboard trap of five focusable elements that do
+             nothing. There is no ATS and no careers@ address to point at, and
+             inventing one would just bounce (§7), so the affordance goes and the
+             section's real action — "Get in touch" below — stands on its own. */
           roles.map((r) => (
-            <a href="#" class="role">
+            <div class="role">
               <div class="role-main">
                 <div class="role-t">{r}</div>
                 <div class="role-meta">Remote (EU) · Full-time</div>
               </div>
-              <span class="role-link">View role →</span>
-            </a>
+            </div>
           ))
         }
       </div>
@@ -142,7 +146,7 @@ const roles = [
   /* ── Section heads (shared rhythm with other pages) ───────────────── */
   .section-head { max-width: 640px; margin-bottom: 44px; }
   .section-head .h2 { margin-top: 14px; }
-  .on-dark { color: #fff; }
+  .on-dark { color: var(--white); }
   .lead.on-dark { color: var(--text-dark-body); }
 
   /* ── Page hero ────────────────────────────────────────────────────── */
@@ -152,8 +156,8 @@ const roles = [
     inset: 0;
     pointer-events: none;
     background:
-      radial-gradient(110% 80% at 70% -10%, rgba(124, 92, 255, 0.26), transparent 55%),
-      radial-gradient(60% 60% at 8% 10%, rgba(34, 211, 238, 0.13), transparent 52%);
+      radial-gradient(110% 80% at 70% -10%, color-mix(in srgb, var(--violet) 26%, transparent), transparent 55%),
+      radial-gradient(60% 60% at 8% 10%, color-mix(in srgb, var(--cyan) 13%, transparent), transparent 52%);
   }
   .page-hero-wrap { z-index: 1; }
   .pill {
@@ -167,7 +171,7 @@ const roles = [
     margin-bottom: 24px;
     font-size: 13px;
     font-weight: 600;
-    color: #d7d7e2;
+    color: var(--text-dark-bright);
   }
   .pill .dot {
     width: 7px;
@@ -205,7 +209,7 @@ const roles = [
     gap: 18px;
   }
   .principle {
-    background: #fff;
+    background: var(--white);
     border: 1px solid var(--border-light);
     border-radius: 16px;
     padding: 26px;
@@ -233,7 +237,7 @@ const roles = [
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background: radial-gradient(80% 70% at 12% 0%, rgba(34, 211, 238, 0.14), transparent 55%);
+    background: radial-gradient(80% 70% at 12% 0%, color-mix(in srgb, var(--cyan) 14%, transparent), transparent 55%);
   }
   .careers .wrap { z-index: 1; }
   .roles { display: flex; flex-direction: column; gap: 12px; }
@@ -246,20 +250,17 @@ const roles = [
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 14px;
     padding: 22px 24px;
-    text-decoration: none;
-    transition: border-color 0.15s ease, transform 0.15s ease;
   }
-  .role:hover { border-color: rgba(34, 211, 238, 0.5); transform: translateY(-2px); }
-  .role-t { font-family: var(--font-display); font-weight: 700; font-size: 18px; color: #fff; }
+  /* No :hover lift — these are not interactive (see the markup note above). */
+  .role-t { font-family: var(--font-display); font-weight: 700; font-size: 18px; color: var(--white); }
   .role-meta { font-size: 13.5px; color: var(--text-dark-muted); margin-top: 4px; }
-  .role-link { flex: none; font-size: 14.5px; font-weight: 600; color: var(--cyan); }
   .careers-cta { margin-top: 28px; }
 
   /* ── Final CTA ────────────────────────────────────────────────────── */
   .final {
     position: relative;
     overflow: hidden;
-    background: linear-gradient(125deg, #0b0b12 0%, #241a52 50%, #3b82f6 135%);
+    background: linear-gradient(125deg, var(--ink) 0%, var(--violet-deep) 50%, var(--blue) 135%);
   }
   .final-blob {
     position: absolute;
@@ -268,7 +269,7 @@ const roles = [
     width: 480px;
     height: 480px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(124, 92, 255, 0.5), transparent 65%);
+    background: radial-gradient(circle, color-mix(in srgb, var(--violet) 50%, transparent), transparent 65%);
     filter: blur(30px);
     pointer-events: none;
   }
@@ -279,6 +280,6 @@ const roles = [
     position: relative;
     z-index: 1;
   }
-  .final-h2 { color: #fff; margin-bottom: 26px; }
+  .final-h2 { color: var(--white); margin-bottom: 26px; }
   .final-cta { justify-content: center; }
 </style>
