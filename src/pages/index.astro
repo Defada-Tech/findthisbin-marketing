@@ -5,6 +5,7 @@ import Button from "../components/Button.astro";
 import DemoPanel from "../components/DemoPanel.astro";
 import BinPlayground from "../components/BinPlayground.astro";
 import CodeTabs from "../components/CodeTabs.astro";
+import FinalCta from "../components/FinalCta.astro";
 import type { CodeTab } from "../components/CodeTabs.astro";
 import {
   SITE_DESCRIPTION,
@@ -12,6 +13,8 @@ import {
   BOOK_DEMO_URL,
   SEE_DEPLOYMENT_LABEL,
   SEE_DEPLOYMENT_URL,
+  SEE_FEATURES_LABEL,
+  SEE_FEATURES_URL,
   TALK_TO_SALES_LABEL,
   TALK_TO_SALES_URL,
   FEATURES_PATH,
@@ -85,20 +88,16 @@ const fields = [
   { k: "dataset_version", v: "2026-06-12" },
 ];
 
-const useCases = [
-  { t: "Least-cost & debit routing", d: "Route on real card type and regulated-debit status to cut acceptance cost." },
-  { t: "Surcharging & interchange", d: "Charge and optimize correctly with consumer vs. commercial certainty." },
-  { t: "DCC eligibility (EU)", d: "Offer compliant dynamic currency conversion with ECB-rate disclosure." },
-  { t: "Checkout UX & card art", d: "Render the right scheme logo and card visuals the moment a BIN is typed." },
-  { t: "Fraud & risk signals", d: "Flag issuer-country mismatches and prepaid cards in your risk engine." },
-  { t: "Batch data enrichment", d: "Enrich historical transaction tables with accurate, versioned BIN data." },
-];
-
-const pspCards = [
-  { t: "Smarter routing", d: "Least-cost & debit routing decisions from accurate type and regulated-debit flags.", tone: "violet" },
-  { t: "Surcharging & interchange", d: "Apply correct surcharges and optimize interchange with commercial/consumer precision.", tone: "violet" },
-  { t: "DCC eligibility for EU flows", d: "PSD2 / CBPR-ready disclosure with ECB reference-rate data points.", tone: "cyan" },
-  { t: "Richer checkout UX & risk", d: "Card art and scheme logos, plus issuer-country signals for fraud screening.", tone: "cyan" },
+/* The six revenue levers — the PSP section's right column. (The old page said
+   this twice: four "psp-cards" here and six near-identical use-case cards in
+   their own section below. One list now.) */
+const pspLevers = [
+  { t: "Least-cost & debit routing", d: "Route on real card type and regulated-debit status to cut acceptance cost.", tone: "violet" },
+  { t: "Surcharging & interchange", d: "Charge and optimize correctly with consumer vs. commercial certainty.", tone: "cyan" },
+  { t: "DCC eligibility (EU)", d: "Offer compliant dynamic currency conversion with ECB-rate disclosure.", tone: "violet" },
+  { t: "Checkout UX & card art", d: "Render the right card art and scheme label the moment a BIN is typed.", tone: "cyan" },
+  { t: "Fraud & risk signals", d: "Flag issuer-country mismatches and prepaid cards in your risk engine.", tone: "violet" },
+  { t: "Batch data enrichment", d: "Enrich historical transaction tables with accurate, versioned BIN data.", tone: "cyan" },
 ];
 
 const steps = [
@@ -134,16 +133,14 @@ const compliance = [
     <div class="wrap hero-wrap">
       <div class="hero-grid">
         <div class="hero-copy">
-          <span class="hero-pill">
+          <span class="pill">
             <span class="dot" aria-hidden="true"></span>
-            BIN intelligence engine · Runs in your cloud
+            Self-hosted · Managed · Fully managed
           </span>
-          <h1 class="h1 hero-h1">The BIN intelligence engine<br />payment platforms <span class="grad-text">run themselves.</span></h1>
+          <h1 class="h1 hero-h1">The BIN intelligence engine<br />that runs in <span class="grad-text">your cloud.</span></h1>
           <p class="lead hero-lead">
-            Deploy a fast, multi-source BIN engine in your own cloud — or let us run it for you.
-            Plug in your own data licenses (Visa VBASS, Mastercard, commercial, CSV); we handle the
-            8-digit logic, the merging, the sub-10ms performance, and the ops. Your data never leaves
-            your environment.
+            Built for payment platforms. Plug in your data licenses; get 8-digit card
+            records at sub-10ms. Your data never leaves.
           </p>
           <div class="cta-row hero-cta">
             <Button href={BOOK_DEMO_URL} label={BOOK_DEMO_LABEL} variant="primary" size="lg" />
@@ -162,14 +159,13 @@ const compliance = [
   <section id="product" class="band band-white">
     <div class="wrap">
       <div class="section-head" data-reveal>
-        <Eyebrow label="Why FindThisBIN" tone="violet" />
         <h2 class="h2">Engineered for the teams that move money.</h2>
       </div>
       <div class="pillars" data-reveal>
-        <article class="pillar dark">
+        <article class="pillar">
           <div class="pillar-glow glow-violet" aria-hidden="true"></div>
           <div class="pillar-body">
-            <div class="pillar-eyebrow lime">01 · DEPLOY IN YOUR CLOUD</div>
+            <Eyebrow label="01 · Deploy in your cloud" tone="lime" />
             <h3 class="h3">Run it where your data lives.</h3>
             <p class="pillar-text">Self-host in your own cloud, VPC, or on-prem — air-gappable. Or let us deploy and operate it inside your environment. Same engine either way; you choose who runs the ops.</p>
             <pre class="mini-code mono"><code>$ helm install findthisbin ./engine
@@ -177,29 +173,10 @@ const compliance = [
           </div>
         </article>
 
-        <article class="pillar light">
-          <div class="pillar-eyebrow violet">02 · COMPLIANCE &amp; DATA RESIDENCY</div>
-          <h3 class="h3 ink">Your data never leaves.</h3>
-          <p class="pillar-text light">The engine runs in your environment, so your data stays in your VPC. We're out of PCI scope and out of the card/data path entirely — a processor model with a per-customer DPA, an EU-hosting option, and SOC 2 in progress.</p>
-          <div class="chips">
-            {["Out of PCI scope", "Data stays in your VPC", "Per-customer DPA", "EU-hosting option"].map((c) => <span class="chip">{c}</span>)}
-          </div>
-        </article>
-
-        <article class="pillar light">
-          <div class="pillar-eyebrow violet">03 · BUILD VS. BUY</div>
-          <h3 class="h3 ink">Live this week, not in two quarters.</h3>
-          <p class="pillar-text light">The 8-digit range logic, multi-source merge with confidence, the sub-10ms hot path, freshness and versioning, and the ongoing ops as networks change their files — it's all built. Deploy the engine instead of staffing a team to maintain it.</p>
-          <div class="accuracy-stat">
-            <div class="big-8">days</div>
-            <div class="big-8-sub">to production —<br />not months of specialist work</div>
-          </div>
-        </article>
-
-        <article class="pillar dark">
+        <article class="pillar">
           <div class="pillar-glow glow-cyan glow-bl" aria-hidden="true"></div>
           <div class="pillar-body">
-            <div class="pillar-eyebrow cyan">04 · CORRECTNESS &amp; PERFORMANCE</div>
+            <Eyebrow label="02 · Correctness &amp; performance" tone="cyan" />
             <h3 class="h3">Correct data, on the hot path.</h3>
             <p class="pillar-text">True 8-digit precision and multi-source merge with per-field confidence, served at sub-10ms p99 and resistant to BIN-enumeration bursts. Your engineers integrate a clean REST API with SDKs in 5 languages.</p>
             <div class="perf-mini">
@@ -239,7 +216,7 @@ const compliance = [
       </div>
       <div class="cta-row center deploy-cta" data-reveal>
         <Button href={BOOK_DEMO_URL} label={BOOK_DEMO_LABEL} variant="primary" />
-        <a href={FEATURES_PATH} class="compare-link">Compare all plans &amp; features →</a>
+        <a href={FEATURES_PATH} class="compare-link">Compare deployment options →</a>
       </div>
     </div>
   </section>
@@ -249,12 +226,11 @@ const compliance = [
     <div class="wrap">
       <div class="two-col two-col-start">
         <div data-reveal>
-          <Eyebrow label="Bring your own licenses" tone="violet" />
           <h2 class="h2 byol-h2">Plug in your licenses. We did the hard logic.</h2>
           <p class="lead">Connect the data you already license and the engine handles the 8-digit ranges, the multi-source merge, the confidence scoring, and the freshness. It works on day one with bundled open seed data while you onboard your sources.</p>
           <p class="byol-note">Don't have a license yet? We'll help you connect to the right providers.</p>
           <div class="cta-row">
-            <Button href={TALK_TO_SALES_URL} label="Talk to sales about connectors" variant="primary" />
+            <Button href={TALK_TO_SALES_URL} label={TALK_TO_SALES_LABEL} variant="primary" />
           </div>
         </div>
         <div class="connector-list" data-reveal>
@@ -271,12 +247,18 @@ const compliance = [
           }
         </div>
       </div>
+      <div class="poc-strip" data-reveal>
+        <span class="poc-tag mono">Proof of concept</span>
+        <p class="poc-text">Evaluate in your own cloud: stand up the engine on bundled seed data, then run it against your real BINs before you commit.</p>
+        <a href={BOOK_DEMO_URL} class="poc-link">Book a demo →</a>
+      </div>
     </div>
   </section>
 
-  <!-- ============ TRY IT LIVE ============ -->
+  <!-- ============ TRY IT LIVE + WHAT YOU GET ============ -->
   <section id="try" class="band band-ink try">
     <div class="try-bg" aria-hidden="true"></div>
+    <div class="try-grid grid-texture" aria-hidden="true"></div>
     <div class="wrap wrap-narrow">
       <div class="section-head center" data-reveal>
         <Eyebrow label="Playground" tone="cyan" class="center-eyebrow" />
@@ -286,21 +268,11 @@ const compliance = [
       <div data-reveal>
         <BinPlayground />
       </div>
-      <div class="cta-row center try-cta" data-reveal>
-        <Button href={BOOK_DEMO_URL} label="See it on your own BINs — book a demo" variant="primary" />
-      </div>
     </div>
-  </section>
-
-  <!-- ============ WHAT YOU GET ============ -->
-  <section class="band band-off">
-    <div class="wrap">
-      <div class="section-head" data-reveal>
-        <Eyebrow label="One call, everything" tone="violet" />
-        <h2 class="h2">Every field your stack needs.</h2>
-        <p class="lead">A single BIN lookup returns the full card-intelligence record — typed, scored, and versioned.</p>
-      </div>
-      <div class="fields" data-reveal>
+    <div class="wrap fields-wrap" data-reveal>
+      <h3 class="fields-h3">Every field your stack needs.</h3>
+      <p class="fields-sub">A single lookup returns the full card-intelligence record — typed, scored, and versioned.</p>
+      <div class="fields">
         {
           fields.map((f) => (
             <div class="field-chip">
@@ -310,6 +282,9 @@ const compliance = [
           ))
         }
       </div>
+      <div class="cta-row center try-cta">
+        <Button href={BOOK_DEMO_URL} label={BOOK_DEMO_LABEL} variant="primary" />
+      </div>
     </div>
   </section>
 
@@ -317,7 +292,6 @@ const compliance = [
   <section class="band band-white bvb-band">
     <div class="wrap">
       <div class="section-head" data-reveal>
-        <Eyebrow label="Build vs. buy" tone="violet" />
         <h2 class="h2">Months of specialist work, or a deployment this week.</h2>
         <p class="lead">BIN intelligence looks simple until you own it. Here's what you'd carry in-house versus what you get on day one.</p>
       </div>
@@ -338,7 +312,7 @@ const compliance = [
     </div>
   </section>
 
-  <!-- ============ PSP SECTION ============ -->
+  <!-- ============ FOR PAYMENT PLATFORMS (PSP) ============ -->
   <section id="psp" class="band band-ink psp">
     <div class="psp-bg" aria-hidden="true"></div>
     <div class="wrap">
@@ -349,12 +323,12 @@ const compliance = [
           <p class="lead on-dark">PSPs, orchestrators, and ISVs run the FindThisBIN engine to power smarter routing, surcharging, DCC eligibility, richer checkout UX, and risk signals — all from one deployment. White-label, high-volume pricing, SLAs, and EU data-residency guarantees included.</p>
           <div class="cta-row">
             <Button href={TALK_TO_SALES_URL} label={TALK_TO_SALES_LABEL} variant="primary" />
-            <Button href={FEATURES_PATH} label="See deployment features" variant="ghost-dark" />
+            <Button href={SEE_FEATURES_URL} label={SEE_FEATURES_LABEL} variant="ghost-dark" />
           </div>
         </div>
         <div class="psp-cards" data-reveal>
           {
-            pspCards.map((c) => (
+            pspLevers.map((c) => (
               <div class="psp-card">
                 <span class:list={["psp-arrow", c.tone]}>↳</span>
                 <div>
@@ -369,29 +343,11 @@ const compliance = [
     </div>
   </section>
 
-  <!-- ============ USE CASES ============ -->
-  <section class="band band-white">
-    <div class="wrap">
-      <h2 class="h2 usecases-h2" data-reveal>One dataset, six revenue levers.</h2>
-      <div class="usecases" data-reveal>
-        {
-          useCases.map((u) => (
-            <div class="usecase">
-              <div class="usecase-t">{u.t}</div>
-              <div class="usecase-d">{u.d}</div>
-            </div>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-
   <!-- ============ HOW IT WORKS ============ -->
   <section class="band band-ink">
     <div class="wrap">
       <div class="two-col two-col-start">
         <div data-reveal>
-          <Eyebrow label="How it works" tone="lime" />
           <h2 class="h2 on-dark how-h2">Three steps to production.</h2>
           <div class="steps">
             {
@@ -408,40 +364,43 @@ const compliance = [
           </div>
         </div>
         <div data-reveal>
-          <CodeTabs id="how-it-works" tabs={howTabs} />
+          <CodeTabs
+            id="how-it-works"
+            tabs={howTabs}
+            footer={`→ 200 OK · scheme: "mastercard" · confidence: 0.98`}
+          />
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ============ COMPLIANCE & RESIDENCY CALLOUT ============ -->
+  <!-- ============ COMPLIANCE & RESIDENCY ============ -->
   <section class="band band-white compliance-band">
     <div class="wrap">
       <div class="compliance" data-reveal>
-        {
-          compliance.map((c) => (
-            <div class="compliance-item">
-              <span class="compliance-t">{c.t}</span>
-              <span class="compliance-d">{c.d}</span>
-            </div>
-          ))
-        }
+        <div class="compliance-head">
+          <h2 class="h2">Your data never leaves.</h2>
+          <p class="compliance-sub">The engine runs in your environment, so residency is a fact of the architecture — not a promise in a policy.</p>
+        </div>
+        <div class="compliance-grid">
+          {
+            compliance.map((c) => (
+              <div class="compliance-item">
+                <span class="compliance-t">{c.t}</span>
+                <span class="compliance-d">{c.d}</span>
+              </div>
+            ))
+          }
+        </div>
       </div>
     </div>
   </section>
 
   <!-- ============ FINAL CTA ============ -->
-  <section class="final">
-    <div class="final-blob" aria-hidden="true"></div>
-    <div class="wrap wrap-tight final-wrap">
-      <h2 class="h1-page final-h2" data-reveal>Run BIN intelligence in your own cloud.</h2>
-      <p class="final-lead" data-reveal>Book a walkthrough and we'll scope a proof-of-concept deployed in your environment — live in days, not quarters.</p>
-      <div class="cta-row center final-cta" data-reveal>
-        <Button href={BOOK_DEMO_URL} label={BOOK_DEMO_LABEL} variant="primary" size="lg" />
-        <Button href={TALK_TO_SALES_URL} label={TALK_TO_SALES_LABEL} variant="ghost-dark" size="lg" />
-      </div>
-    </div>
-  </section>
+  <FinalCta
+    heading="Run BIN intelligence in your own cloud."
+    lead="Book a walkthrough and we'll scope a proof-of-concept deployed in your environment — live in days, not quarters."
+  />
 </Layout>
 
 <style>
@@ -482,26 +441,7 @@ const compliance = [
     gap: 56px;
     align-items: center;
   }
-  .hero-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 9px;
-    padding: 7px 14px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    margin-bottom: 26px;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text-dark-bright);
-  }
-  .hero-pill .dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--lime);
-    box-shadow: 0 0 10px var(--lime);
-  }
+  .hero .pill { margin-bottom: 26px; }
   .hero-h1 { margin-bottom: 22px; }
   .hero-lead { color: var(--text-dark-body); margin: 0 0 34px; max-width: 560px; }
   .hero-cta { margin-bottom: 34px; }
@@ -520,32 +460,25 @@ const compliance = [
     .hero-grid { grid-template-columns: 1fr; gap: 40px; }
   }
 
-  /* ── Section heads ────────────────────────────────────────────────── */
-  .section-head { max-width: 680px; margin-bottom: 44px; }
-  .section-head .h2 { margin-top: 14px; }
-  .section-head.center { max-width: 660px; margin-left: auto; margin-right: auto; text-align: center; }
-  .center-eyebrow { justify-content: center; display: flex; }
-  .lead-center { margin-left: auto; margin-right: auto; }
-  .on-dark { color: var(--white); }
-  p.lead.on-dark { color: var(--text-dark-body); }
-
-  /* ── Pillars ──────────────────────────────────────────────────────── */
+  /* ── Pillars: two large dark cards (was a 2×2 clone of Product) ───── */
   .pillars { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
-  .pillar { border-radius: 18px; padding: 34px; position: relative; overflow: hidden; }
-  .pillar.dark { background: var(--ink); color: var(--white); }
-  .pillar.light { background: var(--off-white); border: 1px solid var(--border-light); }
+  .pillar {
+    border-radius: 18px;
+    padding: clamp(26px, 3.4vw, 40px);
+    position: relative;
+    overflow: hidden;
+    background: var(--ink);
+    color: var(--white);
+  }
   .pillar-body { position: relative; z-index: 1; }
   .pillar-glow { position: absolute; width: 180px; height: 180px; filter: blur(10px); }
   .glow-violet { top: -40px; right: -40px; background: radial-gradient(circle, color-mix(in srgb, var(--violet) 40%, transparent), transparent 70%); }
   .glow-cyan { background: radial-gradient(circle, color-mix(in srgb, var(--cyan) 35%, transparent), transparent 70%); }
   .glow-bl { bottom: -40px; left: -40px; }
-  .pillar-eyebrow { font-size: 13px; font-weight: 700; letter-spacing: 0.05em; margin-bottom: 14px; }
-  .pillar-eyebrow.lime { color: var(--lime); }
-  .pillar-eyebrow.violet { color: var(--violet); }
-  .pillar-eyebrow.cyan { color: var(--cyan); }
-  .h3.ink { color: var(--ink); }
+  /* Spacing between the card label and title lives on the h3: the label is a
+     child component (Eyebrow), which page-scoped styles cannot reach. */
+  .pillar .h3 { margin-top: 14px; }
   .pillar-text { font-size: 15.5px; line-height: 1.6; color: var(--text-dark-body); margin: 0 0 22px; }
-  .pillar-text.light { color: var(--text-light-body); margin-bottom: 20px; }
   .mini-code {
     background: var(--ink-black);
     border: 1px solid rgba(255, 255, 255, 0.08);
@@ -558,24 +491,7 @@ const compliance = [
     white-space: pre;
     color: var(--code-fg);
   }
-  .mini-code .kw { color: var(--code-keyword); }
-  .mini-code .fn { color: var(--code-function); }
-  .mini-code .st { color: var(--code-string); }
-  .mini-code .pn { color: var(--code-punct); }
   .mini-code .cm { color: var(--code-punct); }
-  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
-  .chip {
-    font-size: 12.5px;
-    font-weight: 600;
-    color: var(--ink);
-    background: var(--white);
-    border: 1px solid var(--border-light);
-    padding: 6px 11px;
-    border-radius: 8px;
-  }
-  .accuracy-stat { margin-top: 22px; display: flex; align-items: center; gap: 14px; }
-  .big-8 { font-family: var(--font-display); font-weight: 700; font-size: 40px; color: var(--ink); letter-spacing: -0.03em; }
-  .big-8-sub { font-size: 13.5px; color: var(--text-light-muted); line-height: 1.4; }
   .perf-mini { display: flex; gap: 28px; }
   .perf-n { font-family: var(--font-display); font-weight: 700; font-size: 32px; color: var(--lime); }
   .perf-l { font-size: 13px; color: var(--text-dark-muted-2); }
@@ -648,7 +564,7 @@ const compliance = [
   }
 
   /* ── Bring your own licenses / connectors ─────────────────────────── */
-  .byol-h2 { margin-top: 16px; }
+  .byol-h2 { margin-top: 0; }
   .byol-note { font-size: 14.5px; color: var(--text-light-muted); margin: 0 0 22px; }
   .connector-list { display: flex; flex-direction: column; gap: 12px; }
   .connector {
@@ -679,7 +595,46 @@ const compliance = [
   .connector-d { font-size: 14px; color: var(--text-light-body); margin-top: 2px; }
   .connector.seed .connector-d { color: var(--text-dark-muted); }
 
-  /* ── Try it live ──────────────────────────────────────────────────── */
+  /* POC strip — the dashed "evaluation path" motif from the prototypes,
+     reused once here (its home stays Features). */
+  .poc-strip {
+    margin-top: 26px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 18px 22px;
+    border: 1px dashed color-mix(in srgb, var(--violet) 45%, transparent);
+    background: color-mix(in srgb, var(--violet) 4%, transparent);
+    border-radius: 16px;
+  }
+  .poc-tag {
+    flex: none;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--violet);
+  }
+  .poc-text {
+    flex: 1;
+    margin: 0;
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: var(--text-light-body);
+  }
+  .poc-link {
+    flex: none;
+    font-size: 14.5px;
+    font-weight: 600;
+    color: var(--violet);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .poc-link:hover { text-decoration: underline; }
+  @media (max-width: 720px) {
+    .poc-strip { flex-direction: column; align-items: flex-start; gap: 10px; }
+  }
+
+  /* ── Try it live + what you get ───────────────────────────────────── */
   .try { position: relative; }
   .try-bg {
     position: absolute;
@@ -687,19 +642,39 @@ const compliance = [
     pointer-events: none;
     background: radial-gradient(90% 80% at 50% 0%, color-mix(in srgb, var(--violet) 18%, transparent), transparent 60%);
   }
+  .try-grid {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.6;
+    mask-image: radial-gradient(120% 90% at 50% 0%, transparent 30%, black 75%);
+  }
   .try .wrap { z-index: 1; }
-  .try-cta { justify-content: center; margin-top: 28px; }
-
-  /* ── What you get ─────────────────────────────────────────────────── */
+  .fields-wrap { margin-top: clamp(44px, 6vw, 64px); }
+  .fields-h3 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(21px, 2.6vw, 27px);
+    letter-spacing: -0.02em;
+    margin: 0 0 8px;
+    color: var(--white);
+  }
+  .fields-sub {
+    margin: 0 0 24px;
+    font-size: 15px;
+    color: var(--text-dark-muted);
+    max-width: 60ch;
+  }
   .fields {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     gap: 14px;
   }
-  .field-chip { background: var(--white); border: 1px solid var(--border-light); border-radius: 12px; padding: 18px; }
-  .field-k { font-size: 12px; color: var(--text-light-faint); margin-bottom: 5px; }
-  .field-v { font-family: var(--font-display); font-weight: 700; font-size: 17px; }
-  .field-v.hi { color: var(--violet); }
+  .field-chip { background: var(--ink-3); border: 1px solid var(--border-dark); border-radius: 12px; padding: 18px; }
+  .field-k { font-size: 12px; color: var(--text-dark-faint); margin-bottom: 5px; }
+  .field-v { font-family: var(--font-display); font-weight: 700; font-size: 17px; color: var(--white); }
+  .field-v.hi { color: var(--cyan); }
+  .try-cta { justify-content: center; margin-top: 36px; }
 
   /* ── Build vs. buy ────────────────────────────────────────────────── */
   .bvb { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: stretch; }
@@ -718,14 +693,6 @@ const compliance = [
     .bvb { grid-template-columns: 1fr; }
   }
 
-  /* ── Two-column sections ──────────────────────────────────────────── */
-  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: center; }
-  .two-col-start { align-items: start; }
-  @media (max-width: 900px) {
-    .two-col { grid-template-columns: 1fr; gap: 36px; }
-  }
-  .psp-h2, .how-h2 { margin-top: 16px; }
-
   /* ── PSP ──────────────────────────────────────────────────────────── */
   .psp { position: relative; }
   .psp-bg {
@@ -735,12 +702,13 @@ const compliance = [
     background: radial-gradient(80% 70% at 90% 20%, color-mix(in srgb, var(--violet) 22%, transparent), transparent 55%);
   }
   .psp .wrap { z-index: 1; }
-  .psp-cards { display: flex; flex-direction: column; gap: 12px; }
+  .psp-h2, .how-h2 { margin-top: 0; }
+  .psp-cards { display: flex; flex-direction: column; gap: 10px; }
   .psp-card {
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 14px;
-    padding: 20px;
+    padding: 16px 18px;
     display: flex;
     gap: 16px;
     align-items: flex-start;
@@ -748,16 +716,8 @@ const compliance = [
   .psp-arrow { font-family: var(--font-display); font-weight: 700; font-size: 15px; }
   .psp-arrow.violet { color: var(--violet); }
   .psp-arrow.cyan { color: var(--cyan); }
-  .psp-card-t { font-weight: 700; font-size: 16px; margin-bottom: 3px; color: var(--white); }
-  .psp-card-d { font-size: 14px; color: var(--text-dark-muted); }
-
-  /* ── Use cases ────────────────────────────────────────────────────── */
-  .usecases-h2 { max-width: 560px; margin-bottom: 40px; }
-  .usecases { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
-  .usecase { border: 1px solid var(--border-light); border-radius: 14px; padding: 24px; transition: border-color 0.15s ease; }
-  .usecase:hover { border-color: var(--violet); }
-  .usecase-t { font-family: var(--font-display); font-weight: 700; font-size: 18px; margin-bottom: 6px; }
-  .usecase-d { font-size: 14.5px; color: var(--text-light-body); line-height: 1.55; }
+  .psp-card-t { font-weight: 700; font-size: 15.5px; margin-bottom: 2px; color: var(--white); }
+  .psp-card-d { font-size: 13.5px; color: var(--text-dark-muted); line-height: 1.5; }
 
   /* ── How it works ─────────────────────────────────────────────────── */
   .steps { display: flex; flex-direction: column; gap: 22px; margin-top: 32px; }
@@ -785,6 +745,13 @@ const compliance = [
     border: 1px solid var(--border-light);
     border-radius: 20px;
     padding: clamp(28px, 4vw, 48px);
+  }
+  .compliance-head { max-width: 560px; margin-bottom: 30px; }
+  .compliance-head .h2 { margin: 0 0 10px; }
+  .compliance-sub { margin: 0; font-size: 16px; line-height: 1.6; color: var(--text-light-body); }
+  .compliance-grid {
+    border-top: 1px solid var(--border-light);
+    padding-top: 30px;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
     gap: 28px;
@@ -792,38 +759,4 @@ const compliance = [
   .compliance-item { display: flex; flex-direction: column; gap: 6px; }
   .compliance-t { font-family: var(--font-display); font-weight: 700; font-size: 18px; color: var(--violet); }
   .compliance-d { font-size: 14px; color: var(--text-light-body); line-height: 1.5; }
-
-  /* ── Final CTA ────────────────────────────────────────────────────── */
-  .final {
-    position: relative;
-    overflow: hidden;
-    background: linear-gradient(125deg, var(--ink) 0%, var(--violet-deep) 45%, var(--blue) 130%);
-  }
-  .final-blob {
-    position: absolute;
-    top: -100px;
-    left: 30%;
-    width: 500px;
-    height: 500px;
-    border-radius: 50%;
-    background: radial-gradient(circle, color-mix(in srgb, var(--violet) 50%, transparent), transparent 65%);
-    filter: blur(30px);
-    pointer-events: none;
-  }
-  .final-wrap {
-    padding-top: clamp(72px, 10vw, 128px);
-    padding-bottom: clamp(72px, 10vw, 128px);
-    text-align: center;
-    position: relative;
-    z-index: 1;
-  }
-  .final-h2 { color: var(--white); margin-bottom: 22px; }
-  .final-lead {
-    font-size: 18px;
-    line-height: 1.6;
-    color: var(--text-dark-soft);
-    margin: 0 auto 34px;
-    max-width: 520px;
-  }
-  .final-cta { justify-content: center; }
 </style>

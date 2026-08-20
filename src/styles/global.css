@@ -344,6 +344,113 @@ a {
   gap: 14px;
 }
 
+/* ── Section scaffolding (shared across pages — declare once, here) ───── */
+.section-head {
+  max-width: 680px;
+  margin-bottom: 44px;
+}
+.section-head .h2 {
+  margin-top: 14px;
+}
+.section-head.center {
+  max-width: 660px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+.center-eyebrow {
+  justify-content: center;
+  display: flex;
+}
+.lead-center {
+  margin-left: auto;
+  margin-right: auto;
+}
+.on-dark {
+  color: var(--white);
+}
+p.lead.on-dark,
+.lead.on-dark {
+  color: var(--text-dark-body);
+}
+
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  align-items: center;
+}
+.two-col-start {
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .two-col {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+}
+
+/* Hero pill — the small status chip atop dark heroes (was per-page
+   .hero-pill / .pill, five copies of one style). */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dark-bright);
+}
+.pill .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--lime);
+  box-shadow: 0 0 10px var(--lime);
+}
+
+/* Blueprint grid-lines texture — subtle engineering motif for dark bands
+   (playground, atlas). 1px lines at 32px, 3% white (from the .dc.html refs). */
+.grid-texture {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* Mono glyph chip — the brand-native "icon" for feature/endpoint cards
+   (▸ ⇲ €$ ⊞ ∿ { } GET). No icon font, no SVG spriting. */
+.glyph {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 9px;
+  color: var(--violet);
+  background: color-mix(in srgb, var(--violet) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--violet) 30%, transparent);
+}
+.glyph.cyan {
+  color: var(--cyan);
+  background: color-mix(in srgb, var(--cyan) 10%, transparent);
+  border-color: color-mix(in srgb, var(--cyan) 30%, transparent);
+}
+.glyph.lime {
+  /* lime-deep: legible on both light cards and dark panels (--lime itself
+     washes out on white). */
+  color: var(--lime-deep);
+  background: color-mix(in srgb, var(--lime) 14%, transparent);
+  border-color: color-mix(in srgb, var(--lime) 34%, transparent);
+}
+
 /* ── Scroll-reveal: hidden initial state; force-shown when revealed ─────── */
 [data-reveal] {
   opacity: 0;

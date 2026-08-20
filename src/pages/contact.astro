@@ -5,50 +5,72 @@ import Layout from "../layouts/Layout.astro";
 import ContactForm from "../components/ContactForm.astro";
 
 const params = Astro.url.searchParams;
-const intent = params.get("intent") === "sales" ? "sales" : "demo";
+const intentParam = params.get("intent");
+const intent =
+  intentParam === "sales" ? "sales" : intentParam === "careers" ? "careers" : "demo";
 const submitted = params.get("sent") === "1";
 const error =
   params.get("error") === "1"
     ? "Please provide your name, a valid work email, and your company."
     : undefined;
 
-const sales = intent === "sales";
+const copy =
+  intent === "sales"
+    ? {
+        eyebrow: "Talk to sales",
+        heading: "Let’s talk deployment.",
+        subhead:
+          "Tell us about your platform and we’ll scope the right deployment model, connectors, SLA, and data-residency setup for you.",
+        nextStep:
+          "A solutions engineer reviews your note and replies within one business day to scope deployment and pricing.",
+        emailLabel: "sales@findthisbin.com" as string | undefined,
+        emailHref: "mailto:sales@findthisbin.com",
+      }
+    : intent === "careers"
+      ? {
+          // No invented careers@ inbox — the form is the channel, and the
+          // "Prefer email?" row is omitted rather than pointing at an address
+          // that doesn't exist.
+          eyebrow: "Careers",
+          heading: "Come build with us.",
+          subhead:
+            "We’re a small, senior team based in the EU, building payments infrastructure. Tell us what you’ve shipped and what you want to work on.",
+          nextStep:
+            "We read every note ourselves. If there’s a fit with an open role — or a future one — we reply.",
+          emailLabel: undefined,
+          emailHref: undefined,
+        }
+      : {
+          eyebrow: "Book a demo",
+          heading: "See the engine in your stack.",
+          subhead:
+            "Book a walkthrough with a solutions engineer. We’ll show the engine running in a cloud like yours, with licensed sources plugged in — and scope a proof-of-concept.",
+          nextStep:
+            "A solutions engineer reaches out within one business day to schedule your walkthrough and a proof-of-concept deployed in your cloud.",
+          emailLabel: "demo@findthisbin.com" as string | undefined,
+          emailHref: "mailto:demo@findthisbin.com",
+        };
 
-// Cosmetic reference shown in the success pane (runs on the Worker at request time).
-const refId = "ftb_" + Math.random().toString(36).slice(2, 8).toUpperCase();
-
-const copy = sales
-  ? {
-      eyebrow: "Talk to sales",
-      heading: "Let’s talk deployment.",
-      subhead:
-        "Tell us about your platform and we’ll scope the right deployment model, connectors, SLA, and data-residency setup for you.",
-      nextStep:
-        "A solutions engineer reviews your note and replies within one business day to scope deployment and pricing.",
-      emailLabel: "sales@findthisbin.com",
-      emailHref: "mailto:sales@findthisbin.com",
-    }
-  : {
-      eyebrow: "Book a demo",
-      heading: "See the engine in your stack.",
-      subhead:
-        "Book a walkthrough with a solutions engineer. We’ll show the engine running in a cloud like yours, with licensed sources plugged in — and scope a proof-of-concept.",
-      nextStep:
-        "A solutions engineer reaches out within one business day to schedule your walkthrough and a proof-of-concept deployed in your cloud.",
-      emailLabel: "demo@findthisbin.com",
-      emailHref: "mailto:demo@findthisbin.com",
-    };
-
-const points = [
-  "Deployed in your cloud in days, not months",
-  "Your data never leaves your environment",
-  "Out of PCI scope · DPA · EU-hosting option",
-];
+const points =
+  intent === "careers"
+    ? [
+        "Small, senior team — based in the EU, fully remote",
+        "Payments infrastructure thousands of transactions depend on",
+        "Data pipelines, low-latency APIs, and developer experience",
+      ]
+    : [
+        "Deployed in your cloud in days, not months",
+        "Your data never leaves your environment",
+        "Out of PCI scope · DPA · EU-hosting option",
+      ];
 
 const title = `${copy.heading.replace(/’/g, "'").replace(/\.$/, "")} — FindThisBIN`;
-const description = sales
-  ? "Talk to the FindThisBIN team about deploying the BIN intelligence engine in your cloud — deployment models, connectors, SLAs, and EU data residency."
-  : "Book a FindThisBIN demo: see the BIN intelligence engine running in a cloud like yours, with your licensed sources plugged in, and scope a proof-of-concept.";
+const description =
+  intent === "sales"
+    ? "Talk to the FindThisBIN team about deploying the BIN intelligence engine in your cloud — deployment models, connectors, SLAs, and EU data residency."
+    : intent === "careers"
+      ? "Careers at FindThisBIN — a small, senior EU team building the BIN intelligence engine payment platforms run in their own cloud."
+      : "Book a FindThisBIN demo: see the BIN intelligence engine running in a cloud like yours, with your licensed sources plugged in, and scope a proof-of-concept.";
 ---
 
 <Layout title={title} description={description}>
@@ -73,15 +95,19 @@ const description = sales
         <div class="next-card">
           <div class="next-label">What happens next</div>
           <p>{copy.nextStep}</p>
-          <div class="next-email">
-            Prefer email? <a href={copy.emailHref}>{copy.emailLabel}</a>
-          </div>
+          {
+            copy.emailHref && (
+              <div class="next-email">
+                Prefer email? <a href={copy.emailHref}>{copy.emailLabel}</a>
+              </div>
+            )
+          }
         </div>
       </div>
 
       <!-- RIGHT: form / success -->
       <div class="form-col" data-reveal>
-        <ContactForm intent={intent} submitted={submitted} error={error} refId={refId} />
+        <ContactForm intent={intent} submitted={submitted} error={error} />
       </div>
     </div>
   </section>
@@ -108,26 +134,8 @@ const description = sales
     .contact-grid { grid-template-columns: 1fr; gap: 36px; }
   }
 
-  .pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 9px;
-    padding: 7px 14px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    margin-bottom: 22px;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text-dark-bright);
-  }
-  .pill .dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--lime);
-    box-shadow: 0 0 10px var(--lime);
-  }
+  /* .pill itself is global (global.css); only its rhythm here is local. */
+  .reassure-col .pill { margin-bottom: 22px; }
 
   .h1-page { margin: 0 0 18px; max-width: 14ch; }
   .reassure-col .lead { color: var(--text-dark-body); margin: 0 0 32px; max-width: 440px; }

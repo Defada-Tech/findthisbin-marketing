@@ -69,8 +69,15 @@ export const TALK_TO_SALES_URL = `${CONTACT_PATH}?intent=sales`;
    so the anchor form is already canonical. */
 export const SEE_DEPLOYMENT_LABEL = "See deployment options";
 export const SEE_DEPLOYMENT_URL = `${HOME_PATH}#deployment`;
+/* Ghost CTA pointing at the Features page (Home PSP section, Product). */
+export const SEE_FEATURES_LABEL = "See features";
+export const SEE_FEATURES_URL = FEATURES_PATH;
+/* Company careers — routes to the contact form with careers copy (there is
+   no ATS and no careers@ inbox; the form is the one honest channel). */
+export const CAREERS_LABEL = "Get in touch";
+export const CAREERS_URL = `${CONTACT_PATH}?intent=careers`;
 
-/* Trust strip — reused on hero + pricing close. */
+/* Trust strip — reused on the Home hero + the Features close. */
 export const TRUST_POINTS = [
   "Runs in your cloud",
   "Your data never leaves",

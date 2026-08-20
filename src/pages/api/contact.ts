@@ -44,7 +44,12 @@ interface Lead {
 }
 
 async function notifySlack(webhook: string, lead: Lead): Promise<void> {
-  const label = lead.intent === "sales" ? "Talk to sales" : "Book a demo";
+  const label =
+    lead.intent === "sales"
+      ? "Talk to sales"
+      : lead.intent === "careers"
+        ? "Careers"
+        : "Book a demo";
   const payload = {
     text: `New ${label} request — FindThisBIN`,
     blocks: [
@@ -92,7 +97,9 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   const get = (k: string) => (form.get(k) ?? "").toString().trim();
-  const intent = get("intent") === "sales" ? "sales" : "demo";
+  const rawIntent = get("intent");
+  const intent =
+    rawIntent === "sales" || rawIntent === "careers" ? rawIntent : "demo";
 
   // Honeypot: real users never fill `website`. Pretend success, deliver nothing.
   if (get("website") !== "") return ok(request, intent);

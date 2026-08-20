@@ -1,0 +1,101 @@
+---
+import Button from "./Button.astro";
+import {
+  BOOK_DEMO_LABEL,
+  BOOK_DEMO_URL,
+  TALK_TO_SALES_LABEL,
+  TALK_TO_SALES_URL,
+} from "../lib/site";
+
+/**
+ * The closing gradient CTA band — one component, previously copy-pasted into
+ * four pages (Home/Product/Company/Features) with slight drift (Company lost
+ * its lead; Features renamed every class to `.close`). Pass `lead` for the
+ * paragraph under the heading and `trustLine` for the small print row above it.
+ */
+interface Props {
+  heading: string;
+  lead?: string;
+  trustLine?: string[];
+  class?: string;
+}
+const { heading, lead, trustLine, class: className } = Astro.props;
+---
+
+<section class:list={["final", className]}>
+  <div class="final-blob" aria-hidden="true"></div>
+  <div class="wrap wrap-tight final-wrap">
+    {
+      trustLine && (
+        <div class="final-trust" data-reveal>
+          {trustLine.map((t, i) => (
+            <Fragment>
+              {i > 0 && <span aria-hidden="true">·</span>}
+              <span>{t}</span>
+            </Fragment>
+          ))}
+        </div>
+      )
+    }
+    <h2 class="h1-page final-h2" data-reveal>{heading}</h2>
+    {lead && <p class="final-lead" data-reveal>{lead}</p>}
+    <div class="cta-row center final-cta" data-reveal>
+      <Button href={BOOK_DEMO_URL} label={BOOK_DEMO_LABEL} variant="primary" size="lg" />
+      <Button href={TALK_TO_SALES_URL} label={TALK_TO_SALES_LABEL} variant="ghost-dark" size="lg" />
+    </div>
+  </div>
+</section>
+
+<style>
+  .final {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(125deg, var(--ink) 0%, var(--violet-deep) 45%, var(--blue) 130%);
+  }
+  .final-blob {
+    position: absolute;
+    top: -100px;
+    left: 30%;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, color-mix(in srgb, var(--violet) 50%, transparent), transparent 65%);
+    filter: blur(30px);
+    pointer-events: none;
+  }
+  .final-wrap {
+    padding-top: clamp(72px, 10vw, 128px);
+    padding-bottom: clamp(72px, 10vw, 128px);
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+  .final-trust {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    justify-content: center;
+    margin-bottom: 28px;
+    font-size: 13.5px;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 500;
+  }
+  .final-h2 {
+    color: var(--white);
+    margin: 0 0 22px;
+  }
+  /* No lead paragraph → the heading needs the extra air before the CTAs. */
+  .final-h2:has(+ .final-cta) {
+    margin-bottom: 30px;
+  }
+  .final-lead {
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--text-dark-soft);
+    margin: 0 auto 34px;
+    max-width: 520px;
+  }
+  .final-cta {
+    justify-content: center;
+  }
+</style>

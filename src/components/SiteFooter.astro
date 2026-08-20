@@ -4,6 +4,8 @@ import {
   HOME_PATH,
   PRODUCT_PATH,
   FEATURES_PATH,
+  COMPANY_PATH,
+  CONTACT_PATH,
   PRIVACY_PATH,
   TERMS_PATH,
   DPA_PATH,
@@ -15,6 +17,11 @@ const productLinks = [
   { href: `${HOME_PATH}#try`, label: "Try it live" },
   { href: FEATURES_PATH, label: "Features" },
   { href: `${HOME_PATH}#deployment`, label: "Deployment models" },
+];
+const companyLinks = [
+  { href: COMPANY_PATH, label: "About" },
+  { href: `${COMPANY_PATH}#careers`, label: "Careers" },
+  { href: CONTACT_PATH, label: "Contact" },
 ];
 const legalLinks = [
   { href: PRIVACY_PATH, label: "Privacy" },
@@ -43,6 +50,10 @@ const legalLinks = [
         <ul>{productLinks.map((l) => <li><a href={l.href}>{l.label}</a></li>)}</ul>
       </div>
       <div class="col">
+        <h2>Company</h2>
+        <ul>{companyLinks.map((l) => <li><a href={l.href}>{l.label}</a></li>)}</ul>
+      </div>
+      <div class="col">
         <h2>Legal</h2>
         <ul>{legalLinks.map((l) => <li><a href={l.href}>{l.label}</a></li>)}</ul>
       </div>
@@ -67,7 +78,7 @@ const legalLinks = [
   }
   .footer-grid {
     display: grid;
-    grid-template-columns: 1.6fr 1fr 1fr;
+    grid-template-columns: 1.6fr 1fr 1fr 1fr;
     gap: 40px 32px;
   }
   .brand { min-width: 200px; }

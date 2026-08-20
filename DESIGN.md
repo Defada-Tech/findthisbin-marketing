@@ -1,32 +1,20 @@
 # FindThisBIN Marketing Site — Design Spec (v3, enterprise infrastructure)
 
-> ## ⚠ Read this before trusting a page section
+> ## Status note (updated 2026-08, whole-site refinement pass)
 >
 > **This file is authoritative for tokens, the type scale, copy rules, CTA
-> wiring, and the BIN-playground logic. Its per-page sections are STALE.**
+> wiring, and the BIN-playground logic — and the per-page sections below now
+> match `src/pages/` again** (re-authored in the 2026-08 refinement pass, which
+> consolidated Home 12→10 sections, gave Product the spec-sheet/stepper layouts,
+> rebuilt Features as the capability atlas, and added the careers intent).
 >
-> The v3 repositioning changed the page structure and this spec was never
-> updated, so the two disagree — and MARKETING_TECH_STACK.md §14 declares this
-> file authoritative, which means the stale half gets believed. Concretely:
+> Still true and worth repeating:
 >
-> | This spec says | Reality |
-> |---|---|
-> | Page 2 — Pricing (`pricing.astro`) | **Does not exist.** Never built. |
-> | Page 3 — Docs (`docs.astro`) | **Does not exist.** Never built. |
-> | *(not mentioned)* | **`features.astro` ships** and has no spec here. |
-> | *(not mentioned)* | **`privacy` / `terms` / `dpa` / `gdpr` ship.** |
-> | *(not mentioned)* | **`404.astro` ships** (branded not-found). |
-> | Nav has an `active` prop | Nav self-derives from `Astro.url.pathname`. |
-> | Nav links: Product / Pricing / Docs / Company | Product / Features / Company. |
->
-> **The real page list is in `CLAUDE.md` and `README.md`, and `npm run conform`
-> checks it against the filesystem.** Those are trustworthy; the sections below
-> are not, until someone re-authors them.
->
-> Writing the Features spec is design work, not a mechanical edit — it needs a
-> human who knows what that page is for. It is deliberately left undone rather
-> than invented here, because a fabricated spec would be worse than an absent
-> one. Delete this banner when the page sections match `src/pages/`.
+> - **There is no Pricing page and no Docs page.** The `~~Pricing~~` / `~~Docs~~`
+>   sections are struck through and kept for reference only.
+> - Nav self-derives its active link from `Astro.url.pathname`; pages pass nothing.
+> - `npm run conform` checks the page list against the filesystem
+>   (`// pages: 10; ssr: 2` in `astro.config.mjs`).
 
 
 > **Positioning (v3).** FindThisBIN is a **deployable BIN intelligence engine** that payment platforms (PSPs) run in their **own cloud** — self-hosted / BYOC, managed-in-your-cloud, or fully-managed (BYOL). Customers **bring their own data licenses** (Visa VBASS, Mastercard BIN table, commercial feeds, CSV); we provide the engine, the 8-digit logic, the multi-source merge, the sub-10ms hot path, and the ops. This is **not** a self-serve hosted API — there is no signup, no API-key flow, and no per-lookup pricing. The bold fintech identity (palette, typography, gradient/glow motif, code panels, motion, font stack) is **unchanged** from the original brief; what changed is messaging, page structure, and CTAs. This document is the authoritative spec; the refreshed `design_files/*.dc.html` prototypes are the visual reference, and `design_files/findthisbin-design-addendum.md` records the repositioning deltas.
@@ -34,14 +22,13 @@
 ## Overview
 A bold, modern, **multi-page marketing site** for **FindThisBIN** (findthisbin.com) aimed at **infrastructure buyers** — both the platform decision-maker (compliance, data residency, build-vs-buy, time-to-value) and their engineers (clean API, deploy in your stack).
 
-**The pages that actually ship** (see the banner above — the numbered specs
-further down still describe the pre-repositioning set):
+**The pages that actually ship:**
 
 1. **Home / landing** (`/`)
 2. **Product** (`/product/`) — product/feature deep-dive
-3. **Features** (`/features/`) — *ships; no spec in this file yet*
+3. **Features** (`/features/`) — capability atlas + deployment-model comparison
 4. **Company** (`/company/`) — about + careers (`#careers`)
-5. **Contact / Book-a-demo** (`/contact/`) — the form behind both primary CTAs; posts a Slack message via webhook (`/api/contact/`)
+5. **Contact / Book-a-demo** (`/contact/`) — the form behind the CTAs (demo · sales · careers intents); posts a Slack message via webhook (`/api/contact/`)
 6. **Legal** — `/privacy/`, `/terms/`, `/dpa/`, `/gdpr/`
 7. **404** — branded not-found
 
@@ -55,7 +42,7 @@ There is no Pricing page and no Docs page. `design_files/Pricing.dc.html` and
 ## Stack & build
 Built as a static, prerendered **Astro 6** site (`output: "static"`) on the `@astrojs/cloudflare` adapter, Tailwind v4 (config-in-CSS), self-hosted fonts via the Astro Fonts API. Every page prerenders except the on-demand `/contact/` (reads query params) and **`/api/contact/`** (`prerender = false`, the Slack-webhook endpoint) — two on-demand routes. `trailingSlash: "always"`; every path carries the slash. See `README.md` / `CLAUDE.md` for commands, the two-wrangler-config setup, and the deploy runbook (`DEPLOYMENT.md`).
 
-**Routing & anchors:** `Home`→`/`, `Product`→`/product`, `Pricing`→`/pricing`, `Docs`→`/docs`, `Company`→`/company`, `Contact`→`/contact` (+ `/api/contact`). In-page anchors preserved as section `id`s: `#deployment` (new — Home deployment models), `#try`, `#psp` (Home), `#tiers` (Pricing), `#reference`, `#sdks` (Docs), `#careers` (Company), `#footer`.
+**Routing & anchors:** `Home`→`/`, `Product`→`/product/`, `Features`→`/features/`, `Company`→`/company/`, `Contact`→`/contact/` (+ `/api/contact/`). In-page anchors preserved as section `id`s: `#deployment`, `#try`, `#psp`, `#product` (Home), `#tiers` (Features), `#careers` (Company), `#footer`.
 
 ## About the Design Files
 `design_files/*.dc.html` are **design references** authored in a streaming "Design Component" format (`*.dc.html` + the gitignored `support.js` runtime) using inline-style objects. They are visual + behavioral references only — **do not port** the inline styles or the `.dc.html`/`support.js` runtime into Astro. The shipped Astro site is the source of truth; where a prototype reintroduces a fabricated stat or partner name, the site (and the honesty constraints above) win.
@@ -149,40 +136,35 @@ Self-hosted via the Astro Fonts API (`fontProviders.google()` in `astro.config.m
 - **Mobile (≤860px):** hamburger toggles a full-width panel with stacked links. *(inline script)*
 
 ### Footer (`SiteFooter.astro`)
-- Background `#08080E`, 5-col grid (`1.6fr 1fr 1fr 1fr 1fr` → `1fr 1fr` ≤900px), `id="footer"`.
+- Background `#08080E`, 4-col grid (`1.6fr 1fr 1fr 1fr` → `1fr 1fr` ≤900px), `id="footer"`.
 - Col 1: wordmark, tagline **"The BIN intelligence engine for payment platforms. Deploy it in your own cloud; your data never leaves."**, and a cyan **"Runs in your cloud · EU option"** pill.
-- Columns: **Product** · **Developers** · **Company** · **Legal** (Privacy, Terms, DPA, GDPR). ⚠ *This list references Pricing / Docs / SDKs / Blog / Status — verify against `SiteFooter.astro` before trusting it; the pages behind several of those do not exist.*
-- Bottom bar: "© 2026 FindThisBIN…" + GitHub / X / LinkedIn icon links.
+- Columns: **Product** (Overview · Try it live → `/#try` · Features · Deployment models → `/#deployment`) · **Company** (About · Careers → `/company/#careers` · Contact) · **Legal** (Privacy, Terms, DPA, GDPR).
+- Bottom bar: "© 2026 FindThisBIN. All rights reserved." *(No social icons; none exist as assets.)*
 
 ---
 
 ## Page 1 — Home (`index.astro`)
-Sections, in order (alternating dark / light; social-proof + stat-band sections intentionally omitted):
+Sections, in order (alternating dark / light; social-proof + stat-band sections intentionally omitted). The 2026-08 pass consolidated 12 sections → 10: the build-vs-buy and compliance pillar cards folded into their dedicated sections, and the use-case grid merged into the PSP section.
 
-1. **Hero** (dark). Eyebrow pill ("BIN intelligence engine · Runs in your cloud", lime dot). H1 **"The BIN intelligence engine payment platforms run themselves."** — "run themselves." gradient-clipped. Subhead: the deploy-in-your-cloud / BYOL paragraph. Dual CTA: **Book a demo** (lime) + **See deployment options** (ghost → `#deployment`). Trust strip (cyan `●`): **Runs in your cloud · Your data never leaves · Out of PCI scope · EU-hosted option · sub-10ms p99**. Right column is the **deployment-motif demo panel** (`DemoPanel.astro`):
+1. **Hero** (dark). Pill ("Self-hosted · Managed · Fully managed", lime dot). H1 **"The BIN intelligence engine that runs in your cloud."** — "your cloud." gradient-clipped. Subhead: "Built for payment platforms. Plug in your data licenses; get 8-digit card records at sub-10ms. Your data never leaves." Dual CTA: **Book a demo** (lime) + **See deployment options** (ghost → `#deployment`). Trust strip (cyan `●`): **Runs in your cloud · Your data never leaves · Out of PCI scope · EU-hosted option · sub-10ms p99**. Right column is the **deployment-motif demo panel** (`DemoPanel.astro`):
    - Window chrome `findthisbin-engine · your-cloud`; a dashed "your cloud" box headed `your cloud · eu-west-1 · vpc` / `data stays here`.
    - Deployment flow: licensed sources (`VBASS` · `Mastercard` · `CSV`) → engine (`FindThisBIN engine` / "8-digit · multi-source merge") → output (`your API`, lime).
    - Request line: lime `GET` badge + `https://bins.internal/v1/bins/53847012` (BIN in cyan).
    - Canonical JSON body, each line `ftbUp` staggered (0.05s → 0.72s) + blinking lime caret.
    - Scheme strip: "Coverage across every major scheme" + VISA / Mastercard / AMEX / Discover / JCB / UnionPay as **plain greyscale text**.
-2. **Value pillars** (`id="product"`, white). H2 "Engineered for the teams that move money." 2×2 grid, new order:
-   - **01 · Deploy in your cloud** (dark, lime eyebrow) "Run it where your data lives." + `helm install` mini-snippet.
-   - **02 · Compliance & data residency** (light) "Your data never leaves." + chips: Out of PCI scope, Data stays in your VPC, Per-customer DPA, EU-hosting option.
-   - **03 · Build vs. buy** (light) "Live this week, not in two quarters." + big "days" stat.
-   - **04 · Correctness & performance** (dark, cyan eyebrow) "Correct data, on the hot path." + stats `<10ms` p99 · `8-digit`.
-3. **Deployment models** (`id="deployment"`, dark). Eyebrow "Deployment models" (lime). H2 "One engine. You choose who runs it." 3 cards — **Self-hosted / BYOC** · **Managed in your cloud** *(highlighted, lime "most popular" chip + violet border)* · **Fully managed (BYOL)** — each with a checklist (lime ✓ on cards 1 & 3, cyan ✓ on the highlighted card). Section CTA "Book a demo".
-4. **Bring your own licenses / connectors** (white). Eyebrow "Bring your own licenses". H2 "Plug in your licenses. We did the hard logic." Body + provider-brokerage line. CTA "Talk to sales about connectors" → sales. Connector list: VBASS · Mastercard BIN table · Commercial providers · CSV upload · **Bundled open seed data** (highlighted, lime badge, "works on day one").
-5. **Try it live** (`id="try"`, dark). Eyebrow "Playground" (cyan). H2 "Look up any BIN, right now." Interactive `BinPlayground.astro` (see logic below). CTA "See it on your own BINs — book a demo" → demo.
-6. **What you get** (off-white). H2 "Every field your stack needs." Grid of 13 field chips (`dcc_eligible` & `confidence` highlighted violet).
-7. **Build vs. buy** (white). Eyebrow "Build vs. buy". H2 "Months of specialist work, or a deployment this week." Two columns — **Build it in-house** (✕, muted) vs **Deploy the engine** (✓, lime, dark card), 5 items each.
-8. **For payment platforms** (`id="psp"`, dark, violet glow). Eyebrow "For payment platforms" (cyan). H2 "Embed card intelligence across your entire stack." 2-col: copy + CTAs (Talk to sales / See platform pricing → `/pricing`) | 4 mini-cards (Smarter routing, Surcharging & interchange, DCC eligibility for EU flows, Richer checkout UX & risk).
-9. **Use cases** (white). H2 "One dataset, six revenue levers." 6 cards, violet border on hover.
-10. **How it works** (dark). Eyebrow "How it works" (lime). H2 "Three steps to production." 2-col: 3 numbered steps (**Deploy in your cloud → Connect your licenses → Integrate the API**) | code panel with language tabs (cURL / Node / Python / Go / PHP), all targeting `https://bins.internal`.
-11. **Pricing preview** (off-white). H2 "Pricing that fits your deployment." 3 cards (Startup / **Growth** highlighted dark "MOST POPULAR" / Enterprise), prices "Let's talk" / "Custom", CTAs Request pricing / Talk to sales → `/contact?intent=sales`. Link "Compare all plans & features →" → `/pricing`.
-12. **Compliance & residency callout** (white). Rounded panel, 4 items: Your environment · Out of the data path · Out of PCI scope · DPA & EU option (each violet title + one line).
-13. **Dev/docs CTA** (dark, faint grid background). H2 "Everything you need to integrate in minutes." 2-col: copy + CTAs (Read the docs / API reference) | 2×2 link cards (Docs, API Reference, SDKs, Postman), cyan border on hover.
-14. **Final CTA** (gradient + violet glow). H2 **"Run BIN intelligence in your own cloud."** + Book a demo / Talk to sales.
-15. **Footer.**
+2. **Value pillars** (`id="product"`, white). H2 "Engineered for the teams that move money." Two large dark cards (was a 2×2 clone of Product's capabilities):
+   - **01 · Deploy in your cloud** (lime eyebrow) "Run it where your data lives." + `helm install` mini-snippet.
+   - **02 · Correctness & performance** (cyan eyebrow) "Correct data, on the hot path." + stats `<10ms` p99 · `8-digit`.
+3. **Deployment models** (`id="deployment"`, dark). Eyebrow "Deployment models" (lime). H2 "One engine. You choose who runs it." 3 cards — **Self-hosted / BYOC** · **Managed in your cloud** *(highlighted, lime "most popular" chip + violet border)* · **Fully managed (BYOL)** — each with a checklist (lime ✓ on cards 1 & 3, cyan ✓ on the highlighted card). Section CTA "Book a demo" + text link "Compare deployment options →" → `/features/`.
+4. **Bring your own licenses / connectors** (white). H2 "Plug in your licenses. We did the hard logic." Body + provider-brokerage line. CTA **Talk to sales** → sales. Connector list: VBASS · Mastercard BIN table · Commercial providers · CSV upload · **Bundled open seed data** (highlighted, lime badge, "works on day one"). Foot: dashed-violet **POC strip** ("Proof of concept" mono tag + one line + "Book a demo →" link).
+5. **Try it live + what you get** (`id="try"`, dark, `.grid-texture` blueprint overlay). Eyebrow "Playground" (cyan). H2 "Look up any BIN, right now." Interactive `BinPlayground.astro` (see logic below). Below, in the same band: H3 "Every field your stack needs." + grid of 13 dark field chips (`dcc_eligible` & `confidence` highlighted cyan). CTA **Book a demo**.
+6. **Build vs. buy** (white). H2 "Months of specialist work, or a deployment this week." Two columns — **Build it in-house** (✕, muted) vs **Deploy the engine** (✓, lime, dark card), 5 items each.
+7. **For payment platforms** (`id="psp"`, dark, violet glow). Eyebrow "For payment platforms" (cyan). H2 "Embed card intelligence across your entire stack." 2-col: copy + CTAs (Talk to sales / See features → `/features/`) | six `↳` rows — the merged use-case list (Least-cost & debit routing · Surcharging & interchange · DCC eligibility (EU) · Checkout UX & card art · Fraud & risk signals · Batch data enrichment).
+8. **How it works** (dark). H2 "Three steps to production." 2-col: 3 numbered steps (**Deploy in your cloud → Connect your licenses → Integrate the API**) | code panel with language tabs (cURL / Node / Python / Go / PHP), all targeting `https://bins.internal`, status-line footer `→ 200 OK · scheme: "mastercard" · confidence: 0.98`.
+9. **Compliance & residency** (white). Rounded off-white panel with its own headline — H2 "Your data never leaves." + sub — then a 4-up grid: Your environment · Out of the data path · Out of PCI scope · DPA & EU option.
+10. **Final CTA** (`FinalCta.astro`, gradient + violet glow). H2 **"Run BIN intelligence in your own cloud."** + lead + Book a demo / Talk to sales.
+
+**Footer** follows on every page.
 
 ## ~~Page 2 — Pricing (`pricing.astro`)~~ — ⚠ NOT BUILT. Historical; kept for reference only.
 Contact-driven enterprise tiers — **no monthly/annual toggle, no per-lookup prices**.
@@ -223,41 +205,55 @@ Contact-driven enterprise tiers — **no monthly/annual toggle, no per-lookup pr
 8. **Footer.**
 
 ## Page 4 — Product (`product.astro`)
-1. **Hero** (dark, centered). Eyebrow "Product". H1 "The card-intelligence layer for **payment platforms.**" Subhead opens on deploy-in-your-cloud / BYOL. Dual CTA (Book a demo / Talk to sales).
-2. **Anatomy of a lookup** (white). 2-col: copy ("the engine running in your environment") + 4 grouped bullets (Identity / Issuer / Flags & DCC / Provenance) | dark code panel (`findthisbin-engine · your-cloud`, `GET https://bins.internal/v1/bins/53847012`) + canonical JSON.
-3. **Capabilities** (off-white). H2 "Four things we obsess over." 2×2 pillars — **01 Deploy in your cloud** ("Run it where your data lives.") / 02 EU & compliance / 03 Accuracy / 04 Performance.
-4. **Endpoints** (dark). H2 "Three endpoints. Everything you need." 3 cards: `GET /v1/bins/{bin}` · `POST /v1/bins/batch` (≤10k) · `GET /v1/dcc/{bin}`. Link → `/docs#reference`.
-5. **Fits your stack** (white). H2 "Plugs into every decision in your flow." 6 cards.
-6. **Final CTA** (gradient): "See it on your own BINs." + Book a demo / Talk to sales. **Footer.**
+The "engine spec sheet" page — left-aligned and mono-forward, visually distinct from Home's split hero.
+1. **Hero** (dark, left-aligned). Pill "Product". H1 "The card-intelligence layer for **payment platforms.**" Subhead opens on deploy-in-your-cloud / BYOL. Dual CTA (Book a demo / Talk to sales). Below the CTAs, the **request bar**: a wide dark panel with a lime `GET` chip + `https://bins.internal/v1/bins/53847012` (BIN in cyan, blinking lime caret) + right-aligned mono status `→ 200 OK · sub-10ms`.
+2. **Anatomy of a lookup** (white). 2-col: copy ("the engine running in your environment") + 4 grouped bullets (Identity / Issuer / Flags & DCC / Provenance) | dark code panel (`findthisbin-engine · your-cloud`, `GET https://bins.internal/v1/bins/53847012`) + canonical JSON + status-line footer `→ 200 OK · scheme: "mastercard" · confidence: 0.98`.
+3. **Spec sheet** (off-white). H2 "Four things we obsess over." Four stat tiles — **<10ms** p99 lookup latency · **99.9%** uptime target · **8-digit** range precision · **EU** residency option — each with a mono label + one line. (All four are the site's sanctioned inline claims; nothing invented.) Below: three grouped capability lists — **Deployment** / **Data quality** / **Compliance** — with violet top rails and lime-deep ✓ items. This replaced the 2×2 pillar grid cloned from Home.
+4. **Endpoints** (dark). H2 "Three endpoints. Everything you need." 3 cards: `GET /v1/bins/{bin}` · `POST /v1/bins/batch` (≤10k) · `GET /v1/dcc/{bin}`. Verb-chip convention: GET cyan, POST lime.
+5. **Fits your stack** (white). H2 "Plugs into every decision in your flow." A five-step **payment-flow stepper** — Authorize · Route · Price · Present · Analyze — with mono index nodes on a top rail (vertical rail on mobile); each step carries the matching use case. This replaced the 6-card grid cloned from Home.
+6. **Final CTA** (`FinalCta.astro`): "See it on your own BINs." + lead + Book a demo / Talk to sales. **Footer.**
+
+## Page — Features (`features.astro`)
+The capability atlas + deployment comparison. (This page has no `.dc.html` prototype — it was re-authored in the 2026-08 pass to replace the interim page adapted from the Pricing prototype.)
+1. **Header** (dark, centered). Mono eyebrow `// features` (violet). H1 "One engine, every capability." Subhead: everything runs in your environment, on your licenses, same engine either way. Dual CTA (Book a demo / Talk to sales) — the header previously had none.
+2. **Capability atlas** (white). H2 "What the engine does." Five-cell bento (6-col grid, cells span 4/2 then 2/2/2): **Lookup & batch** (wide dark cell, `▸` glyph, mono request lines) · **DCC eligibility** (`€$`) · **Flags & regulation** (`⊞`) · **Confidence & provenance** (`∿`) · **Connectors & seed data** (`⇲`, violet-tinted cell). Glyph chips (`.glyph` in global.css) are the brand-native icon system — no icon font.
+3. **Deployment options** (`id="tiers"`, dark). H2 "Three ways to run it." Three horizontal rows (not cards — Home owns the cards): name + mono chip ("self-hosted" / lime "most popular" / "fully managed") + text + ✓ checklist; middle row highlighted violet. CTA "Book a demo".
+4. **Comparison table** (off-white). H2 "Compare deployment options." Horizontally scrollable (`min-width:720px`), columns Self-hosted / **Managed in your cloud** (violet) / Fully managed. Real capability rows only (the prototype's three self-referential rows were dropped; "Air-gappable install" added). **SOC 2 renders "Roadmap" in every column** — it is in progress company-wide; no deployment model may show a check.
+5. **POC callout** (white). Dashed-violet panel, mono tag "Proof of concept", H2 "Evaluate with a POC in your own cloud.", CTA **Book a demo**.
+6. **Volume callout** (dark band). Signature-gradient panel: H2 "Multiple environments, regions, or a managed rollout?" + "Talk to sales" white button.
+7. **FAQ accordion** (off-white, max-width 820). H2 "Deployment questions." 8 items, single-open (first open by default), no-JS shows all.
+8. **Close** (`FinalCta.astro`). Trust strip (Runs in your cloud · Your data never leaves · Out of PCI scope · DPA available) + H2 "Book a demo today." + Book a demo / Talk to sales. **Footer.**
 
 ## Page 5 — Company (`company.astro`)
 1. **Hero** (dark). Eyebrow "Company". H1 "Building the trust layer for **payments.**" + mission subhead.
 2. **Mission / story** (white). 2-col: H2 "BIN data was stuck in the 6-digit era. Payments moved on." | 3 paragraphs (the middle one references "a sub-10ms engine you run in your own cloud").
 3. **Principles** (off-white). H2 "Principles we build on." 4 numbered cards: Precision over guesswork · Developer-first (no "free tier" claim) · **Runs in your environment** · Out of PCI scope.
-4. **Careers** (`id="careers"`, dark). Eyebrow "Careers". H2 "Come build payments infrastructure." + 3 roles (Senior Data Engineer — BIN Pipeline · Backend Engineer — Low-latency API · Developer Advocate — Payments), each "Remote (EU) · Full-time" + "View role →". CTA "Get in touch" → sales. (Footer Careers link targets `#careers`.)
-5. **Final CTA** (gradient): "Build on card intelligence you can trust." + Book a demo / Talk to sales. **Footer.**
+4. **Careers** (`id="careers"`, dark). Eyebrow "Careers". H2 "Come build payments infrastructure." + 3 role rows (Senior Data Engineer — BIN Pipeline · Backend Engineer — Low-latency API · Developer Advocate — Payments), each "Remote (EU) · Full-time". Rows are deliberately **not** links — no ATS or role pages exist. CTA "Get in touch" → **`/contact/?intent=careers`** (was `?intent=sales`, which landed applicants on deployment-scoping copy). (Footer Careers link targets `#careers`.)
+5. **Final CTA** (`FinalCta.astro`): "Build on card intelligence you can trust." + lead + Book a demo / Talk to sales. **Footer.**
 
 ## Page 6 — Contact / Book-a-demo (`contact.astro`) + Slack webhook
-The single destination for **both** primary CTAs, switched by `?intent=`:
+The single destination for the primary CTAs, switched by `?intent=`:
 - `?intent=demo` (default) — eyebrow "Book a demo", heading "See the engine in your stack."; CTA "Book a demo"; email `demo@findthisbin.com`.
 - `?intent=sales` — eyebrow "Talk to sales", heading "Let's talk deployment."; CTA "Request pricing"; email `sales@findthisbin.com`.
+- `?intent=careers` — eyebrow "Careers", heading "Come build with us."; CTA "Send your note"; reassurance list and "what happens next" swap to hiring copy; the deployment-preference select is hidden; **no "Prefer email?" row** (there is no careers@ inbox — inventing one would just bounce).
 
-Any non-`sales` intent (including legacy `?intent=api-key`) falls through to `demo`.
+Any other value (including legacy `?intent=api-key`) falls through to `demo`.
 
-**Layout** (dark, 2-col `0.85fr 1fr`, stacks ≤940px): left = intent-driven heading/subhead + 3 reassurance check-rows (**Deployed in your cloud in days, not months** · **Your data never leaves your environment** · **Out of PCI scope · DPA · EU-hosting option**) + a "What happens next" card with a contact-email link; right = `ContactForm.astro` (gradient glow border).
+**Layout** (dark, 2-col `0.85fr 1fr`, stacks ≤940px): left = intent-driven heading/subhead + 3 reassurance check-rows + a "What happens next" card; right = `ContactForm.astro` (gradient glow border).
 
-**Fields:** Full name\*, Work email\*, Company\* (name+email in a 2-col row), Role (shown for both intents, optional), **Deployment preference** (`<select>`, field name `volume`): *Not sure yet* (default) / *Self-hosted / BYOC* / *Managed in our cloud* / *Fully managed (BYOL)*, Message (textarea; label/placeholder switch by intent), a honeypot `website` field. Validate: name non-empty, email `^[^@\s]+@[^@\s]+\.[^@\s]+$`, company non-empty. The switch link below the form toggles to the **other** intent. Submit = lime, disabled + "Sending…" while submitting.
+**Fields:** Full name\*, Work email\*, Company\* (name+email in a 2-col row), Role (optional), **Deployment preference** (`<select>`, field name `volume`, hidden for careers): *Not sure yet* (default) / *Self-hosted / BYOC* / *Managed in our cloud* / *Fully managed (BYOL)*, Message (textarea; label/placeholder switch by intent), a honeypot `website` field. Validate: name non-empty, email `^[^@\s]+@[^@\s]+\.[^@\s]+$`, company non-empty. The switch link below the form points at the other journey (demo ↔ sales; careers → demo). Submit = lime, disabled + "Sending…" while submitting.
 
-**Progressive enhancement.** The form natively POSTs to `/api/contact` (303-redirects back with `?sent=1`/`?error=1`, works without JS); a small script intercepts submit, fetches with `Accept: application/json`, and swaps to the success pane inline. Success title "Request received." + intent-specific body + a cosmetic `ref:` chip.
+**Progressive enhancement.** The form natively POSTs to `/api/contact` (303-redirects back with `?sent=1`/`?error=1`, works without JS); a small script intercepts submit, fetches with `Accept: application/json`, and swaps to the success pane inline. Success title "Request received." + intent-specific body + CTAs "Back to home" / "Explore the product". (The cosmetic `ref:` chip was removed in the 2026-08 pass — a fabricated ticket ID read as dishonest.)
 
-**`/api/contact` (`prerender=false`).** Reads `SLACK_WEBHOOK_URL` via `import { env } from "cloudflare:workers"`, validates, honeypot-guards, and posts a Slack Block Kit message. `label = intent === "sales" ? "Talk to sales" : "Book a demo"`. Section fields: Name · Work email · Company · Role · **Deployment preference** (`lead.volume`) · Intent, then a Message section. Missing webhook → 500 (logged); Slack non-2xx/throw → 502; honeypot non-empty → fake success, deliver nothing. Set `SLACK_WEBHOOK_URL` via `wrangler secret put` / `.dev.vars` (never in Terraform state).
+**`/api/contact` (`prerender=false`).** Reads `SLACK_WEBHOOK_URL` via `import { env } from "cloudflare:workers"`, validates, honeypot-guards, and posts a Slack Block Kit message. `label = intent==="sales" ? "Talk to sales" : intent==="careers" ? "Careers" : "Book a demo"`. Section fields: Name · Work email · Company · Role · **Deployment preference** (`lead.volume`) · Intent, then a Message section. Missing webhook → 500 (logged); Slack non-2xx/throw → 502; honeypot non-empty → fake success, deliver nothing. Set `SLACK_WEBHOOK_URL` via `wrangler secret put` / `.dev.vars` (never in Terraform state).
 
 ## CTA wiring (global)
-Every primary CTA routes through the contact form, by intent (centralized in `src/lib/site.ts`):
-- **"Book a demo"** (nav button, hero, deployment-models CTA, try-it-live, docs quickstart "Start here", docs utility bar, POC callout, all closers) → **`/contact?intent=demo`**.
-- **"Talk to sales"** / **"Request pricing"** (hero secondary on inner pages, PSP, connectors, all pricing tier CTAs, volume callout, company "Get in touch", all closers) → **`/contact?intent=sales`**.
-- **"See deployment options"** (Home hero secondary) → **`/#deployment`**.
-- **"Sign in"** (nav only) stays a placeholder. There is **no** "Get your free API key" CTA anywhere.
+Every CTA routes through the contact form, by intent (centralized in `src/lib/site.ts`):
+- **"Book a demo"** (nav button, heroes, deployment-models CTAs, try-it-live, POC callouts/strips, all closers) → **`/contact/?intent=demo`**.
+- **"Talk to sales"** (inner-page hero secondary, PSP section, connectors, volume callout, all closers) → **`/contact/?intent=sales`**. ("Request pricing" survives only as the sales-intent submit button label.)
+- **"Get in touch"** (Company careers) → **`/contact/?intent=careers`**.
+- **"See deployment options"** (Home hero secondary) → **`/#deployment`**; **"See features"** (Home PSP secondary) → **`/features/`**.
+- There is **no** "Get your free API key" CTA anywhere, and labels are never improvised per-section — the constants above are the only labels.
 
 ---
 
@@ -304,17 +300,17 @@ Passive scroll listener toggles `scrolled` at `scrollY > 12`; hamburger toggles 
   Synthesis (deterministic): scheme by first digit (4=Visa, 2/5=Mastercard, 3=Amex, 6=Discover, else Unknown); `sum` = digit sum; `type = ['Credit','Debit','Prepaid','Charge'][sum%4]`; country `['DE','FR','ES','NL','IT','US','GB','PL','IE','SE'][sum%10]` (matching currency); issuer `['Deutsche Bank','Santander','ING Group','UniCredit','Barclays','Citi','Nordea','Raiffeisen'][sum%8]`; `commercial = sum%5===0`; `regulated_debit = type==='Debit' && sum%2===0`; `dcc = scheme!=='Amex'`; `confidence = 0.84 + (sum%9)/100`; `bestGuess:true`.
 - Result card: Scheme, Type, Issuer (+ product), Country, Currency, DCC, Flags (lime ✓ / muted ✕), and a Confidence bar (gradient fill) with a hint: "Exact 8-digit range match" vs "Best-guess match · lower confidence" + "Dataset version 2026-06-12".
 
-### Code language tabs (Home "How it works"; Docs quickstart) — `CodeTabs.astro`
-Active-tab swaps the visible Shiki-highlighted block (build-time, no client highlighting). Active tab = lime text/border on a faint lime bg.
+### Code language tabs (Home "How it works"; Product "Anatomy") — `CodeTabs.astro`
+Active-tab swaps the visible Shiki-highlighted block (build-time, no client highlighting). Active tab = lime text/border on a faint lime bg. Optional `footer` renders the mono status line (`→ 200 OK · scheme: "mastercard" · confidence: 0.98`).
 
-### Pricing FAQ
+### Features FAQ
 Single-open accordion, item 0 open by default; `+`↔`–`. No-JS shows all answers. **There is no pricing toggle** (per-lookup/annual pricing was removed).
 
 ## Responsive & accessibility
-Mobile-first; key breakpoints **860px** (nav), **980px** (hero), **900px** (2-col + footer + deployment cards + docs), **820px** (pillars), **920px** (pricing tiers stack). Fluid `clamp()` type/spacing. Comparison table scrolls horizontally under ~720px. Maintain WCAG AA contrast on dark sections; semantic landmarks; keyboard-operable accordions/tabs (real `<button>`s, `aria-expanded`); visible focus states.
+Mobile-first; key breakpoints **860px** (nav, atlas bento), **980px** (hero, spec tiles), **900px** (2-col + footer + deployment cards), **820px** (pillars, spec groups, deployment rows). Fluid `clamp()` type/spacing. Comparison table scrolls horizontally under ~720px. Maintain WCAG AA contrast on dark sections; semantic landmarks; keyboard-operable accordions/tabs (real `<button>`s, `aria-expanded`); visible focus states.
 
 ## Assets
 - **Fonts:** Space Grotesk, IBM Plex Sans, IBM Plex Mono — self-hosted via the Astro Fonts API.
-- **Icons:** inline SVGs only (search magnifier, footer GitHub/X/LinkedIn).
+- **Icons:** inline SVGs only (nav toggle bars). Feature/endpoint "icons" are **mono glyph chips** (`.glyph`), not an icon font.
 - **Logos:** FindThisBIN is a text wordmark. **No partner/customer logos.** Card-scheme names are plain text / generic motifs — never trademarked logo files.
 - **No raster images** — all visuals are CSS gradients, glows, and type.
