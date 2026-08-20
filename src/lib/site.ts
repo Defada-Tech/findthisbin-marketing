@@ -22,7 +22,7 @@ export const FAMILY_LINKS = [
   { href: PARENT_URL, label: PARENT_NAME },
   { href: "https://www.trypathproof.com", label: "Pathproof" },
   { href: "https://www.trychargebackhq.com", label: "ChargebackHQ" },
-  { href: `${PARENT_URL}products/`, label: "3DSCore" },
+  { href: `${PARENT_URL}3dscore/`, label: "3DSCore" },
 ] as const;
 
 /**
