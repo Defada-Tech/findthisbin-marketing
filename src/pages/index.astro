@@ -1,6 +1,5 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Eyebrow from "../components/Eyebrow.astro";
 import Button from "../components/Button.astro";
 import DemoPanel from "../components/DemoPanel.astro";
 import BinPlayground from "../components/BinPlayground.astro";
@@ -165,7 +164,6 @@ const compliance = [
         <article class="pillar">
           <div class="pillar-glow glow-violet" aria-hidden="true"></div>
           <div class="pillar-body">
-            <Eyebrow label="01 · Deploy in your cloud" tone="lime" />
             <h3 class="h3">Run it where your data lives.</h3>
             <p class="pillar-text">Self-host in your own cloud, VPC, or on-prem — air-gappable. Or let us deploy and operate it inside your environment. Same engine either way; you choose who runs the ops.</p>
             <pre class="mini-code mono"><code>$ helm install findthisbin ./engine
@@ -176,7 +174,6 @@ const compliance = [
         <article class="pillar">
           <div class="pillar-glow glow-cyan glow-bl" aria-hidden="true"></div>
           <div class="pillar-body">
-            <Eyebrow label="02 · Correctness &amp; performance" tone="cyan" />
             <h3 class="h3">Correct data, on the hot path.</h3>
             <p class="pillar-text">True 8-digit precision and multi-source merge with per-field confidence, served at sub-10ms p99 and resistant to BIN-enumeration bursts. Your engineers integrate a clean REST API with SDKs in 5 languages.</p>
             <div class="perf-mini">
@@ -194,7 +191,6 @@ const compliance = [
     <div class="deploy-bg" aria-hidden="true"></div>
     <div class="wrap">
       <div class="section-head center" data-reveal>
-        <Eyebrow label="Deployment models" tone="lime" class="center-eyebrow" />
         <h2 class="h2 on-dark">One engine. You choose who runs it.</h2>
         <p class="lead lead-center on-dark">Self-host it, have us operate it in your cloud, or run fully managed. Every model runs the exact same engine — the only difference is who keeps the lights on.</p>
       </div>
@@ -250,7 +246,7 @@ const compliance = [
       <div class="poc-strip" data-reveal>
         <span class="poc-tag mono">Proof of concept</span>
         <p class="poc-text">Evaluate in your own cloud: stand up the engine on bundled seed data, then run it against your real BINs before you commit.</p>
-        <a href={BOOK_DEMO_URL} class="poc-link">Book a demo →</a>
+        <a href={BOOK_DEMO_URL} class="poc-link">{BOOK_DEMO_LABEL} →</a>
       </div>
     </div>
   </section>
@@ -261,7 +257,6 @@ const compliance = [
     <div class="try-grid grid-texture" aria-hidden="true"></div>
     <div class="wrap wrap-narrow">
       <div class="section-head center" data-reveal>
-        <Eyebrow label="Playground" tone="cyan" class="center-eyebrow" />
         <h2 class="h2 on-dark">Look up any BIN, right now.</h2>
         <p class="lead lead-center">Type a 6–8 digit BIN and see the engine's output — the same record your integration receives, wherever you run it.</p>
       </div>
@@ -318,7 +313,6 @@ const compliance = [
     <div class="wrap">
       <div class="two-col">
         <div data-reveal>
-          <Eyebrow label="For payment platforms" tone="cyan" />
           <h2 class="h2 on-dark psp-h2">Embed card intelligence across your entire stack.</h2>
           <p class="lead on-dark">PSPs, orchestrators, and ISVs run the FindThisBIN engine to power smarter routing, surcharging, DCC eligibility, richer checkout UX, and risk signals — all from one deployment. White-label, high-volume pricing, SLAs, and EU data-residency guarantees included.</p>
           <div class="cta-row">
@@ -475,9 +469,6 @@ const compliance = [
   .glow-violet { top: -40px; right: -40px; background: radial-gradient(circle, color-mix(in srgb, var(--violet) 40%, transparent), transparent 70%); }
   .glow-cyan { background: radial-gradient(circle, color-mix(in srgb, var(--cyan) 35%, transparent), transparent 70%); }
   .glow-bl { bottom: -40px; left: -40px; }
-  /* Spacing between the card label and title lives on the h3: the label is a
-     child component (Eyebrow), which page-scoped styles cannot reach. */
-  .pillar .h3 { margin-top: 14px; }
   .pillar-text { font-size: 15.5px; line-height: 1.6; color: var(--text-dark-body); margin: 0 0 22px; }
   .mini-code {
     background: var(--ink-black);

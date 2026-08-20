@@ -1,6 +1,5 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Eyebrow from "../components/Eyebrow.astro";
 import Button from "../components/Button.astro";
 import FinalCta from "../components/FinalCta.astro";
 import {
@@ -115,9 +114,6 @@ const cellKind = (c: string) => (c === "✓" ? "check" : c === "—" ? "dash" : 
   <section class="header">
     <div class="header-bg" aria-hidden="true"></div>
     <div class="wrap wrap-narrow header-wrap">
-      <div class="header-eyebrow">
-        <Eyebrow label="// features" mono tone="violet" />
-      </div>
       <h1 class="h1-page">One engine, every capability.</h1>
       <p class="header-lead">
         Everything below runs in your environment, on your licenses — self-hosted, managed in
@@ -280,7 +276,7 @@ const cellKind = (c: string) => (c === "✓" ? "check" : c === "—" ? "dash" : 
 </Layout>
 
 <style>
-  /* ── Header — the mono "// features" identity (no pill here) ──────── */
+  /* ── Header ───────────────────────────────────────────────────────── */
   .header { position: relative; background: var(--ink); overflow: hidden; }
   .header-bg {
     position: absolute;
@@ -294,7 +290,6 @@ const cellKind = (c: string) => (c === "✓" ? "check" : c === "—" ? "dash" : 
     text-align: center;
     z-index: 1;
   }
-  .header-eyebrow { display: flex; justify-content: center; margin-bottom: 16px; font-size: 14px; }
   .header-lead {
     font-size: clamp(16px, 1.8vw, 19px);
     line-height: 1.6;
@@ -438,7 +433,7 @@ const cellKind = (c: string) => (c === "✓" ? "check" : c === "—" ? "dash" : 
     padding: clamp(28px, 4vw, 44px);
     text-align: center;
   }
-  .poc-eyebrow, .poc-tag {
+  .poc-tag {
     display: block;
     font-size: 12px;
     letter-spacing: 0.06em;

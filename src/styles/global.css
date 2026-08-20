@@ -271,17 +271,6 @@ a {
 }
 
 /* Headings */
-.eyebrow {
-  /* Use the bridge, not the raw family. Naming "IBM Plex Sans" first bypassed
-     --ff-body's size-adjusted fallback — the exact mechanism §5 says keeps CLS
-     near zero — so this element alone reflowed on font swap. */
-  font-family: var(--font-sans);
-  font-weight: 700;
-  font-size: 13px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  margin: 0;
-}
 .h1 {
   font-family: var(--font-display);
   font-weight: 700;
@@ -349,18 +338,11 @@ a {
   max-width: 680px;
   margin-bottom: 44px;
 }
-.section-head .h2 {
-  margin-top: 14px;
-}
 .section-head.center {
   max-width: 660px;
   margin-left: auto;
   margin-right: auto;
   text-align: center;
-}
-.center-eyebrow {
-  justify-content: center;
-  display: flex;
 }
 .lead-center {
   margin-left: auto;
