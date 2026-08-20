@@ -1,0 +1,55 @@
+---
+import Layout from "./Layout.astro";
+
+/**
+ * Shared shell for the four legal pages — the band, tight measure, and type
+ * rules below were byte-identical copies in each page before this layout.
+ * Slotted content belongs to the page, not this component, so the content
+ * rules go through `.content :global(...)` to reach it.
+ */
+interface Props {
+  title: string;
+  description: string;
+  heading: string;
+  lastUpdated: string;
+}
+const { title, description, heading, lastUpdated } = Astro.props;
+---
+
+<Layout title={title} description={description}>
+  <section class="page">
+    <div class="bg" aria-hidden="true"></div>
+    <div class="wrap wrap-tight">
+      <h1 class="h1-page">{heading}</h1>
+      <p class="date">Last updated: {lastUpdated}</p>
+      <div class="content"><slot /></div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .page {
+    position: relative;
+    background: var(--ink);
+    overflow: hidden;
+    padding: clamp(56px, 8vw, 96px) 0 clamp(64px, 8vw, 96px);
+  }
+  .bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(100% 80% at 50% -10%, color-mix(in srgb, var(--violet) 22%, transparent), transparent 55%);
+  }
+  .wrap-tight {
+    max-width: 720px;
+    position: relative;
+    z-index: 1;
+  }
+  .h1-page { margin-bottom: 8px; }
+  .date { font-size: 14px; color: var(--text-dark-muted); margin: 0 0 36px; }
+  .content :global(h2) { font-family: var(--font-display); font-weight: 700; font-size: 22px; color: var(--white); margin: 36px 0 12px; }
+  .content :global(p), .content :global(li) { font-size: 15px; line-height: 1.7; color: var(--text-dark-body); margin: 0 0 14px; }
+  .content :global(ul) { padding-left: 20px; margin: 0 0 14px; }
+  .content :global(a) { color: var(--cyan); text-decoration: none; }
+  .content :global(a:hover) { text-decoration: underline; }
+</style>

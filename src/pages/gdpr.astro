@@ -1,69 +1,37 @@
 ---
-import Layout from "../layouts/Layout.astro";
+import LegalLayout from "../layouts/LegalLayout.astro";
 import { DPA_PATH } from "../lib/site";
-
-const lastUpdated = "2026-07-01";
 ---
 
-<Layout title="GDPR Compliance — FindThisBIN" description="FindThisBIN GDPR compliance — EU data residency, lawful basis, and data subject rights.">
-  <section class="page">
-    <div class="bg" aria-hidden="true"></div>
-    <div class="wrap wrap-tight">
-      <h1 class="h1-page">GDPR Compliance</h1>
-      <p class="date">Last updated: {lastUpdated}</p>
+<LegalLayout
+  title="GDPR Compliance — FindThisBIN"
+  description="FindThisBIN GDPR compliance — EU data residency, lawful basis, and data subject rights."
+  heading="GDPR Compliance"
+  lastUpdated="2026-07-01"
+>
+  <h2>1. Our Commitment</h2>
+  <p>FindThisBIN is committed to compliance with the EU General Data Protection Regulation (GDPR). We design our engine and operations to minimize personal data exposure — the engine works exclusively with BIN prefixes and is out of the card data path by design.</p>
 
-      <h2>1. Our Commitment</h2>
-      <p>FindThisBIN is committed to compliance with the EU General Data Protection Regulation (GDPR). We design our engine and operations to minimize personal data exposure — the engine works exclusively with BIN prefixes and is out of the card data path by design.</p>
+  <h2>2. Data Residency</h2>
+  <p>For self-hosted and managed-in-your-cloud deployments, your data never leaves your VPC or chosen region. For fully-managed deployments, we offer EU-hosting with data stored in Frankfurt (eu-central-1). We do not transfer customer data outside the chosen region.</p>
 
-      <h2>2. Data Residency</h2>
-      <p>For self-hosted and managed-in-your-cloud deployments, your data never leaves your VPC or chosen region. For fully-managed deployments, we offer EU-hosting with data stored in Frankfurt (eu-central-1). We do not transfer customer data outside the chosen region.</p>
+  <h2>3. Lawful Basis</h2>
+  <p>Processing of personal data (limited to BIN prefixes and, where applicable, contact details provided through demo/sales inquiries) is based on:</p>
+  <ul>
+    <li><strong>Contractual necessity</strong> — to provide the FindThisBIN engine under the service agreement</li>
+    <li><strong>Legitimate interest</strong> — to respond to business inquiries and improve our services</li>
+    <li><strong>Consent</strong> — where applicable (e.g., marketing communications)</li>
+  </ul>
 
-      <h2>3. Lawful Basis</h2>
-      <p>Processing of personal data (limited to BIN prefixes and, where applicable, contact details provided through demo/sales inquiries) is based on:</p>
-      <ul>
-        <li><strong>Contractual necessity</strong> — to provide the FindThisBIN engine under the service agreement</li>
-        <li><strong>Legitimate interest</strong> — to respond to business inquiries and improve our services</li>
-        <li><strong>Consent</strong> — where applicable (e.g., marketing communications)</li>
-      </ul>
+  <h2>4. Data Subject Rights</h2>
+  <p>Under the GDPR, individuals have the right to access, rectify, erase, restrict processing, object to processing, and data portability. To exercise these rights, contact <a href="mailto:privacy@findthisbin.com">privacy@findthisbin.com</a>. We respond within 30 days.</p>
 
-      <h2>4. Data Subject Rights</h2>
-      <p>Under the GDPR, individuals have the right to access, rectify, erase, restrict processing, object to processing, and data portability. To exercise these rights, contact <a href="mailto:privacy@findthisbin.com">privacy@findthisbin.com</a>. We respond within 30 days.</p>
+  <h2>5. DPA Availability</h2>
+  <p>A Data Processing Agreement is available for all customers. See our <a href={DPA_PATH}>DPA page</a> or request an executed copy at <a href="mailto:dpa@findthisbin.com">dpa@findthisbin.com</a>.</p>
 
-      <h2>5. DPA Availability</h2>
-      <p>A Data Processing Agreement is available for all customers. See our <a href={DPA_PATH}>DPA page</a> or request an executed copy at <a href="mailto:dpa@findthisbin.com">dpa@findthisbin.com</a>.</p>
+  <h2>6. EU Representative</h2>
+  <p>FindThisBIN's EU establishment is in Tallinn, Estonia. For GDPR-related inquiries, contact <a href="mailto:privacy@findthisbin.com">privacy@findthisbin.com</a>.</p>
 
-      <h2>6. EU Representative</h2>
-      <p>FindThisBIN's EU establishment is in Tallinn, Estonia. For GDPR-related inquiries, contact <a href="mailto:privacy@findthisbin.com">privacy@findthisbin.com</a>.</p>
-
-      <h2>7. Supervisory Authority</h2>
-      <p>You have the right to lodge a complaint with your local data protection supervisory authority. Our lead supervisory authority is the Estonian Data Protection Inspectorate (Andmekaitse Inspektsioon).</p>
-    </div>
-  </section>
-</Layout>
-
-<style>
-  .page {
-    position: relative;
-    background: var(--ink);
-    overflow: hidden;
-    padding: clamp(56px, 8vw, 96px) 0 clamp(64px, 8vw, 96px);
-  }
-  .bg {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background: radial-gradient(100% 80% at 50% -10%, color-mix(in srgb, var(--violet) 22%, transparent), transparent 55%);
-  }
-  .wrap-tight {
-    max-width: 720px;
-    position: relative;
-    z-index: 1;
-  }
-  .h1-page { margin-bottom: 8px; }
-  .date { font-size: 14px; color: var(--text-dark-muted); margin: 0 0 36px; }
-  h2 { font-family: var(--font-display); font-weight: 700; font-size: 22px; color: var(--white); margin: 36px 0 12px; }
-  p, li { font-size: 15px; line-height: 1.7; color: var(--text-dark-body); margin: 0 0 14px; }
-  ul { padding-left: 20px; margin: 0 0 14px; }
-  a { color: var(--cyan); text-decoration: none; }
-  a:hover { text-decoration: underline; }
-</style>
+  <h2>7. Supervisory Authority</h2>
+  <p>You have the right to lodge a complaint with your local data protection supervisory authority. Our lead supervisory authority is the Estonian Data Protection Inspectorate (Andmekaitse Inspektsioon).</p>
+</LegalLayout>

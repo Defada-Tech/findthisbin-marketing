@@ -1,69 +1,37 @@
 ---
-import Layout from "../layouts/Layout.astro";
-
-const lastUpdated = "2026-07-01";
+import LegalLayout from "../layouts/LegalLayout.astro";
 ---
 
-<Layout title="Privacy Policy — FindThisBIN" description="FindThisBIN Privacy Policy — how we collect, use, and protect your information.">
-  <section class="page">
-    <div class="bg" aria-hidden="true"></div>
-    <div class="wrap wrap-tight">
-      <h1 class="h1-page">Privacy Policy</h1>
-      <p class="date">Last updated: {lastUpdated}</p>
+<LegalLayout
+  title="Privacy Policy — FindThisBIN"
+  description="FindThisBIN Privacy Policy — how we collect, use, and protect your information."
+  heading="Privacy Policy"
+  lastUpdated="2026-07-01"
+>
+  <h2>1. Introduction</h2>
+  <p>FindThisBIN ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website findthisbin.com or engage with our sales and services.</p>
 
-      <h2>1. Introduction</h2>
-      <p>FindThisBIN ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website findthisbin.com or engage with our sales and services.</p>
+  <h2>2. Information We Collect</h2>
+  <p><strong>Information you provide:</strong> When you book a demo, contact sales, or submit a form, we may collect your name, work email, company name, role, deployment preferences, and any other details you choose to share.</p>
+  <p><strong>Automatically collected information:</strong> Our website may collect standard analytics data (page views, referrer URLs, browser type) through privacy-respecting, cookieless analytics. We do not use third-party advertising cookies or tracking pixels.</p>
 
-      <h2>2. Information We Collect</h2>
-      <p><strong>Information you provide:</strong> When you book a demo, contact sales, or submit a form, we may collect your name, work email, company name, role, deployment preferences, and any other details you choose to share.</p>
-      <p><strong>Automatically collected information:</strong> Our website may collect standard analytics data (page views, referrer URLs, browser type) through privacy-respecting, cookieless analytics. We do not use third-party advertising cookies or tracking pixels.</p>
+  <h2>3. How We Use Your Information</h2>
+  <p>We use the information we collect to:</p>
+  <ul>
+    <li>Respond to your demo or sales inquiries and follow up with relevant information</li>
+    <li>Understand how visitors interact with our site to improve the experience</li>
+    <li>Comply with legal obligations</li>
+  </ul>
 
-      <h2>3. How We Use Your Information</h2>
-      <p>We use the information we collect to:</p>
-      <ul>
-        <li>Respond to your demo or sales inquiries and follow up with relevant information</li>
-        <li>Understand how visitors interact with our site to improve the experience</li>
-        <li>Comply with legal obligations</li>
-      </ul>
+  <h2>4. Data Sharing</h2>
+  <p>We do not sell, trade, or rent your personal information. We may share data with trusted service providers who assist us in operating our website and business (e.g., email delivery, analytics), subject to appropriate data processing agreements.</p>
 
-      <h2>4. Data Sharing</h2>
-      <p>We do not sell, trade, or rent your personal information. We may share data with trusted service providers who assist us in operating our website and business (e.g., email delivery, analytics), subject to appropriate data processing agreements.</p>
+  <h2>5. Data Retention</h2>
+  <p>We retain your personal information only for as long as necessary to fulfill the purposes described in this policy, or as required by law. Contact form submissions and related communications are retained for the duration of the business relationship plus a reasonable period thereafter.</p>
 
-      <h2>5. Data Retention</h2>
-      <p>We retain your personal information only for as long as necessary to fulfill the purposes described in this policy, or as required by law. Contact form submissions and related communications are retained for the duration of the business relationship plus a reasonable period thereafter.</p>
+  <h2>6. Your Rights</h2>
+  <p>Depending on your jurisdiction, you may have rights to access, correct, delete, or port your data, and to object to or restrict processing. To exercise these rights, contact us at <a href="mailto:privacy@findthisbin.com">privacy@findthisbin.com</a>.</p>
 
-      <h2>6. Your Rights</h2>
-      <p>Depending on your jurisdiction, you may have rights to access, correct, delete, or port your data, and to object to or restrict processing. To exercise these rights, contact us at <a href="mailto:privacy@findthisbin.com">privacy@findthisbin.com</a>.</p>
-
-      <h2>7. Contact</h2>
-      <p>For questions about this policy, reach us at <a href="mailto:privacy@findthisbin.com">privacy@findthisbin.com</a>.</p>
-    </div>
-  </section>
-</Layout>
-
-<style>
-  .page {
-    position: relative;
-    background: var(--ink);
-    overflow: hidden;
-    padding: clamp(56px, 8vw, 96px) 0 clamp(64px, 8vw, 96px);
-  }
-  .bg {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background: radial-gradient(100% 80% at 50% -10%, color-mix(in srgb, var(--violet) 22%, transparent), transparent 55%);
-  }
-  .wrap-tight {
-    max-width: 720px;
-    position: relative;
-    z-index: 1;
-  }
-  .h1-page { margin-bottom: 8px; }
-  .date { font-size: 14px; color: var(--text-dark-muted); margin: 0 0 36px; }
-  h2 { font-family: var(--font-display); font-weight: 700; font-size: 22px; color: var(--white); margin: 36px 0 12px; }
-  p, li { font-size: 15px; line-height: 1.7; color: var(--text-dark-body); margin: 0 0 14px; }
-  ul { padding-left: 20px; margin: 0 0 14px; }
-  a { color: var(--cyan); text-decoration: none; }
-  a:hover { text-decoration: underline; }
-</style>
+  <h2>7. Contact</h2>
+  <p>For questions about this policy, reach us at <a href="mailto:privacy@findthisbin.com">privacy@findthisbin.com</a>.</p>
+</LegalLayout>
