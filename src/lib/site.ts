@@ -13,6 +13,18 @@ export const SITE_DESCRIPTION =
 /* Engine host shown in code/demo URLs — signals self-hosting (vs a hosted API). */
 export const ENGINE_BASE_URL = "https://bins.internal";
 
+/* The CloakHound family — parent brand plus the sibling products with public
+   sites, linked from the footer's Company column. 3DSCore has no site of its
+   own, so it points at the parent's products page. */
+export const PARENT_NAME = "CloakHound";
+export const PARENT_URL = "https://www.cloakhound.com/";
+export const FAMILY_LINKS = [
+  { href: PARENT_URL, label: PARENT_NAME },
+  { href: "https://www.trypathproof.com", label: "Pathproof" },
+  { href: "https://www.trychargebackhq.com", label: "ChargebackHQ" },
+  { href: `${PARENT_URL}products/`, label: "3DSCore" },
+] as const;
+
 /**
  * Cloudflare Web Analytics beacon token (§11). Cookieless, so no consent banner.
  *
@@ -42,7 +54,6 @@ export const CF_ANALYTICS_TOKEN: string =
 export const HOME_PATH = "/";
 export const PRODUCT_PATH = "/product/";
 export const FEATURES_PATH = "/features/";
-export const COMPANY_PATH = "/company/";
 export const CONTACT_PATH = "/contact/";
 export const PRIVACY_PATH = "/privacy/";
 export const TERMS_PATH = "/terms/";
@@ -72,10 +83,6 @@ export const SEE_DEPLOYMENT_URL = `${HOME_PATH}#deployment`;
 /* Ghost CTA pointing at the Features page (Home PSP section, Product). */
 export const SEE_FEATURES_LABEL = "See features";
 export const SEE_FEATURES_URL = FEATURES_PATH;
-/* Company careers — routes to the contact form with careers copy (there is
-   no ATS and no careers@ inbox; the form is the one honest channel). */
-export const CAREERS_LABEL = "Get in touch";
-export const CAREERS_URL = `${CONTACT_PATH}?intent=careers`;
 
 /* Trust strip — reused on the Home hero + the Features close. */
 export const TRUST_POINTS = [

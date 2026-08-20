@@ -6,7 +6,11 @@ export const prerender = false;
 
 import type { APIRoute } from "astro";
 import { env } from "cloudflare:workers";
-import { CONTACT_PATH } from "../../lib/site";
+import {
+  CONTACT_PATH,
+  BOOK_DEMO_LABEL,
+  TALK_TO_SALES_LABEL,
+} from "../../lib/site";
 
 const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 
@@ -44,12 +48,7 @@ interface Lead {
 }
 
 async function notifySlack(webhook: string, lead: Lead): Promise<void> {
-  const label =
-    lead.intent === "sales"
-      ? "Talk to sales"
-      : lead.intent === "careers"
-        ? "Careers"
-        : "Book a demo";
+  const label = lead.intent === "sales" ? TALK_TO_SALES_LABEL : BOOK_DEMO_LABEL;
   const payload = {
     text: `New ${label} request — FindThisBIN`,
     blocks: [
@@ -97,9 +96,8 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   const get = (k: string) => (form.get(k) ?? "").toString().trim();
-  const rawIntent = get("intent");
-  const intent =
-    rawIntent === "sales" || rawIntent === "careers" ? rawIntent : "demo";
+  // Legacy intent values (e.g. `careers`) fall through to demo.
+  const intent = get("intent") === "sales" ? "sales" : "demo";
 
   // Honeypot: real users never fill `website`. Pretend success, deliver nothing.
   if (get("website") !== "") return ok(request, intent);

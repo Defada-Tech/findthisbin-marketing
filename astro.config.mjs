@@ -14,7 +14,7 @@ const cfAnalyticsToken = JSON.stringify(
 // www, so canonical + sitemap URLs must use www to match the redirect target.
 export default defineConfig({
   site: "https://www.findthisbin.com",
-  // pages: 10; ssr: 2
+  // pages: 9; ssr: 2
   // ^ Machine-readable and checked by scripts/conform.mjs against the actual
   //   filesystem (§12). It replaced a prose comment that claimed "all 3 pages
   //   prerender; the site has no SSR routes" — wrong on both counts for months,

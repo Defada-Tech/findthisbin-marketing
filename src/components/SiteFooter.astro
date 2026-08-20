@@ -4,12 +4,14 @@ import {
   HOME_PATH,
   PRODUCT_PATH,
   FEATURES_PATH,
-  COMPANY_PATH,
   CONTACT_PATH,
   PRIVACY_PATH,
   TERMS_PATH,
   DPA_PATH,
   GDPR_PATH,
+  FAMILY_LINKS,
+  PARENT_NAME,
+  PARENT_URL,
 } from "../lib/site";
 
 const productLinks = [
@@ -17,10 +19,6 @@ const productLinks = [
   { href: `${HOME_PATH}#try`, label: "Try it live" },
   { href: FEATURES_PATH, label: "Features" },
   { href: `${HOME_PATH}#deployment`, label: "Deployment models" },
-];
-const companyLinks = [
-  { href: COMPANY_PATH, label: "About" },
-  { href: `${COMPANY_PATH}#careers`, label: "Careers" },
   { href: CONTACT_PATH, label: "Contact" },
 ];
 const legalLinks = [
@@ -51,7 +49,17 @@ const legalLinks = [
       </div>
       <div class="col">
         <h2>Company</h2>
-        <ul>{companyLinks.map((l) => <li><a href={l.href}>{l.label}</a></li>)}</ul>
+        <ul>
+          {
+            FAMILY_LINKS.map((l) => (
+              <li>
+                <a href={l.href} target="_blank" rel="noopener noreferrer">
+                  {l.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
       </div>
       <div class="col">
         <h2>Legal</h2>
@@ -61,6 +69,9 @@ const legalLinks = [
 
     <div class="footer-bottom">
       <span class="copyright">© 2026 FindThisBIN. All rights reserved.</span>
+      <a class="parent-link" href={PARENT_URL} target="_blank" rel="noopener noreferrer">
+        a {PARENT_NAME} product
+      </a>
     </div>
   </div>
 </footer>
@@ -141,10 +152,24 @@ const legalLinks = [
     margin-top: 52px;
     padding-top: 26px;
     border-top: 1px solid rgba(255, 255, 255, 0.07);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px 24px;
   }
   .copyright {
     font-size: 13px;
     color: var(--text-dark-faint);
+  }
+  .parent-link {
+    font-size: 13px;
+    color: var(--text-dark-muted);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  .parent-link:hover {
+    color: var(--white);
   }
 
   @media (max-width: 900px) {

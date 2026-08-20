@@ -3,11 +3,11 @@ export const prerender = false; // SSR so success/error render without JS (reads
 
 import Layout from "../layouts/Layout.astro";
 import ContactForm from "../components/ContactForm.astro";
+import { BOOK_DEMO_LABEL, TALK_TO_SALES_LABEL } from "../lib/site";
 
 const params = Astro.url.searchParams;
-const intentParam = params.get("intent");
-const intent =
-  intentParam === "sales" ? "sales" : intentParam === "careers" ? "careers" : "demo";
+// Any other intent value (incl. legacy ones like `careers`) falls through to demo.
+const intent = params.get("intent") === "sales" ? "sales" : "demo";
 const submitted = params.get("sent") === "1";
 const error =
   params.get("error") === "1"
@@ -17,60 +17,37 @@ const error =
 const copy =
   intent === "sales"
     ? {
-        eyebrow: "Talk to sales",
+        eyebrow: TALK_TO_SALES_LABEL,
         heading: "Let’s talk deployment.",
         subhead:
           "Tell us about your platform and we’ll scope the right deployment model, connectors, SLA, and data-residency setup for you.",
         nextStep:
           "A solutions engineer reviews your note and replies within one business day to scope deployment and pricing.",
-        emailLabel: "sales@findthisbin.com" as string | undefined,
+        emailLabel: "sales@findthisbin.com",
         emailHref: "mailto:sales@findthisbin.com",
       }
-    : intent === "careers"
-      ? {
-          // No invented careers@ inbox — the form is the channel, and the
-          // "Prefer email?" row is omitted rather than pointing at an address
-          // that doesn't exist.
-          eyebrow: "Careers",
-          heading: "Come build with us.",
-          subhead:
-            "We’re a small, senior team based in the EU, building payments infrastructure. Tell us what you’ve shipped and what you want to work on.",
-          nextStep:
-            "We read every note ourselves. If there’s a fit with an open role — or a future one — we reply.",
-          emailLabel: undefined,
-          emailHref: undefined,
-        }
-      : {
-          eyebrow: "Book a demo",
-          heading: "See the engine in your stack.",
-          subhead:
-            "Book a walkthrough with a solutions engineer. We’ll show the engine running in a cloud like yours, with licensed sources plugged in — and scope a proof-of-concept.",
-          nextStep:
-            "A solutions engineer reaches out within one business day to schedule your walkthrough and a proof-of-concept deployed in your cloud.",
-          emailLabel: "demo@findthisbin.com" as string | undefined,
-          emailHref: "mailto:demo@findthisbin.com",
-        };
+    : {
+        eyebrow: BOOK_DEMO_LABEL,
+        heading: "See the engine in your stack.",
+        subhead:
+          "Book a walkthrough with a solutions engineer. We’ll show the engine running in a cloud like yours, with licensed sources plugged in — and scope a proof-of-concept.",
+        nextStep:
+          "A solutions engineer reaches out within one business day to schedule your walkthrough and a proof-of-concept deployed in your cloud.",
+        emailLabel: "demo@findthisbin.com",
+        emailHref: "mailto:demo@findthisbin.com",
+      };
 
-const points =
-  intent === "careers"
-    ? [
-        "Small, senior team — based in the EU, fully remote",
-        "Payments infrastructure thousands of transactions depend on",
-        "Data pipelines, low-latency APIs, and developer experience",
-      ]
-    : [
-        "Deployed in your cloud in days, not months",
-        "Your data never leaves your environment",
-        "Out of PCI scope · DPA · EU-hosting option",
-      ];
+const points = [
+  "Deployed in your cloud in days, not months",
+  "Your data never leaves your environment",
+  "Out of PCI scope · DPA · EU-hosting option",
+];
 
 const title = `${copy.heading.replace(/’/g, "'").replace(/\.$/, "")} — FindThisBIN`;
 const description =
   intent === "sales"
     ? "Talk to the FindThisBIN team about deploying the BIN intelligence engine in your cloud — deployment models, connectors, SLAs, and EU data residency."
-    : intent === "careers"
-      ? "Careers at FindThisBIN — a small, senior EU team building the BIN intelligence engine payment platforms run in their own cloud."
-      : "Book a FindThisBIN demo: see the BIN intelligence engine running in a cloud like yours, with your licensed sources plugged in, and scope a proof-of-concept.";
+    : "Book a FindThisBIN demo: see the BIN intelligence engine running in a cloud like yours, with your licensed sources plugged in, and scope a proof-of-concept.";
 ---
 
 <Layout title={title} description={description}>
@@ -95,13 +72,9 @@ const description =
         <div class="next-card">
           <div class="next-label">What happens next</div>
           <p>{copy.nextStep}</p>
-          {
-            copy.emailHref && (
-              <div class="next-email">
-                Prefer email? <a href={copy.emailHref}>{copy.emailLabel}</a>
-              </div>
-            )
-          }
+          <div class="next-email">
+            Prefer email? <a href={copy.emailHref}>{copy.emailLabel}</a>
+          </div>
         </div>
       </div>
 
