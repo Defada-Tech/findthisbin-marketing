@@ -7,16 +7,17 @@ fully-managed (BYOL), plugging in their own data licenses. It is sold as
 enterprise infrastructure, not a self-serve hosted API: the primary action
 everywhere is **"Book a demo"** (there is no signup or per-lookup pricing).
 
-**Ten pages** — Home (`/`), Product (`/product/`), Features (`/features/`),
-Company (`/company/`), a Contact / book-a-demo form (`/contact/`), four legal
-pages (`/privacy/`, `/terms/`, `/dpa/`, `/gdpr/`), and a branded `404` — built as
-a near-zero-JS site on **Astro 6** and deployed to **Cloudflare Workers (Static
-Assets)**.
+**Nine pages** — Home (`/`), Product (`/product/`), Features (`/features/`),
+a Contact / book-a-demo form (`/contact/`), four legal pages (`/privacy/`,
+`/terms/`, `/dpa/`, `/gdpr/`), and a branded `404` — built as a near-zero-JS
+site on **Astro 6** and deployed to **Cloudflare Workers (Static Assets)**.
+There is no Company page; the footer's Company column links the CloakHound
+product family instead.
 
 **Two routes are on-demand**, not one: `/api/contact` (posts submissions to
 Slack) and `/contact/` itself, which is SSR so it can render the success/error
 pane from query params without JavaScript. `astro.config.mjs` carries a
-`// pages: 10; ssr: 2` marker that `npm run conform` checks against the
+`// pages: 9; ssr: 2` marker that `npm run conform` checks against the
 filesystem.
 
 ## Stack
@@ -53,10 +54,11 @@ highlighting is build-time via Astro's Shiki with a custom theme
 ```
 src/
   layouts/Layout.astro          ← <head> (BaseHead), SiteNav + <slot/> + SiteFooter, scroll-reveal
+  layouts/LegalLayout.astro     ← shared shell for the four legal pages
   components/
     BaseHead.astro              ← SEO meta, OG, fonts, favicon
-    SiteNav.astro / SiteFooter.astro / Wordmark.astro
-    Eyebrow.astro / Button.astro
+    SiteNav.astro / SiteFooter.astro / Wordmark.astro / Button.astro
+    FinalCta.astro              ← the closing gradient CTA band on every page
     CodeTabs.astro              ← tabbed, Shiki-highlighted code panel
     DemoPanel.astro             ← hero animated JSON response
     BinPlayground.astro         ← "Try it live" interactive widget
@@ -69,8 +71,8 @@ src/
   lib/
     securityHeaders.ts          ← the §10 header set; single source for _headers + middleware
   middleware.ts                 ← applies the §10 headers to SSR responses (_headers misses them)
-  pages/{index,product,features,company,contact}.astro
-  pages/{privacy,terms,dpa,gdpr}.astro
+  pages/{index,product,features,contact}.astro
+  pages/{privacy,terms,dpa,gdpr}.astro  ← legal (LegalLayout)
   pages/404.astro               ← branded not-found
   pages/api/contact.ts          ← SSR endpoint (prerender=false) → Slack webhook
   styles/global.css             ← design tokens, @theme bridge, keyframes, shared utilities
@@ -106,9 +108,10 @@ See **`DEPLOYMENT.md`** for the full runbook (prerequisites, ordering, token sco
 
 - **`DESIGN.md`** — the design spec: positioning, tokens, per-section page specs,
   copy, CTA wiring, and the BIN-playground logic. Records the honesty constraints
-  (no fabricated partner logos or scale metrics; SOC 2 "in progress"). **Its page
-  specs are stale** — they still describe the pre-repositioning structure. See
-  the note at the top of that file.
+  (no fabricated partner logos or scale metrics; SOC 2 "in progress"). Its page
+  specs match the codebase as of the 2026-08 refinement pass; the struck-through
+  Pricing / Docs / Company sections are historical. See the note at the top of
+  that file.
 - **`../MARKETING_TECH_STACK.md`** — the cross-site stack standard this repo
   conforms to. `npm run conform` enforces the mechanical parts.
 - **`design_files/*.dc.html`** — the HTML design references (prototypes; not shipped) + `findthisbin-design-addendum.md` (the v3 repositioning deltas). `design_files/support.js` is the prototype runtime and is gitignored.

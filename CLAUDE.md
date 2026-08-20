@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Marketing site for **FindThisBIN** (findthisbin.com) — a **deployable BIN** (Bank Identification Number) **intelligence engine** that payment platforms (PSPs) run in their **own cloud** (self-hosted / BYOC, managed-in-your-cloud, or fully-managed BYOL), plugging in their own data licenses (Visa VBASS, Mastercard, commercial, CSV). It is sold as **enterprise infrastructure, not a self-serve hosted API** — there is no signup, no API-key flow, and no per-lookup pricing; the primary CTA everywhere is **"Book a demo"**.
 
-**Ten pages** — Home (`/`), Product (`/product/`), Features (`/features/`), Company (`/company/`), a Contact / book-a-demo form (`/contact/`), four legal pages (`/privacy/`, `/terms/`, `/dpa/`, `/gdpr/`), and a branded `404` — sharing one nav, footer, and visual system, built as a **near-zero-JS, static-first site** on **Astro 6** and deployed to **Cloudflare Workers (Static Assets)**.
+**Nine pages** — Home (`/`), Product (`/product/`), Features (`/features/`), a Contact / book-a-demo form (`/contact/`), four legal pages (`/privacy/`, `/terms/`, `/dpa/`, `/gdpr/`), and a branded `404` — sharing one nav, footer, and visual system, built as a **near-zero-JS, static-first site** on **Astro 6** and deployed to **Cloudflare Workers (Static Assets)**.
 
 **Two routes are on-demand**, not one: `/api/contact` (posts form submissions to Slack) and `/contact/` itself, which is SSR so it renders the success/error pane from query params without JS. `astro.config.mjs` carries a `// pages: 10; ssr: 2` marker; `npm run conform` checks it against the filesystem, because the prose comment that preceded it was wrong for months.
 
@@ -25,7 +25,7 @@ Source material:
 - **Astro 6**, `output: "static"` (all pages prerender) + **`@astrojs/cloudflare`** adapter (`imageService: "passthrough"`, `prerenderEnvironment: "node"`).
 - **Tailwind CSS v4** via `@tailwindcss/vite` (no `tailwind.config.*` — config lives in CSS).
 - **`@astrojs/sitemap`**; `site` set to the canonical host.
-- **Self-hosted fonts via the Astro Fonts API** (`fontProviders.google()` in `astro.config.mjs`) — *not* `<link>` to Google Fonts (DESIGN.md's `<link>` instruction predates this stack; self-host instead). Families (matched to the sibling `../pathproof-marketing`): **Space Grotesk** (display, 500/600/700), **IBM Plex Sans** (body/UI, 400/500/600/700), **IBM Plex Mono** (code/eyebrows, 400/500), each exposed as a `--ff-*` CSS variable.
+- **Self-hosted fonts via the Astro Fonts API** (`fontProviders.google()` in `astro.config.mjs`) — *not* `<link>` to Google Fonts (DESIGN.md's `<link>` instruction predates this stack; self-host instead). Families (matched to the sibling `../pathproof-marketing`): **Space Grotesk** (display, 500/600/700), **IBM Plex Sans** (body/UI, 400/500/600/700), **IBM Plex Mono** (code, 400/500), each exposed as a `--ff-*` CSS variable.
 - **TypeScript** strict (`extends: "astro/tsconfigs/strict"`).
 - **Wrangler** for deploy; **Terraform** (`infra/`, Cloudflare provider `~> 5`) for edge config only.
 
@@ -54,14 +54,14 @@ Source material:
 - **Near-zero client JS, no UI framework runtime.** Interactions are each a small scoped inline `<script>` (vanilla TS): (1) nav scroll-translucency + mobile menu (`SiteNav`), (2) Home "Try it live" BIN playground (`BinPlayground`), (3) code-language tab switchers (`CodeTabs`), (4) the Features FAQ accordion (single-open, no-JS shows all), (5) the `ContactForm` progressive-enhancement submit. (There is no pricing page and no monthly/annual toggle — pricing is contact-driven.) The hero JSON staggered reveal is pure CSS (`ftbUp` + delays, `DemoPanel`). Code highlighting is build-time via Astro's `<Code>` (Shiki) with the custom theme in `src/lib/codeTheme.ts` — no client JS. Respect `prefers-reduced-motion`; the `<noscript>` fail-safe (Layout) and the contact form's query-param success pane keep JS-gated content working without JS.
 
 The one exception to "scoped scripts only" is `Analytics.astro`, which loads Cloudflare's beacon from its own origin and therefore must be `is:inline`. It renders **nothing** unless `CF_ANALYTICS_TOKEN` is set in the build environment — the same variable that widens the CSP, so the beacon can never ship without the policy that permits it. The Web Analytics site itself is managed by Terraform (`cloudflare_web_analytics_site`); its `site_token` is exported as the `cf_analytics_token` output.
-- **Honesty constraints on copy (per DESIGN.md) — do not violate:** SOC 2 is "in progress / roadmap" (not certified); GDPR-clean + DPA available; PCI out-of-scope (no PCI DSS certification claim); no fabricated partner logos or dataset/scale metrics. The v3 prototypes *reintroduce* fabricated social proof (partner wordmarks NorthPay/Volt/…; invented counters "6.2M BINs", "242 countries", "184M lookups/day") and gradient stat bands — these are **intentionally not shipped** (no social-proof strip, no animated counters, no stat bands on Home/Product/Company). Only defensible claims appear inline (`sub-10ms p99`, `99.9% uptime`, `8-digit` precision, EU residency). Take the design files with a grain of salt; keep these constraints intact when editing copy.
+- **Honesty constraints on copy (per DESIGN.md) — do not violate:** SOC 2 is "in progress / roadmap" (not certified); GDPR-clean + DPA available; PCI out-of-scope (no PCI DSS certification claim); no fabricated partner logos or dataset/scale metrics. The v3 prototypes *reintroduce* fabricated social proof (partner wordmarks NorthPay/Volt/…; invented counters "6.2M BINs", "242 countries", "184M lookups/day") and gradient stat bands — these are **intentionally not shipped** (no social-proof strip, no animated counters, no stat bands on Home/Product). Only defensible claims appear inline (`sub-10ms p99`, `99.9% uptime`, `8-digit` precision, EU residency). Take the design files with a grain of salt; keep these constraints intact when editing copy.
 
 ## FindThisBIN-specific rules (from DESIGN.md — do not violate)
 
 - **Never port `support.js` or the `.dc.html` inline styles into Astro.** `support.js` is a React-based "Design Component" runtime that loads React UMD from unpkg and renders `<x-dc>` templates (`{{ expr }}`, `<sc-if>`, `<sc-for>`, camelCased inline-style objects). The `.dc.html` files are visual + behavioral references only; their trailing `<script data-dc-script>` `class Component extends DCLogic` is the behavioral spec (the BIN-playground logic is reimplemented in `src/lib/bin.ts`). It is gitignored, not shipped.
-- **Routing:** `Home.dc.html`→`/`, `Product.dc.html`→`/product/`, `Company.dc.html`→`/company/`, `Contact.dc.html`→`/contact/` (+ the `/api/contact/` endpoint). `Pricing.dc.html` and `Docs.dc.html` map to **nothing** — those pages were never built. `features.astro` ships with no `.dc.html` prototype behind it (re-authored as the capability atlas in the 2026-08 pass). Product and Company are standalone pages (not Home anchors). In-page anchors preserved as section `id`s: `#deployment`, `#try`, `#psp`, `#product` (Home), `#tiers` (Features), `#careers` (Company), `#footer`.
+- **Routing:** `Home.dc.html`→`/`, `Product.dc.html`→`/product/`, `Contact.dc.html`→`/contact/` (+ the `/api/contact/` endpoint). `Pricing.dc.html`, `Docs.dc.html`, and `Company.dc.html` map to **nothing** — Pricing/Docs were never built, and the Company page (`/company/`) was removed in the 2026-08 pass (there is no company/careers story on this site; `/company/` now 404s). `features.astro` ships with no `.dc.html` prototype behind it (re-authored as the capability atlas in the same pass). Product is a standalone page (not a Home anchor). In-page anchors preserved as section `id`s: `#deployment`, `#try`, `#psp`, `#product` (Home), `#tiers` (Features), `#footer`.
 - **URL form:** `trailingSlash: "always"`. Every `*_PATH` in `site.ts` carries the slash, and the CTA URLs are derived from `CONTACT_PATH` so the path is typed once. This includes the API route — `API_CONTACT_PATH` is `/api/contact/`, because a bare form action makes every submit pay a 308.
-- **Contact intents:** `demo` (default; "Book a demo"), `sales` ("Talk to sales"), and `careers` ("Get in touch" from Company `#careers`). Any other value (incl. legacy `?intent=api-key`) falls through to `demo`. The contact form's **Deployment preference** `<select>` (field name `volume`, hidden for careers) carries `Not sure yet` / `Self-hosted / BYOC` / `Managed in our cloud` / `Fully managed (BYOL)`; `/api/contact` posts it to Slack with `label = intent==="sales" ? "Talk to sales" : intent==="careers" ? "Careers" : "Book a demo"`. The careers intent deliberately shows **no "Prefer email?" row** — there is no careers@ inbox, and inventing one would bounce.
+- **Contact intents:** `demo` (default; "Book a demo") and `sales` ("Talk to sales"). Any other value (incl. legacy `?intent=api-key` / `?intent=careers`) falls through to `demo`. The contact form's **Deployment preference** `<select>` (field name `volume`) carries `Not sure yet` / `Self-hosted / BYOC` / `Managed in our cloud` / `Fully managed (BYOL)`; `/api/contact` posts it to Slack with `label = intent==="sales" ? TALK_TO_SALES_LABEL : BOOK_DEMO_LABEL`.
 - **Brand logos** from `design_files/logo_design_files/` are copied into `public/` (`favicon.svg`, `app-icon.svg`, `icon-*.svg`); the icon mark + "FindThis"(white)"BIN"(cyan) wordmark is the `Wordmark.astro` component used in nav/footer.
 - **No raster images, and no trademarked third-party logos.** All other visuals are CSS gradients/glows/type. Card-scheme (VISA, Mastercard, …) and partner names render as plain text / generic motifs only.
 - **Canonical API example** (`GET https://bins.internal/v1/bins/53847012` + its JSON response, in DESIGN.md) is reused everywhere code appears — the `DemoPanel`, the `CodeTabs` snippets, and the Docs reference panel. The `bins.internal` host (the `ENGINE_BASE_URL` constant) signals self-hosting in *your* cloud rather than a hosted API.
@@ -72,23 +72,24 @@ The one exception to "scoped scripts only" is `Analytics.astro`, which loads Clo
 ```
 src/
   layouts/Layout.astro          ← <head> via BaseHead, SiteNav + <slot/> + SiteFooter, scroll-reveal + <noscript> fail-safe
+  layouts/LegalLayout.astro     ← shared shell for the 4 legal pages (band + type rules; slot styled via .content :global())
   components/
     BaseHead.astro              ← <head>: meta, canonical, OG, self-hosted fonts
     SiteNav.astro               ← sticky nav (scroll-translucency + mobile menu); self-derives its active link from Astro.url.pathname — no `active` prop
-    SiteFooter.astro            ← 4-col footer (brand + Product/Company/Legal), EU pill; no social icons
+    SiteFooter.astro            ← 4-col footer (brand + Product/Company/Legal), EU pill; no social icons. The Company column is the CloakHound family (CloakHound · Pathproof · ChargebackHQ · 3DSCore, external), from site.ts FAMILY_LINKS; the bottom bar carries an "a CloakHound product" link
     Wordmark.astro              ← icon mark + FindThis/BIN wordmark
-    Eyebrow.astro / Button.astro
+    Button.astro
     FinalCta.astro              ← the closing gradient CTA band (one component; props: heading, lead?, trustLine?)
     CodeTabs.astro              ← tabbed Shiki code panel (Home "How it works", Product "Anatomy")
     DemoPanel.astro             ← hero animated JSON response (pure-CSS stagger)
     BinPlayground.astro         ← "Try it live" island; renders via lib/bin.ts
     ContactForm.astro           ← contact form (intent switch, honeypot, JS-off fallback + PE submit)
   lib/
-    site.ts                     ← site-wide routes/labels/URLs
+    site.ts                     ← site-wide routes/labels/URLs (+ PARENT_*/FAMILY_LINKS for the CloakHound family)
     bin.ts                      ← BIN sample map + synthesis + card renderer (SSR default + client island)
     codeTheme.ts                ← custom Shiki theme (DESIGN.md code palette)
-  pages/{index,product,features,company,contact}.astro
-  pages/{privacy,terms,dpa,gdpr}.astro  ← legal
+  pages/{index,product,features,contact}.astro
+  pages/{privacy,terms,dpa,gdpr}.astro  ← legal (LegalLayout)
   pages/404.astro               ← branded not-found
   pages/api/contact.ts          ← on-demand (prerender=false) Slack-webhook endpoint
   styles/global.css             ← @import "tailwindcss"; :root tokens; @theme bridge; keyframes; shared utilities
