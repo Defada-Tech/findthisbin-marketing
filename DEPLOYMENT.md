@@ -43,7 +43,7 @@ Optionally exercise the built Worker locally (closest to production):
 npm run preview      # astro build && wrangler dev --config ./dist/server/wrangler.json
 ```
 
-Visit the port wrangler prints (default http://localhost:8787) and click through `/`, `/product`, `/pricing`, `/docs`, `/company`, `/contact` — confirm the nav scroll/menu, BIN playground, code-language tabs, pricing toggle, FAQ accordion, and the contact form (intent switch + submit) all work. To exercise the Slack delivery locally, copy `.dev.vars.example` → `.dev.vars` and set a real `SLACK_WEBHOOK_URL`.
+Visit the port wrangler prints (default http://localhost:8787) and click through `/`, `/product/`, `/features/`, `/contact/` — confirm the nav scroll/menu, BIN playground, code-language tabs, FAQ accordion, and the contact form (intent switch + submit) all work. To exercise the Slack delivery locally, copy `.dev.vars.example` → `.dev.vars` and set a real `SLACK_WEBHOOK_URL`.
 
 ---
 
@@ -72,9 +72,7 @@ This builds and uploads the Worker named **`findthisbin-marketing`** (per `wrang
 BASE=https://findthisbin-marketing.<subdomain>.workers.dev
 curl -sI  $BASE/                  # 200
 curl -sI  $BASE/product/          # 200
-curl -sI  $BASE/pricing/          # 200
-curl -sI  $BASE/docs/             # 200
-curl -sI  $BASE/company/          # 200
+curl -sI  $BASE/features/         # 200
 curl -sI  $BASE/contact/          # 200
 curl -sI  $BASE/robots.txt        # 200
 curl -sI  $BASE/sitemap-index.xml # 200
@@ -181,11 +179,11 @@ Every push to `main` now builds and deploys inside Cloudflare's infrastructure. 
 
 ## Verification checklist
 
-- [ ] All 6 routes return 200 (`/`, `/product`, `/pricing`, `/docs`, `/company`, `/contact`).
+- [ ] All 4 main routes return 200 (`/`, `/product/`, `/features/`, `/contact/`), plus the legal pages and `404`.
 - [ ] `/robots.txt` and `/sitemap-index.xml` return 200.
 - [ ] `www` serves over HTTPS (200); the apex 301s to `https://www.findthisbin.com`; any `http://` URL 301s to `https://`.
 - [ ] Page canonical tags point at **`www`** (`site = "https://www.findthisbin.com"` in `astro.config.mjs`) so the canonical/sitemap match the redirect target.
-- [ ] Interactions work in the browser: nav scroll-translucency + mobile menu, BIN playground, code-language tabs, pricing monthly/annual toggle, FAQ accordion, contact-form intent switch. With JS disabled, content still renders (hero JSON, playground default card, all FAQ answers) and the contact form still submits via native POST → 303 → query-param success pane.
+- [ ] Interactions work in the browser: nav scroll-translucency + mobile menu, BIN playground, code-language tabs, FAQ accordion, contact-form intent switch. With JS disabled, content still renders (hero JSON, playground default card, all FAQ answers) and the contact form still submits via native POST → 303 → query-param success pane.
 - [ ] `SLACK_WEBHOOK_URL` secret is set (`wrangler secret list`); submitting `/contact` delivers a Slack message.
 
 ## Rollback
