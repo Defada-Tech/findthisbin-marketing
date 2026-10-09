@@ -13,16 +13,16 @@ export const SITE_DESCRIPTION =
 /* Engine host shown in code/demo URLs — signals self-hosting (vs a hosted API). */
 export const ENGINE_BASE_URL = "https://bins.internal";
 
-/* The CloakHound family — parent brand plus the sibling products with public
+/* The Enigma Soft family — parent brand plus the sibling products with public
    sites, linked from the footer's Company column. 3DSCore has no site of its
-   own, so it points at the parent's products page. */
-export const PARENT_NAME = "CloakHound";
-export const PARENT_URL = "https://www.cloakhound.com/";
+   own, so it points at the parent's site. */
+export const PARENT_NAME = "Enigma Soft";
+export const PARENT_URL = "https://www.enigmasoft.ltd.uk";
 export const FAMILY_LINKS = [
   { href: PARENT_URL, label: PARENT_NAME },
   { href: "https://www.trypathproof.com", label: "Pathproof" },
   { href: "https://www.trychargebackhq.com", label: "ChargebackHQ" },
-  { href: `${PARENT_URL}3dscore/`, label: "3DSCore" },
+  { href: PARENT_URL, label: "3DSCore" },
 ] as const;
 
 /**

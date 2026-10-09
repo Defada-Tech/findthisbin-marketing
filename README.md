@@ -11,7 +11,7 @@ everywhere is **"Book a demo"** (there is no signup or per-lookup pricing).
 a Contact / book-a-demo form (`/contact/`), four legal pages (`/privacy/`,
 `/terms/`, `/dpa/`, `/gdpr/`), and a branded `404` — built as a near-zero-JS
 site on **Astro 6** and deployed to **Cloudflare Workers (Static Assets)**.
-There is no Company page; the footer's Company column links the CloakHound
+There is no Company page; the footer's Company column links the Enigma Soft
 product family instead.
 
 **Two routes are on-demand**, not one: `/api/contact` (posts submissions to
@@ -103,6 +103,13 @@ to match the apex→www 301 the infra sets up. Change both together if the
 canonical host changes.
 
 See **`DEPLOYMENT.md`** for the full runbook (prerequisites, ordering, token scopes, verification, rollback, Workers Builds CD).
+
+## Content roadmap
+
+[ROADMAP.md](ROADMAP.md) compares FindThisBIN with BINLookupAPI and prioritizes
+content accuracy, technical evaluation, commercial clarity, and focused guides.
+It describes planned website work; the routes and capabilities listed there are
+not a statement of what is currently shipped.
 
 ## Design source of truth
 

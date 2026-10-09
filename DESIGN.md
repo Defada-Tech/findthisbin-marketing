@@ -8,7 +8,7 @@
 > consolidated Home 12→10 sections, gave Product the spec-sheet/stepper layouts,
 > and rebuilt Features as the capability atlas; a follow-up in the same pass
 > removed the Company page and the careers intent, removed all eyebrow labels,
-> and pointed the footer's Company column at the CloakHound family).
+> and pointed the footer's Company column at the Enigma Soft family).
 >
 > Still true and worth repeating:
 >
@@ -141,8 +141,8 @@ Self-hosted via the Astro Fonts API (`fontProviders.google()` in `astro.config.m
 ### Footer (`SiteFooter.astro`)
 - Background `#08080E`, 4-col grid (`1.6fr 1fr 1fr 1fr` → `1fr 1fr` ≤900px), `id="footer"`.
 - Col 1: wordmark, tagline **"The BIN intelligence engine for payment platforms. Deploy it in your own cloud; your data never leaves."**, and a cyan **"Runs in your cloud · EU option"** pill.
-- Columns: **Product** (Overview · Try it live → `/#try` · Features · Deployment models → `/#deployment` · Contact) · **Company** — the CloakHound family, all external (`site.ts` `FAMILY_LINKS`): CloakHound → `https://www.cloakhound.com/` · Pathproof → `https://www.trypathproof.com` · ChargebackHQ → `https://www.trychargebackhq.com` · 3DSCore → `https://www.cloakhound.com/products/` · **Legal** (Privacy, Terms, DPA, GDPR).
-- Bottom bar: "© 2026 FindThisBIN. All rights reserved." left, "a CloakHound product" link → `PARENT_URL` right. *(No social icons; none exist as assets.)*
+- Columns: **Product** (Overview · Try it live → `/#try` · Features · Deployment models → `/#deployment` · Contact) · **Company** — the Enigma Soft family, all external (`site.ts` `FAMILY_LINKS`): Enigma Soft → `https://www.enigmasoft.ltd.uk` · Pathproof → `https://www.trypathproof.com` · ChargebackHQ → `https://www.trychargebackhq.com` · 3DSCore → `https://www.enigmasoft.ltd.uk` · **Legal** (Privacy, Terms, DPA, GDPR).
+- Bottom bar: "© 2026 FindThisBIN. All rights reserved." left, "an Enigma Soft product" link → `PARENT_URL` right. *(No social icons; none exist as assets.)*
 
 ---
 

@@ -76,7 +76,7 @@ src/
   components/
     BaseHead.astro              ← <head>: meta, canonical, OG, self-hosted fonts
     SiteNav.astro               ← sticky nav (scroll-translucency + mobile menu); self-derives its active link from Astro.url.pathname — no `active` prop
-    SiteFooter.astro            ← 4-col footer (brand + Product/Company/Legal), EU pill; no social icons. The Company column is the CloakHound family (CloakHound · Pathproof · ChargebackHQ · 3DSCore, external), from site.ts FAMILY_LINKS; the bottom bar carries an "a CloakHound product" link
+    SiteFooter.astro            ← 4-col footer (brand + Product/Company/Legal), EU pill; no social icons. The Company column is the Enigma Soft family (Enigma Soft · Pathproof · ChargebackHQ · 3DSCore, external), from site.ts FAMILY_LINKS; the bottom bar carries an "an Enigma Soft product" link
     Wordmark.astro              ← icon mark + FindThis/BIN wordmark
     Button.astro
     FinalCta.astro              ← the closing gradient CTA band (one component; props: heading, lead?, trustLine?)
@@ -85,7 +85,7 @@ src/
     BinPlayground.astro         ← "Try it live" island; renders via lib/bin.ts
     ContactForm.astro           ← contact form (intent switch, honeypot, JS-off fallback + PE submit)
   lib/
-    site.ts                     ← site-wide routes/labels/URLs (+ PARENT_*/FAMILY_LINKS for the CloakHound family)
+    site.ts                     ← site-wide routes/labels/URLs (+ PARENT_*/FAMILY_LINKS for the Enigma Soft family)
     bin.ts                      ← BIN sample map + synthesis + card renderer (SSR default + client island)
     codeTheme.ts                ← custom Shiki theme (DESIGN.md code palette)
   pages/{index,product,features,contact}.astro
